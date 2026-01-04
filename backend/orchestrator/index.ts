@@ -480,14 +480,73 @@ Analyze this request and determine which agents and skills are needed.`;
             // Get tool definitions for agent's skills
             const tools = this.skillRegistry.getToolDefinitions(agent.skills);
 
+            // Extract language from context for enforcement
+            const userLanguage = (context as any)?.language || (context as any)?.allAnswers?.language;
+            const languageMap: Record<string, string> = {
+                'hi-IN': 'Hindi',
+                'te-IN': 'Telugu',
+                'ta-IN': 'Tamil',
+                'kn-IN': 'Kannada',
+                'ml-IN': 'Malayalam',
+                'mr-IN': 'Marathi',
+                'bn-IN': 'Bengali',
+                'gu-IN': 'Gujarati',
+                'en-US': 'English'
+            };
+            const languageName = userLanguage ? (languageMap[userLanguage] || userLanguage) : null;
+            const isNonEnglish = languageName && languageName !== 'English';
+
+            // Build user content with explicit language instruction if needed
+            let userContent = `${task.description}\n\nContext: ${JSON.stringify(context || {}, null, 2)}`;
+
+            if (isNonEnglish && languageName) {
+                // Add example phrases to help the model
+                let examplePhrases = '';
+                if (userLanguage === 'te-IN') {
+                    examplePhrases = `
+EXAMPLE CORRECT TELUGU PHRASES (use these as reference):
+- "మీ పేరు ఏమిటి?" (What is your name?)
+- "చాలా బాగుంది!" (Very good!)
+- "ఇంకా చెప్పండి" (Tell me more)
+- "మీ email ఏమిటి?" (What is your email?)
+- "మీ business idea ఏమిటి?" (What is your business idea?)
+- "ధన్యవాదాలు!" (Thank you!)
+
+USE SIMPLE SPOKEN TELUGU ONLY. Mix English words for business terms.`;
+                } else if (userLanguage === 'hi-IN') {
+                    examplePhrases = `
+EXAMPLE CORRECT HINDI PHRASES (use these as reference):
+- "आपका नाम क्या है?" (What is your name?)
+- "बहुत अच्छा!" (Very good!)
+- "और बताइए" (Tell me more)
+- "आपका email क्या है?" (What is your email?)
+- "आपका business idea क्या है?" (What is your business idea?)
+- "धन्यवाद!" (Thank you!)
+
+USE SIMPLE CONVERSATIONAL HINDI ONLY. Hinglish is fine.`;
+                }
+
+                userContent = `🔴 CRITICAL LANGUAGE REQUIREMENT 🔴
+The user has selected ${languageName} (${userLanguage}) as their preferred language.
+YOU MUST respond ENTIRELY in ${languageName}. DO NOT use English sentences.
+
+⚠️ USE SIMPLE, EVERYDAY ${languageName.toUpperCase()} - NOT FORMAL/LITERARY LANGUAGE!
+${examplePhrases}
+
+${userContent}
+
+REMINDER: Your response must be 100% in simple ${languageName}. Use common words only.`;
+            }
+
             // Build messages
             const messages: GroqMessage[] = [
                 { role: 'system', content: agent.system_prompt },
                 {
                     role: 'user',
-                    content: `${task.description}\n\nContext: ${JSON.stringify(context || {}, null, 2)}`
+                    content: userContent
                 }
             ];
+
 
             // Use local Ollama or Groq based on config
             let response: any;

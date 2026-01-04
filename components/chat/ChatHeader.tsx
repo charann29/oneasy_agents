@@ -37,14 +37,14 @@ export default function ChatHeader({ progress, phaseName, isTyping, onReset, use
                     </div>
                 </div>
 
-                {/* Reset Button */}
+                {/* New Plan Button */}
                 {onReset && (
                     <button
                         onClick={onReset}
-                        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-red-50 hover:text-red-600 text-slate-500 text-[10px] font-bold uppercase tracking-wider transition-all border border-slate-200 hover:border-red-100"
-                        title="Start a new conversation"
+                        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium transition-all shadow-sm"
+                        title="Start a new business plan"
                     >
-                        🔄 New
+                        + New Plan
                     </button>
                 )}
 
