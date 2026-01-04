@@ -1516,28 +1516,67 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                     </div>
                 );
 
+            case QuestionType.PERCENTAGE:
             case QuestionType.NUMBER:
             case QuestionType.AMOUNT:
                 return (
-                    <div className="flex gap-2 w-full">
-                        <input
-                            type="number"
-                            value={currentAnswer}
-                            onChange={(e) => setCurrentAnswer(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleSubmitAnswer()}
-                            placeholder={currentQuestion.placeholder || "Enter number..."}
-                            className={commonClasses}
-                            autoFocus
-                        />
-                        <button
-                            onClick={handleSubmitAnswer}
-                            className="flex items-center gap-2 px-5 py-3 bg-black text-white rounded-xl hover:bg-slate-800 transition-all shadow-md hover:shadow-lg active:scale-95"
-                        >
-                            <span className="font-bold text-sm">{t('submit')}</span>
-                            <Send className="w-4 h-4" />
-                        </button>
+                    <form onSubmit={(e) => { e.preventDefault(); handleSubmitAnswer(); }} className="flex flex-col gap-2 w-full">
+                        <div className="flex gap-1.5 sm:gap-2 w-full items-center">
+                            <input
+                                type="number"
+                                value={currentAnswer}
+                                onChange={(e) => setCurrentAnswer(e.target.value)}
+                                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmitAnswer(); } }}
+                                placeholder={currentQuestion.placeholder || "Enter value..."}
+                                className={`${commonClasses} flex-1 min-w-0`}
+                                autoFocus
+                            />
 
-                    </div>
+                            <VoiceInput
+                                onTranscription={handleVoiceTranscription}
+                                language={selectedLanguage}
+                                onLanguageChange={setSelectedLanguage}
+                                isProcessing={isProcessing}
+                            />
+
+                            <button
+                                type="submit"
+                                className="flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-5 sm:py-3 bg-black text-white rounded-xl hover:bg-slate-800 transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px]"
+                                disabled={isProcessing}
+                            >
+                                {isProcessing ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <>
+                                        <span className="hidden sm:inline font-bold text-sm">{t('submit')}</span>
+                                        <Send className="w-4 h-4" />
+                                    </>
+                                )}
+                            </button>
+                        </div>
+
+                        {/* Hidden on mobile, shown on larger screens */}
+                        <div className="hidden sm:flex justify-end">
+                            <div className="text-xs px-2 py-1 text-slate-500 font-medium">
+                                {/* Map language code to native name */}
+                                {(() => {
+                                    const labels: Record<string, string> = {
+                                        'en-US': '🇺🇸 English',
+                                        'en-IN': '🇮🇳 English',
+                                        'hi-IN': '🇮🇳 हिंदी',
+                                        'te-IN': '🇮🇳 తెలుగు',
+                                        'ta-IN': '🇮🇳 தமிழ்',
+                                        'kn-IN': '🇮🇳 ಕನ್ನಡ',
+                                        'ml-IN': '🇮🇳 മലയാളം',
+                                        'mr-IN': '🇮🇳 मराठी',
+                                        'bn-IN': '🇮🇳 বাংলা',
+                                        'gu-IN': '🇮🇳 ગુજરાતી'
+                                    };
+                                    return labels[selectedLanguage] || selectedLanguage;
+                                })()}
+                            </div>
+                        </div>
+                    </form>
                 );
 
             case QuestionType.CHOICE:
