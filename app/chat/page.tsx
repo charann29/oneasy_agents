@@ -1360,9 +1360,21 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                 phaseName={currentPhase?.name}
                 isTyping={state.agentActivity.length > 0}
                 onReset={() => {
-                    if (confirm('Start a new session? Current progress will be lost.')) {
-                        handleLogout();
-                    }
+                    // Clear all state
+                    setState({
+                        sessionId: null,
+                        answers: {},
+                        currentPhase: 0,
+                        messages: [],
+                        aiSuggestions: {},
+                        completedPhases: []
+                    });
+                    // Clear local storage
+                    localStorage.removeItem('chat_state');
+                    // Reset to first question
+                    setCurrentQuestionIndex(0);
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 user={user}
                 onLogin={handleLogin}
