@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  output: 'standalone',
   experimental: {},
   env: {
     GROQ_API_KEY: process.env.GROQ_API_KEY,
