@@ -828,6 +828,58 @@ function QuestionnaireContent() {
         }
     };
 
+    const handleExplainQuestion = async (question: Question) => {
+        if (state.currentPhase === 0) return;
+
+        setIsProcessing(true);
+        setState(prev => ({ ...prev, agentActivity: ['Explaining question...'] }));
+
+        try {
+            const response = await fetch('/api/orchestrator', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: `Question: "${question.question}"
+Context: ${question.placeholder || ''}
+
+Please explain this question in simple layman terms. Why is it asking this? Provide 1 simple example to clarify. Keep your explanation short, conversational, and helpful (max 3 sentences).`,
+                    context: {
+                        questionId: question.id,
+                        questionType: question.type,
+                        currentPhase: state.currentPhase,
+                        phaseName: ALL_PHASES[state.currentPhase]?.name,
+                        allAnswers: state.answers,
+                        requireAgents: true,
+                        mcpTrigger: 'explain_question',
+                        requestType: 'explanation'
+                    }
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.data) {
+                // Add explanation as an assistant message
+                const explanationMsg: Message = {
+                    id: `explain-${Date.now()}`,
+                    role: 'assistant',
+                    content: result.data.synthesis || "I can't explain this right now.",
+                    timestamp: new Date()
+                };
+                setState(prev => ({
+                    ...prev,
+                    messages: [...prev.messages, explanationMsg],
+                    agentActivity: []
+                }));
+            }
+        } catch (error) {
+            console.error('Explanation error:', error);
+            setState(prev => ({ ...prev, agentActivity: [] }));
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
     const getAISuggestions = async (question: Question, partialAnswer: string, isBackground: boolean = false) => {
         // Phase 1 (index 0) doesn't need AI suggestions - just basic info collection
         if (state.currentPhase === 0) {
@@ -1974,11 +2026,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                 <span className="text-[10px] font-bold uppercase tracking-wider">{currentPhase.name}</span>
                             </div>
                         )}
-                        <div className="flex items-center gap-4">
-                            <div className="text-[9px] font-bold text-slate-300 uppercase tracking-widest bg-slate-50 px-2 py-1 rounded-md border border-slate-100 flex items-center gap-1.5">
-                                {state.answers.language === 'hi-IN' ? '🇮🇳 Hindi' : state.answers.language === 'te-IN' ? '🇮🇳 Telugu' : '🇺🇸 English'}
-                            </div>
-                        </div>
+
                     </div>
 
                     {/* AI Suggestions / Idea Starters */}
@@ -2029,11 +2077,11 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
 
                         <div className="flex items-center gap-3 px-6 mt-1 overflow-x-auto no-scrollbar">
                             <button
-                                onClick={() => getAISuggestions(currentQuestion, '')}
+                                onClick={() => handleExplainQuestion(currentQuestion)}
                                 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:text-black flex items-center gap-1.5 transition-colors whitespace-nowrap"
                             >
                                 <Brain className="w-3 h-3" />
-                                Help me answer
+                                Help me understand
                             </button>
                             {!currentQuestion.required && (
                                 <button
