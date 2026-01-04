@@ -5,19 +5,20 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
-// Voice mapping for Indian languages with Google Cloud TTS voice names
+// Voice mapping for Indian languages - ALL MALE voices for consistent "Abhishek CA" character
 const VOICE_MAP: Record<string, { languageCode: string; name: string; ssmlGender: string }> = {
     'en-US': { languageCode: 'en-US', name: 'en-US-Neural2-D', ssmlGender: 'MALE' },
-    'en-IN': { languageCode: 'en-IN', name: 'en-IN-Neural2-A', ssmlGender: 'FEMALE' },
-    'hi-IN': { languageCode: 'hi-IN', name: 'hi-IN-Neural2-A', ssmlGender: 'FEMALE' },
-    'te-IN': { languageCode: 'te-IN', name: 'te-IN-Standard-A', ssmlGender: 'FEMALE' },
-    'ta-IN': { languageCode: 'ta-IN', name: 'ta-IN-Standard-A', ssmlGender: 'FEMALE' },
-    'kn-IN': { languageCode: 'kn-IN', name: 'kn-IN-Standard-A', ssmlGender: 'FEMALE' },
-    'ml-IN': { languageCode: 'ml-IN', name: 'ml-IN-Standard-A', ssmlGender: 'FEMALE' },
-    'mr-IN': { languageCode: 'mr-IN', name: 'mr-IN-Standard-A', ssmlGender: 'FEMALE' },
-    'bn-IN': { languageCode: 'bn-IN', name: 'bn-IN-Standard-A', ssmlGender: 'FEMALE' },
-    'gu-IN': { languageCode: 'gu-IN', name: 'gu-IN-Standard-A', ssmlGender: 'FEMALE' },
+    'en-IN': { languageCode: 'en-IN', name: 'en-IN-Neural2-B', ssmlGender: 'MALE' },
+    'hi-IN': { languageCode: 'hi-IN', name: 'hi-IN-Neural2-B', ssmlGender: 'MALE' },
+    'te-IN': { languageCode: 'te-IN', name: 'te-IN-Standard-B', ssmlGender: 'MALE' },
+    'ta-IN': { languageCode: 'ta-IN', name: 'ta-IN-Standard-B', ssmlGender: 'MALE' },
+    'kn-IN': { languageCode: 'kn-IN', name: 'kn-IN-Standard-B', ssmlGender: 'MALE' },
+    'ml-IN': { languageCode: 'ml-IN', name: 'ml-IN-Standard-B', ssmlGender: 'MALE' },
+    'mr-IN': { languageCode: 'mr-IN', name: 'mr-IN-Standard-B', ssmlGender: 'MALE' },
+    'bn-IN': { languageCode: 'bn-IN', name: 'bn-IN-Standard-B', ssmlGender: 'MALE' },
+    'gu-IN': { languageCode: 'gu-IN', name: 'gu-IN-Standard-B', ssmlGender: 'MALE' },
 };
+
 
 export async function POST(request: NextRequest) {
     try {

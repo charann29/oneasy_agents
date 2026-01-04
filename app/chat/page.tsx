@@ -1783,7 +1783,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                 content={msg.content}
                                 timestamp={msg.timestamp}
                                 isFirstInGroup={idx === 0 || state.messages[idx - 1].role !== msg.role}
-                                enableTTS={msg.role === 'assistant' && ttsEnabled}
+                                enableTTS={false}
                                 ttsLanguage={state.answers.language || selectedLanguage || 'en-US'}
                                 language={selectedLanguage}
                             />
