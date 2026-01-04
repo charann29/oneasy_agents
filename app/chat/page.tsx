@@ -9,10 +9,12 @@ import { ALL_PHASES, Question, QuestionType, QuestionOption } from '@/lib/schema
 import ChatHeader from '@/components/chat/ChatHeader';
 import ChatBubble from '@/components/chat/ChatBubble';
 import PhaseRoadmap from '@/components/chat/PhaseRoadmap';
+import ConversationSidebar from '@/components/chat/ConversationSidebar';
 // import { VoiceInput } from '@/components/questionnaire/VoiceInput';  // OLD - REMOVED
 import { VoiceInput } from '@/components/questionnaire/VoiceInput';  // USING GOOGLE CLOUD
 import { ChatInteraction } from '@/lib/utils/chat-interaction';
 import { supabase } from '@/lib/supabase/client';
+import { chatStorageService } from '@/lib/services/chat-storage';
 import AuthWrapper from '@/components/auth/AuthWrapper';
 import { storeAgentActivity, storeConversationMessage } from '@/lib/services/agent-storage';
 
@@ -59,6 +61,9 @@ interface QuestionnaireState {
 }
 
 function QuestionnaireContent() {
+    // Multi-chat state
+    const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
+
     const [state, setState] = useState<QuestionnaireState>({
         sessionId: null,
         currentPhase: 0,
@@ -1354,244 +1359,302 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
     }
 
     return (
-        <div className="flex flex-col h-screen bg-white">
-            <ChatHeader
-                progress={progressPercentage}
-                phaseName={currentPhase?.name}
-                isTyping={state.agentActivity.length > 0}
-                onReset={() => {
-                    // Clear all state and start fresh
-                    setState(prev => ({
-                        ...prev,
-                        sessionId: null,
-                        answers: {},
-                        currentPhase: 0,
-                        currentQuestionIndex: 0,
-                        messages: [],
-                        aiSuggestions: {},
-                        completedPhases: [],
-                        agentActivity: []
-                    }));
-                    // Clear local storage
-                    localStorage.removeItem('chat_state');
-                    // Scroll to top  
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+        <div className="flex h-screen bg-white">
+            {/* Conversation Sidebar */}
+            <ConversationSidebar
+                userId={user?.id || null}
+                activeConversationId={activeConversationId}
+                onSelectConversation={async (id) => {
+                    // Load conversation data
+                    const messages = await chatStorageService.getMessages(id);
+                    const answers = await chatStorageService.getAnswers(id);
+                    const conv = await chatStorageService.getConversation(id);
+
+                    if (conv) {
+                        setActiveConversationId(id);
+                        setState(prev => ({
+                            ...prev,
+                            answers,
+                            currentPhase: conv.current_phase,
+                            messages: messages.map(m => ({
+                                id: m.id,
+                                role: m.role as any,
+                                content: m.content,
+                                timestamp: new Date(m.created_at)
+                            }))
+                        }));
+                    }
                 }}
-                user={user}
-                onLogin={handleLogin}
-                onLogout={handleLogout}
-                language={selectedLanguage}
+                onNewConversation={async () => {
+                    if (!user?.id) return;
+
+                    // Create new conversation in DB
+                    const newConv = await chatStorageService.createConversation(user.id, selectedLanguage);
+
+                    if (newConv) {
+                        setActiveConversationId(newConv.id);
+                        // Clear state for new conversation
+                        setState({
+                            sessionId: null,
+                            currentPhase: 0,
+                            currentQuestionIndex: 0,
+                            answers: {},
+                            completedPhases: [],
+                            aiSuggestions: {},
+                            autoPopulated: {},
+                            agentActivity: [],
+                            messages: []
+                        });
+                        localStorage.removeItem('chat_state');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }}
             />
 
+            {/* Main Chat Area */}
+            <div className="flex flex-col flex-1">
+                <ChatHeader
+                    progress={progressPercentage}
+                    phaseName={currentPhase?.name}
+                    isTyping={state.agentActivity.length > 0}
+                    onReset={async () => {
+                        if (!user?.id) return;
 
-            <div className="flex-1 overflow-hidden flex">
-                <div className="flex-1 overflow-y-auto px-4 py-8 relative">
-                    <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style={{
-                        backgroundImage: `radial-gradient(#1e293b 0.5px, transparent 0.5px)`,
-                        backgroundSize: '24px 24px'
-                    }}></div>
+                        // Create new conversation instead of clearing
+                        const newConv = await chatStorageService.createConversation(user.id, selectedLanguage);
 
-                    <div className="max-w-3xl mx-auto space-y-4 relative z-10">
-                        {state.messages.map((msg, idx) => (
-                            <ChatBubble
-                                key={msg.id + idx}
-                                role={msg.role === 'user' ? 'user' : 'assistant'}
-                                content={msg.content}
-                                timestamp={msg.timestamp}
-                                isFirstInGroup={idx === 0 || state.messages[idx - 1].role !== msg.role}
-                                enableTTS={msg.role === 'assistant' && ttsEnabled}
-                                ttsLanguage={state.answers.language || selectedLanguage || 'en-US'}
-                                language={selectedLanguage}
-                            />
-                        ))}
+                        if (newConv) {
+                            setActiveConversationId(newConv.id);
+                            setState({
+                                sessionId: null,
+                                currentPhase: 0,
+                                currentQuestionIndex: 0,
+                                answers: {},
+                                completedPhases: [],
+                                aiSuggestions: {},
+                                autoPopulated: {},
+                                agentActivity: [],
+                                messages: []
+                            });
+                            localStorage.removeItem('chat_state');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    }}
+                    user={user}
+                    onLogin={handleLogin}
+                    onLogout={handleLogout}
+                    language={selectedLanguage}
+                />
 
-                        {state.agentActivity.length > 0 && (
-                            <div className="flex justify-center my-6">
-                                <div className="px-5 py-2.5 bg-white border border-slate-200 rounded-2xl flex items-center gap-3 shadow-sm">
-                                    <div className="relative">
-                                        <Brain className="w-4 h-4 text-black" />
-                                        <div className="absolute inset-0 bg-slate-400 rounded-full animate-ping opacity-25"></div>
+
+                <div className="flex-1 overflow-hidden flex">
+                    <div className="flex-1 overflow-y-auto px-4 py-8 relative">
+                        <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style={{
+                            backgroundImage: `radial-gradient(#1e293b 0.5px, transparent 0.5px)`,
+                            backgroundSize: '24px 24px'
+                        }}></div>
+
+                        <div className="max-w-3xl mx-auto space-y-4 relative z-10">
+                            {state.messages.map((msg, idx) => (
+                                <ChatBubble
+                                    key={msg.id + idx}
+                                    role={msg.role === 'user' ? 'user' : 'assistant'}
+                                    content={msg.content}
+                                    timestamp={msg.timestamp}
+                                    isFirstInGroup={idx === 0 || state.messages[idx - 1].role !== msg.role}
+                                    enableTTS={msg.role === 'assistant' && ttsEnabled}
+                                    ttsLanguage={state.answers.language || selectedLanguage || 'en-US'}
+                                    language={selectedLanguage}
+                                />
+                            ))}
+
+                            {state.agentActivity.length > 0 && (
+                                <div className="flex justify-center my-6">
+                                    <div className="px-5 py-2.5 bg-white border border-slate-200 rounded-2xl flex items-center gap-3 shadow-sm">
+                                        <div className="relative">
+                                            <Brain className="w-4 h-4 text-black" />
+                                            <div className="absolute inset-0 bg-slate-400 rounded-full animate-ping opacity-25"></div>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">Active Intelligence</span>
+                                            <span className="text-[10px] font-bold text-black uppercase tracking-wider">
+                                                {state.agentActivity.join(' • ')}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div className="flex flex-col">
-                                        <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">Active Intelligence</span>
-                                        <span className="text-[10px] font-bold text-black uppercase tracking-wider">
-                                            {state.agentActivity.join(' • ')}
-                                        </span>
+                                </div>
+                            )}
+                            {showSkipButton && (
+                                <div className="flex justify-center my-4 animate-in fade-in zoom-in duration-300">
+                                    <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl shadow-sm text-center max-w-sm">
+                                        <p className="text-xs text-amber-700 font-medium mb-3 flex items-center justify-center gap-2">
+                                            <Clock className="w-3.5 h-3.5" />
+                                            {t('takingLong')}
+                                        </p>
+                                        <button
+                                            onClick={() => handleOptionSubmit('Skipped via Timeout')}
+                                            className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
+                                        >
+                                            {t('skip')}
+                                            <ArrowRight className="w-3.5 h-3.5" />
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                        )}
-                        {showSkipButton && (
-                            <div className="flex justify-center my-4 animate-in fade-in zoom-in duration-300">
-                                <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl shadow-sm text-center max-w-sm">
-                                    <p className="text-xs text-amber-700 font-medium mb-3 flex items-center justify-center gap-2">
-                                        <Clock className="w-3.5 h-3.5" />
-                                        {t('takingLong')}
-                                    </p>
-                                    <button
-                                        onClick={() => handleOptionSubmit('Skipped via Timeout')}
-                                        className="w-full py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
-                                    >
-                                        {t('skip')}
-                                        <ArrowRight className="w-3.5 h-3.5" />
-                                    </button>
-                                </div>
-                            </div>
-                        )}
+                            )}
 
-                        {answeredQuestions === totalQuestions && (
-                            <div className="mt-12 p-8 bg-black rounded-[2.5rem] shadow-xl text-white animate-in fade-in slide-in-from-bottom-8 duration-700">
-                                <div className="text-center mb-8">
-                                    <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-md">
-                                        <Sparkles className="w-8 h-8 text-white" />
+                            {answeredQuestions === totalQuestions && (
+                                <div className="mt-12 p-8 bg-black rounded-[2.5rem] shadow-xl text-white animate-in fade-in slide-in-from-bottom-8 duration-700">
+                                    <div className="text-center mb-8">
+                                        <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-md">
+                                            <Sparkles className="w-8 h-8 text-white" />
+                                        </div>
+                                        <h2 className="text-2xl font-bold mb-2">{t('complete')}</h2>
+                                        <p className="text-slate-300 text-sm">{t('ready')}</p>
                                     </div>
-                                    <h2 className="text-2xl font-bold mb-2">{t('complete')}</h2>
-                                    <p className="text-slate-300 text-sm">{t('ready')}</p>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                        <button
+                                            onClick={() => window.open(`/api/export/html/${state.sessionId || 'current'}`, '_blank')}
+                                            className="flex flex-col items-center gap-2 p-4 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10 group active:scale-95"
+                                        >
+                                            <span className="text-xl group-hover:scale-110 transition-transform">🌐</span>
+                                            <span className="text-[10px] font-bold uppercase tracking-widest">HTML Doc</span>
+                                        </button>
+                                        <button
+                                            onClick={() => window.open(`/api/export/pdf/${state.sessionId || 'current'}`, '_blank')}
+                                            className="flex flex-col items-center gap-2 p-4 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10 group active:scale-95"
+                                        >
+                                            <span className="text-xl group-hover:scale-110 transition-transform">📄</span>
+                                            <span className="text-[10px] font-bold uppercase tracking-widest">PDF Package</span>
+                                        </button>
+                                        <button
+                                            onClick={() => window.open(`/api/export/docx/${state.sessionId || 'current'}`, '_blank')}
+                                            className="flex flex-col items-center gap-2 p-4 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10 group active:scale-95"
+                                        >
+                                            <span className="text-xl group-hover:scale-110 transition-transform">📝</span>
+                                            <span className="text-[10px] font-bold uppercase tracking-widest">Word Doc</span>
+                                        </button>
+                                    </div>
                                 </div>
-
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                    <button
-                                        onClick={() => window.open(`/api/export/html/${state.sessionId || 'current'}`, '_blank')}
-                                        className="flex flex-col items-center gap-2 p-4 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10 group active:scale-95"
-                                    >
-                                        <span className="text-xl group-hover:scale-110 transition-transform">🌐</span>
-                                        <span className="text-[10px] font-bold uppercase tracking-widest">HTML Doc</span>
-                                    </button>
-                                    <button
-                                        onClick={() => window.open(`/api/export/pdf/${state.sessionId || 'current'}`, '_blank')}
-                                        className="flex flex-col items-center gap-2 p-4 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10 group active:scale-95"
-                                    >
-                                        <span className="text-xl group-hover:scale-110 transition-transform">📄</span>
-                                        <span className="text-[10px] font-bold uppercase tracking-widest">PDF Package</span>
-                                    </button>
-                                    <button
-                                        onClick={() => window.open(`/api/export/docx/${state.sessionId || 'current'}`, '_blank')}
-                                        className="flex flex-col items-center gap-2 p-4 bg-white/10 hover:bg-white/20 rounded-2xl transition-all border border-white/10 group active:scale-95"
-                                    >
-                                        <span className="text-xl group-hover:scale-110 transition-transform">📝</span>
-                                        <span className="text-[10px] font-bold uppercase tracking-widest">Word Doc</span>
-                                    </button>
-                                </div>
-                            </div>
-                        )}
+                            )}
 
 
 
-                        <div ref={chatEndRef} />
-                    </div>
-                </div>
-
-
-                <div className="hidden lg:block w-80 border-l border-gray-200 overflow-y-auto p-4 bg-gray-50">
-                    <PhaseRoadmap
-                        currentPhase={state.currentPhase}
-                        completedPhases={state.completedPhases}
-                        language={selectedLanguage}
-                    />
-                </div>
-            </div>
-            <div className="relative shrink-0 p-6 bg-gradient-to-t from-white via-white to-transparent">
-                <div className="max-w-3xl mx-auto">
-                    <div className="text-[10px] text-slate-300 px-4 text-center">
-                        User: {user ? user.email : 'None'} |
-                        Hash: {debugHash}
-                    </div>
-
-                    <div className="flex items-center justify-between mb-3 px-2">
-                        {validationError ? (
-
-                            <div className="flex items-center gap-2 text-red-500 animate-in fade-in slide-in-from-left-2 transition-all">
-                                <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                                <span className="text-[10px] font-bold uppercase tracking-wider">{validationError}</span>
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-2 text-slate-400">
-                                <Sparkles className="w-3.5 h-3.5" />
-                                <span className="text-[10px] font-bold uppercase tracking-wider">{currentPhase.name}</span>
-                            </div>
-                        )}
-                        <div className="flex items-center gap-4">
-                            <div className="text-[9px] font-bold text-slate-300 uppercase tracking-widest bg-slate-50 px-2 py-1 rounded-md border border-slate-100 flex items-center gap-1.5">
-                                {state.answers.language === 'hi-IN' ? '🇮🇳 Hindi' : state.answers.language === 'te-IN' ? '🇮🇳 Telugu' : '🇺🇸 English'}
-                            </div>
+                            <div ref={chatEndRef} />
                         </div>
                     </div>
 
-                    {/* AI Suggestions / Idea Starters */}
-                    <div className="mb-3 min-h-[28px]">
-                        {state.aiSuggestions[currentQuestion?.id || ''] && state.aiSuggestions[currentQuestion?.id || ''].length > 0 ? (
-                            <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-bottom-2">
-                                <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded-full mr-1">
-                                    <Sparkles className="w-3 h-3" />
-                                    <span>{t('help')}</span>
-                                </div>
-                                {state.aiSuggestions[currentQuestion?.id || ''].slice(0, 3).map((suggestion, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setCurrentAnswer(suggestion)}
-                                        className="bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-600 hover:text-indigo-700 px-3 py-1.5 rounded-full text-xs transition-all text-left max-w-[200px] truncate shadow-sm"
-                                        title={suggestion}
-                                    >
-                                        {suggestion}
-                                    </button>
-                                ))}
-                                <button
-                                    onClick={() => {
-                                        if (currentQuestion) getAISuggestions(currentQuestion, '', true);
-                                    }}
-                                    className="text-xs text-slate-400 hover:text-slate-600 p-1.5"
-                                    title="Refresh ideas"
-                                >
-                                    🔄
-                                </button>
-                            </div>
-                        ) : (
-                            currentQuestion && state.currentPhase > 0 && !isProcessing && (
-                                <button
-                                    onClick={() => getAISuggestions(currentQuestion, '', true)}
-                                    className="flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-indigo-600 bg-white hover:bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200 transition-all shadow-sm group"
-                                >
-                                    <Sparkles className="w-3.5 h-3.5 text-indigo-400 group-hover:text-indigo-600" />
-                                    <span>{t('ideas')}</span>
-                                </button>
-                            )
-                        )}
-                    </div>
 
-                    <div className="flex flex-col gap-2">
-                        <div className="bg-white p-3 rounded-[2.5rem] border-2 border-slate-200 shadow-sm flex items-end gap-3 transition-all focus-within:border-black focus-within:shadow-md">
-                            {renderInput()}
+                    <div className="hidden lg:block w-80 border-l border-gray-200 overflow-y-auto p-4 bg-gray-50">
+                        <PhaseRoadmap
+                            currentPhase={state.currentPhase}
+                            completedPhases={state.completedPhases}
+                            language={selectedLanguage}
+                        />
+                    </div>
+                </div>
+                <div className="relative shrink-0 p-6 bg-gradient-to-t from-white via-white to-transparent">
+                    <div className="max-w-3xl mx-auto">
+                        <div className="text-[10px] text-slate-300 px-4 text-center">
+                            User: {user ? user.email : 'None'} |
+                            Hash: {debugHash}
                         </div>
 
-                        <div className="flex items-center gap-3 px-6 mt-1 overflow-x-auto no-scrollbar">
-                            <button
-                                onClick={() => getAISuggestions(currentQuestion, '')}
-                                className="text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:text-black flex items-center gap-1.5 transition-colors whitespace-nowrap"
-                            >
-                                <Brain className="w-3 h-3" />
-                                Help me answer
-                            </button>
-                            {!currentQuestion.required && (
-                                <button
-                                    onClick={() => handleOptionSubmit('Skipped')}
-                                    className="text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:text-black flex items-center gap-1.5 transition-colors whitespace-nowrap"
-                                >
-                                    <ArrowRight className="w-3 h-3" />
-                                    Skip question
-                                </button>
+                        <div className="flex items-center justify-between mb-3 px-2">
+                            {validationError ? (
+
+                                <div className="flex items-center gap-2 text-red-500 animate-in fade-in slide-in-from-left-2 transition-all">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
+                                    <span className="text-[10px] font-bold uppercase tracking-wider">{validationError}</span>
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-2 text-slate-400">
+                                    <Sparkles className="w-3.5 h-3.5" />
+                                    <span className="text-[10px] font-bold uppercase tracking-wider">{currentPhase.name}</span>
+                                </div>
+                            )}
+                            <div className="flex items-center gap-4">
+                                <div className="text-[9px] font-bold text-slate-300 uppercase tracking-widest bg-slate-50 px-2 py-1 rounded-md border border-slate-100 flex items-center gap-1.5">
+                                    {state.answers.language === 'hi-IN' ? '🇮🇳 Hindi' : state.answers.language === 'te-IN' ? '🇮🇳 Telugu' : '🇺🇸 English'}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* AI Suggestions / Idea Starters */}
+                        <div className="mb-3 min-h-[28px]">
+                            {state.aiSuggestions[currentQuestion?.id || ''] && state.aiSuggestions[currentQuestion?.id || ''].length > 0 ? (
+                                <div className="flex flex-wrap gap-2 animate-in fade-in slide-in-from-bottom-2">
+                                    <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-500 bg-indigo-50 px-2 py-1 rounded-full mr-1">
+                                        <Sparkles className="w-3 h-3" />
+                                        <span>{t('help')}</span>
+                                    </div>
+                                    {state.aiSuggestions[currentQuestion?.id || ''].slice(0, 3).map((suggestion, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setCurrentAnswer(suggestion)}
+                                            className="bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-600 hover:text-indigo-700 px-3 py-1.5 rounded-full text-xs transition-all text-left max-w-[200px] truncate shadow-sm"
+                                            title={suggestion}
+                                        >
+                                            {suggestion}
+                                        </button>
+                                    ))}
+                                    <button
+                                        onClick={() => {
+                                            if (currentQuestion) getAISuggestions(currentQuestion, '', true);
+                                        }}
+                                        className="text-xs text-slate-400 hover:text-slate-600 p-1.5"
+                                        title="Refresh ideas"
+                                    >
+                                        🔄
+                                    </button>
+                                </div>
+                            ) : (
+                                currentQuestion && state.currentPhase > 0 && !isProcessing && (
+                                    <button
+                                        onClick={() => getAISuggestions(currentQuestion, '', true)}
+                                        className="flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-indigo-600 bg-white hover:bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200 transition-all shadow-sm group"
+                                    >
+                                        <Sparkles className="w-3.5 h-3.5 text-indigo-400 group-hover:text-indigo-600" />
+                                        <span>{t('ideas')}</span>
+                                    </button>
+                                )
                             )}
                         </div>
+
+                        <div className="flex flex-col gap-2">
+                            <div className="bg-white p-3 rounded-[2.5rem] border-2 border-slate-200 shadow-sm flex items-end gap-3 transition-all focus-within:border-black focus-within:shadow-md">
+                                {renderInput()}
+                            </div>
+
+                            <div className="flex items-center gap-3 px-6 mt-1 overflow-x-auto no-scrollbar">
+                                <button
+                                    onClick={() => getAISuggestions(currentQuestion, '')}
+                                    className="text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:text-black flex items-center gap-1.5 transition-colors whitespace-nowrap"
+                                >
+                                    <Brain className="w-3 h-3" />
+                                    Help me answer
+                                </button>
+                                {!currentQuestion.required && (
+                                    <button
+                                        onClick={() => handleOptionSubmit('Skipped')}
+                                        className="text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:text-black flex items-center gap-1.5 transition-colors whitespace-nowrap"
+                                    >
+                                        <ArrowRight className="w-3 h-3" />
+                                        Skip question
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
+
+                        <p className="mt-4 text-[9px] text-center text-slate-400 font-medium uppercase tracking-[0.2em]">
+                            Oneasy Secure Conversational System • End-to-End Encrypted
+                        </p>
                     </div>
-
-
-                    <p className="mt-4 text-[9px] text-center text-slate-400 font-medium uppercase tracking-[0.2em]">
-                        Oneasy Secure Conversational System • End-to-End Encrypted
-                    </p>
                 </div>
-            </div>
 
 
-            <style jsx global>{`
+                <style jsx global>{`
                 .no-scrollbar::-webkit-scrollbar {
                     display: none;
                 }
@@ -1600,7 +1663,9 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                     scrollbar-width: none;
                 }
             `}</style>
+            </div>
         </div>
+        </div >
     );
 }
 
