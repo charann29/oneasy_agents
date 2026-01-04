@@ -4,7 +4,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Sparkles, Loader2, CheckCircle2, Clock, Brain, Zap, User, Send, Mic, MicOff, Volume2, VolumeX, RefreshCw } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Sparkles, Loader2, CheckCircle2, Clock, Brain, Zap, User, Send, Mic, MicOff, Volume2, VolumeX, RefreshCw, Plus, Trash2 } from 'lucide-react';
 import { ALL_PHASES, Question, QuestionType, QuestionOption } from '@/lib/schemas/questions';
 import ChatHeader from '@/components/chat/ChatHeader';
 import ChatBubble from '@/components/chat/ChatBubble';
@@ -1432,6 +1432,97 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
 
 
         switch (currentQuestion.type) {
+            case QuestionType.PERCENTAGE_BREAKDOWN: {
+                // Ensure currentAnswer is array
+                const items = Array.isArray(currentAnswer) ? currentAnswer : [{ percent: '', source: '' }];
+
+                const updateItem = (index: number, field: string, value: string) => {
+                    const newItems = [...items];
+                    newItems[index] = { ...newItems[index], [field]: value };
+                    setCurrentAnswer(newItems);
+                };
+
+                const addItem = () => {
+                    setCurrentAnswer([...items, { percent: '', source: '' }]);
+                };
+
+                const removeItem = (index: number) => {
+                    if (items.length > 1) {
+                        const newItems = items.filter((_: any, i: number) => i !== index);
+                        setCurrentAnswer(newItems);
+                    }
+                };
+
+                return (
+                    <div className="flex flex-col gap-3 w-full">
+                        <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pr-1">
+                            {items.map((item: any, idx: number) => (
+                                <div key={idx} className="flex gap-2 items-center">
+                                    <div className="relative w-24 sm:w-32 shrink-0">
+                                        <input
+                                            type="number"
+                                            value={item.percent}
+                                            onChange={(e) => updateItem(idx, 'percent', e.target.value)}
+                                            placeholder="%"
+                                            className={`${commonClasses} !pr-2 !py-2 text-center`}
+                                            autoFocus={idx === items.length - 1} // Autofocus new item
+                                        />
+                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold">%</span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={item.source}
+                                        onChange={(e) => updateItem(idx, 'source', e.target.value)}
+                                        placeholder="Source (e.g. SaaS)"
+                                        className={`${commonClasses} !py-2 flex-1 min-w-0`}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                if (idx === items.length - 1 && item.percent && item.source) addItem();
+                                                else if (idx === items.length - 1) handleSubmitAnswer();
+                                            }
+                                        }}
+                                    />
+                                    {items.length > 1 && (
+                                        <button
+                                            onClick={() => removeItem(idx)}
+                                            className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={addItem}
+                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-200"
+                            >
+                                <Plus className="w-3.5 h-3.5" />
+                                Add Item
+                            </button>
+                            <div className="flex-1"></div>
+                            <button
+                                onClick={handleSubmitAnswer}
+                                className="flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-5 sm:py-3 bg-black text-white rounded-xl hover:bg-slate-800 transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px]"
+                                disabled={isProcessing}
+                            >
+                                {isProcessing ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <>
+                                        <span className="hidden sm:inline font-bold text-sm">{t('submit')}</span>
+                                        <Send className="w-4 h-4" />
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
             case QuestionType.TEXT:
             case QuestionType.EMAIL:
             case QuestionType.PHONE:

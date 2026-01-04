@@ -20,7 +20,8 @@ export enum QuestionType {
   MILESTONE = 'milestone',
   RANKING = 'ranking',
   CHECKPOINT = 'checkpoint',
-  TEXTAREA = 'textarea'
+  TEXTAREA = 'textarea',
+  PERCENTAGE_BREAKDOWN = 'percentage_breakdown'
 }
 
 export interface QuestionOption {
@@ -909,8 +910,8 @@ export const PHASE_5_REVENUE: Phase = {
     },
     {
       id: 'gross_margin',
-      question: 'What is your expected gross margin?',
-      type: QuestionType.PERCENTAGE,
+      question: 'What is your expected gross margin? (Break down by stream if needed)',
+      type: QuestionType.PERCENTAGE_BREAKDOWN,
       placeholder: 'e.g., 70% for SaaS',
       required: true
     },
