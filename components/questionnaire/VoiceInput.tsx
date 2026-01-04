@@ -243,8 +243,8 @@ export function VoiceInput({
         onClick={toggleListening}
         disabled={isProcessing}
         className={`
-                flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm
-                transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed
+                flex items-center justify-center gap-1.5 px-2.5 py-2 sm:px-4 sm:py-2.5 rounded-xl font-medium text-sm
+                transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed min-w-[40px]
                 ${isListening
             ? 'bg-red-500 text-white animate-pulse'
             : 'bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:from-purple-600 hover:to-blue-600'
@@ -255,13 +255,13 @@ export function VoiceInput({
       >
         {isListening ? (
           <>
-            <MicOff className="w-4 h-4" />
-            <span>Stop</span>
+            <MicOff className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Stop</span>
           </>
         ) : (
           <>
-            <Mic className="w-4 h-4" />
-            <span>Speak</span>
+            <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Speak</span>
           </>
         )}
       </button>

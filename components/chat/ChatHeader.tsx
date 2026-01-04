@@ -18,74 +18,71 @@ export default function ChatHeader({ progress, phaseName, isTyping, onReset, use
     const t = (key: any) => getTranslation(language, key);
 
     return (
-        <div className="bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
-            <div className="flex items-center gap-6">
-                {/* Abhishek CA Avatar */}
-                <div className="flex items-center gap-3">
-                    <div className="relative">
-                        <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white shadow-lg ring-2 ring-white">
-                            <UserIcon className="w-7 h-7" />
-                        </div>
-                        <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-white"></div>
+        <div className="bg-white/90 backdrop-blur-md border-b border-slate-200 px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between sticky top-0 z-50">
+            {/* Left: Avatar & Name */}
+            <div className="flex items-center gap-2 sm:gap-4">
+                {/* Abhishek CA Avatar - smaller on mobile */}
+                <div className="relative">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-black flex items-center justify-center text-white shadow-md">
+                        <UserIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <div>
-                        <h1 className="font-bold text-slate-900 text-lg leading-tight">{t('appName')}</h1>
-                        <div className="flex items-center gap-1.5">
-                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                            <p className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Live Interaction</p>
-                        </div>
+                    <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500 border-2 border-white"></div>
+                </div>
+                <div className="hidden sm:block">
+                    <h1 className="font-bold text-slate-900 text-sm sm:text-base leading-tight">{t('appName')}</h1>
+                    <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                        <p className="text-[9px] text-slate-500 font-medium uppercase tracking-wide">Online</p>
                     </div>
                 </div>
+                {/* Mobile: Just show name */}
+                <span className="sm:hidden font-bold text-slate-900 text-sm">Abhishek CA</span>
 
-                {/* New Plan Button */}
+                {/* New Plan - Icon on mobile, full on desktop */}
                 {onReset && (
-                    <button
-                        onClick={onReset}
-                        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium transition-all shadow-sm"
-                        title="Start a new business plan"
-                    >
-                        + New Plan
-                    </button>
+                    <>
+                        <button
+                            onClick={onReset}
+                            className="sm:hidden w-8 h-8 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-lg flex items-center justify-center shadow-sm"
+                            title="New Plan"
+                        >+</button>
+                        <button
+                            onClick={onReset}
+                            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium shadow-sm"
+                            title="Start new business plan"
+                        >+ New Plan</button>
+                    </>
                 )}
-
-
-                {/* Connection Link */}
-                <div className="hidden md:flex items-center gap-2">
-                    <div className="h-px w-8 bg-slate-200"></div>
-                    <div className="px-3 py-1 bg-slate-100 rounded-full flex items-center gap-2">
-                        <Shield className="w-3 h-3 text-slate-400" />
-                        <span className="text-[10px] font-bold text-slate-500 uppercase">Secure</span>
-                    </div>
-                    <div className="h-px w-8 bg-slate-200"></div>
-                </div>
             </div>
 
-            {/* Progress & Metadata */}
-            <div className="flex flex-col items-end gap-2">
-                <div className="flex items-center gap-4">
-                    <div className="flex flex-col items-end">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{t('phase')}</span>
-                        <span className="text-xs font-bold text-slate-700">{phaseName}</span>
-                    </div>
-                    <div className="h-8 w-px bg-slate-200"></div>
-                    <div className="flex items-center gap-3 bg-white px-3 py-2 rounded-xl border border-slate-200">
-                        <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div
-                                className="h-full bg-black transition-all duration-700 ease-out shadow-sm"
-                                style={{ width: `${progress}%` }}
-                            />
-                        </div>
-                        <span className="text-xs font-bold text-black min-w-[30px]">{Math.round(progress)}%</span>
-                    </div>
+            {/* Right: Progress only on mobile, full on desktop */}
+            <div className="flex items-center gap-2 sm:gap-3">
+                {/* Phase name - hidden on mobile */}
+                <div className="hidden sm:flex flex-col items-end">
+                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{t('phase')}</span>
+                    <span className="text-xs font-medium text-slate-600 max-w-[100px] truncate">{phaseName}</span>
                 </div>
+
+                {/* Progress bar - compact */}
+                <div className="flex items-center gap-2 bg-slate-50 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg border border-slate-100">
+                    <div className="w-12 sm:w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                        <div
+                            className="h-full bg-black transition-all duration-500"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                    <span className="text-[10px] sm:text-xs font-bold text-slate-700">{Math.round(progress)}%</span>
+                </div>
+
+                {/* Typing indicator - minimal on mobile */}
                 {isTyping && (
-                    <div className="flex items-center gap-1.5">
-                        <div className="flex gap-1">
+                    <div className="flex items-center gap-1">
+                        <div className="flex gap-0.5">
                             <span className="w-1 h-1 bg-black rounded-full animate-bounce"></span>
                             <span className="w-1 h-1 bg-black rounded-full animate-bounce delay-75"></span>
                             <span className="w-1 h-1 bg-black rounded-full animate-bounce delay-150"></span>
                         </div>
-                        <span className="text-[10px] font-bold text-slate-500 uppercase">Abhishek is typing</span>
+                        <span className="hidden sm:inline text-[9px] font-medium text-slate-500">Typing</span>
                     </div>
                 )}
             </div>

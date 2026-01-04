@@ -1385,15 +1385,15 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
             case QuestionType.PHONE:
             case QuestionType.URL:
                 return (
-                    <form onSubmit={(e) => { e.preventDefault(); handleSubmitAnswer(); }} className="flex flex-col gap-3 w-full">
-                        <div className="flex gap-2 w-full">
+                    <form onSubmit={(e) => { e.preventDefault(); handleSubmitAnswer(); }} className="flex flex-col gap-2 w-full">
+                        <div className="flex gap-1.5 sm:gap-2 w-full items-center">
                             <input
                                 type={currentQuestion.type === QuestionType.EMAIL ? 'email' : 'text'}
                                 value={currentAnswer}
                                 onChange={(e) => setCurrentAnswer(e.target.value)}
                                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSubmitAnswer(); } }}
                                 placeholder={currentQuestion.placeholder || "Type your answer..."}
-                                className={commonClasses}
+                                className={`${commonClasses} flex-1 min-w-0`}
                                 autoFocus
                             />
 
@@ -1406,21 +1406,22 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
 
                             <button
                                 type="submit"
-                                className="flex items-center gap-2 px-5 py-3 bg-black text-white rounded-xl hover:bg-slate-800 transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-5 sm:py-3 bg-black text-white rounded-xl hover:bg-slate-800 transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px]"
                                 disabled={isProcessing}
                             >
                                 {isProcessing ? (
                                     <Loader2 className="w-4 h-4 animate-spin" />
                                 ) : (
                                     <>
-                                        <span className="font-bold text-sm">{t('submit')}</span>
+                                        <span className="hidden sm:inline font-bold text-sm">{t('submit')}</span>
                                         <Send className="w-4 h-4" />
                                     </>
                                 )}
                             </button>
                         </div>
 
-                        <div className="flex justify-end">
+                        {/* Hidden on mobile, shown on larger screens */}
+                        <div className="hidden sm:flex justify-end">
                             <div className="text-xs px-2 py-1 text-slate-500">
                                 🌍 Voice Language: {selectedLanguage}
                             </div>
@@ -1769,7 +1770,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
             </div>
 
             <div className="flex-1 overflow-hidden flex">
-                <div className="flex-1 overflow-y-auto px-4 py-8 relative">
+                <div className="flex-1 overflow-y-auto px-2 sm:px-4 py-4 sm:py-8 relative">
                     <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style={{
                         backgroundImage: `radial - gradient(#1e293b 0.5px, transparent 0.5px)`,
                         backgroundSize: '24px 24px'
