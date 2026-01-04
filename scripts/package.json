@@ -1,0 +1,14 @@
+{
+  "name": "test-documents",
+  "version": "1.0.0",
+  "description": "Test document generation system",
+  "main": "test-document-generation.ts",
+  "scripts": {
+    "test": "ts-node test-document-generation.ts"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
