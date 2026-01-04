@@ -1433,6 +1433,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
 
         switch (currentQuestion.type) {
             case QuestionType.PERCENTAGE_BREAKDOWN: {
+                const MAX_ITEMS = 7;
                 // Ensure currentAnswer is array
                 const items = Array.isArray(currentAnswer) ? currentAnswer : [{ percent: '', source: '' }];
 
@@ -1443,7 +1444,9 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                 };
 
                 const addItem = () => {
-                    setCurrentAnswer([...items, { percent: '', source: '' }]);
+                    if (items.length < MAX_ITEMS) {
+                        setCurrentAnswer([...items, { percent: '', source: '' }]);
+                    }
                 };
 
                 const removeItem = (index: number) => {
@@ -1478,8 +1481,11 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') {
                                                 e.preventDefault();
-                                                if (idx === items.length - 1 && item.percent && item.source) addItem();
-                                                else if (idx === items.length - 1) handleSubmitAnswer();
+                                                if (idx === items.length - 1 && item.percent && item.source && items.length < MAX_ITEMS) {
+                                                    addItem();
+                                                } else if (idx === items.length - 1) {
+                                                    handleSubmitAnswer();
+                                                }
                                             }
                                         }}
                                     />
@@ -1496,13 +1502,19 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <button
-                                onClick={addItem}
-                                className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-200"
-                            >
-                                <Plus className="w-3.5 h-3.5" />
-                                Add Item
-                            </button>
+                            {items.length < MAX_ITEMS ? (
+                                <button
+                                    onClick={addItem}
+                                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-200"
+                                >
+                                    <Plus className="w-4 h-4" />
+                                    Add Stream
+                                </button>
+                            ) : (
+                                <span className="text-xs text-amber-600 font-medium px-2 py-2 bg-amber-50 rounded-lg border border-amber-100">
+                                    Max {MAX_ITEMS} items reached
+                                </span>
+                            )}
                             <div className="flex-1"></div>
                             <button
                                 onClick={handleSubmitAnswer}
