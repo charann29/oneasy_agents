@@ -17,34 +17,15 @@ export default function AuthWrapper({
     redirectTo = '/'
 }: AuthWrapperProps) {
     const [loading, setLoading] = useState(true)
-    const [authenticated, setAuthenticated] = useState(false)
-    const router = useRouter()
+    const [user, setUser] = useState<User | null>(null) // Changed from 'authenticated' to 'user'
+    const router = useRouter();
 
     useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const { data: { session }, error } = await supabase.auth.getSession()
+        const client = createClient();
 
-                if (error) {
-                    console.error('Auth check error:', error)
-                    setAuthenticated(false)
-                } else {
-                    setAuthenticated(!!session)
-                }
-            } catch (err) {
-                console.error('Session check failed:', err)
-                setAuthenticated(false)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        checkAuth()
-
-        // Listen for auth changes
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            setAuthenticated(!!session)
-
+        const { data: { subscription } } = client.auth.onAuthStateChange((event: any, session: any) => {
+            setUser(session?.user ?? null);
+            // Handle redirects based on auth state changes
             if (event === 'SIGNED_OUT') {
                 router.push('/')
             } else if (event === 'SIGNED_IN' && requireAuth) {
