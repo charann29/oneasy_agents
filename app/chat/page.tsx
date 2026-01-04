@@ -1360,20 +1360,21 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                 phaseName={currentPhase?.name}
                 isTyping={state.agentActivity.length > 0}
                 onReset={() => {
-                    // Clear all state
-                    setState({
+                    // Clear all state and start fresh
+                    setState(prev => ({
+                        ...prev,
                         sessionId: null,
                         answers: {},
                         currentPhase: 0,
+                        currentQuestionIndex: 0,
                         messages: [],
                         aiSuggestions: {},
-                        completedPhases: []
-                    });
+                        completedPhases: [],
+                        agentActivity: []
+                    }));
                     // Clear local storage
                     localStorage.removeItem('chat_state');
-                    // Reset to first question
-                    setCurrentQuestionIndex(0);
-                    // Scroll to top
+                    // Scroll to top  
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 user={user}
