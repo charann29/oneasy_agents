@@ -1476,7 +1476,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                         value={item.source}
                                         onChange={(e) => updateItem(idx, 'source', e.target.value)}
                                         placeholder="Source (e.g. SaaS)"
-                                        className="flex-1 bg-white border-2 border-slate-200 rounded-xl px-4 py-3 focus:border-black focus:outline-none placeholder:text-slate-400 font-medium min-w-0 transition-colors"
+                                        className="w-48 sm:w-64 bg-white border-2 border-slate-200 rounded-xl px-4 py-3 focus:border-black focus:outline-none placeholder:text-slate-400 font-medium min-w-0 transition-colors"
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') {
                                                 e.preventDefault();
