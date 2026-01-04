@@ -1457,7 +1457,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                 };
 
                 return (
-                    <div className="flex flex-col gap-3 w-full">
+                    <div className="flex flex-col gap-3 w-fit">
                         <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pr-1">
                             {items.map((item: any, idx: number) => (
                                 <div key={idx} className="flex gap-2 items-center">
