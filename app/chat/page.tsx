@@ -1422,8 +1422,23 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
 
                         {/* Hidden on mobile, shown on larger screens */}
                         <div className="hidden sm:flex justify-end">
-                            <div className="text-xs px-2 py-1 text-slate-500">
-                                🌍 Voice Language: {selectedLanguage}
+                            <div className="text-xs px-2 py-1 text-slate-500 font-medium">
+                                {/* Map language code to native name */}
+                                {(() => {
+                                    const labels: Record<string, string> = {
+                                        'en-US': '🇺🇸 English',
+                                        'en-IN': '🇮🇳 English',
+                                        'hi-IN': '🇮🇳 हिंदी',
+                                        'te-IN': '🇮🇳 తెలుగు',
+                                        'ta-IN': '🇮🇳 தமிழ்',
+                                        'kn-IN': '🇮🇳 ಕನ್ನಡ',
+                                        'ml-IN': '🇮🇳 മലയാളം',
+                                        'mr-IN': '🇮🇳 मराठी',
+                                        'bn-IN': '🇮🇳 বাংলা',
+                                        'gu-IN': '🇮🇳 ગુજરાતી'
+                                    };
+                                    return labels[selectedLanguage] || selectedLanguage;
+                                })()}
                             </div>
                         </div>
                     </form>
@@ -1456,8 +1471,22 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
 
                         <div className="absolute bottom-2 right-2 flex gap-1.5 sm:gap-2">
                             {/* Hidden on mobile to save space inside textarea */}
-                            <div className="hidden sm:flex items-center px-2 py-1.5 text-xs rounded-lg border border-slate-200 bg-white/50 text-slate-500 shadow-sm">
-                                🌍 {selectedLanguage}
+                            <div className="hidden sm:flex items-center px-2 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white/50 text-slate-500 shadow-sm">
+                                {(() => {
+                                    const labels: Record<string, string> = {
+                                        'en-US': '🇺🇸 English',
+                                        'en-IN': '🇮🇳 English',
+                                        'hi-IN': '🇮🇳 हिंदी',
+                                        'te-IN': '🇮🇳 తెలుగు',
+                                        'ta-IN': '🇮🇳 தமிழ்',
+                                        'kn-IN': '🇮🇳 ಕನ್ನಡ',
+                                        'ml-IN': '🇮🇳 മലയാളം',
+                                        'mr-IN': '🇮🇳 मराठी',
+                                        'bn-IN': '🇮🇳 বাংলা',
+                                        'gu-IN': '🇮🇳 ગુજરાતી'
+                                    };
+                                    return labels[selectedLanguage] || selectedLanguage;
+                                })()}
                             </div>
 
                             <VoiceInput
