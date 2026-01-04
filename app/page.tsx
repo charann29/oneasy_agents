@@ -45,7 +45,8 @@ function HomeContent() {
           await new Promise(resolve => setTimeout(resolve, hasAuthCode ? 1500 : 500))
         }
 
-        const { data: { session }, error } = await supabase.auth.getSession()
+        const client = createClient();
+        const { data: { session }, error } = await client.auth.getSession()
 
         if (error) throw error
 
@@ -61,7 +62,8 @@ function HomeContent() {
           // Retry once more if OAuth callback detected but no session yet
           console.log('OAuth callback but no session, retrying in 1.5s...')
           setTimeout(async () => {
-            const { data: { session: retrySession } } = await supabase.auth.getSession()
+            const retryClient = createClient();
+            const { data: { session: retrySession } } = await retryClient.auth.getSession();
             if (retrySession?.user && mounted) {
               const redirect = searchParams.get('redirect') || '/chat'
               console.log('Retry successful, redirecting to:', redirect)
@@ -82,7 +84,8 @@ function HomeContent() {
     checkSession()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    const authClient = createClient();
+    const { data: { subscription } } = authClient.auth.onAuthStateChange(async (event: any, session: any) => {
       console.log('Auth state change:', event, session?.user?.email || 'No user')
       if (!mounted) return
 
