@@ -1053,6 +1053,14 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
         }, 2000);
     };
 
+    const handleOptionSubmit = (val: any) => {
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+        }
+        setCurrentAnswer(val);
+        handleSubmitAnswer();
+    };
+
     const renderInput = () => {
         if (!currentQuestion) return null;
 
@@ -1337,14 +1345,6 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
             default:
                 return null;
         }
-    };
-
-    const handleOptionSubmit = (val: any) => {
-        if (typeof window !== 'undefined' && window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-        }
-        setCurrentAnswer(val);
-        handleSubmitAnswer();
     };
 
     if (authLoading) {
