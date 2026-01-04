@@ -1459,7 +1459,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                             onChange={(e) => setCurrentAnswer(e.target.value)}
                             placeholder={currentQuestion.placeholder || "Type your response..."}
                             rows={3}
-                            className={`w-full ${commonClasses} resize-y min-h-[80px] py-3 pr-24 leading-normal`}
+                            className={`w-full ${commonClasses} resize-y min-h-[120px] py-3 pr-24 leading-normal`}
                             autoFocus
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
