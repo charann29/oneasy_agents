@@ -1466,18 +1466,17 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                             type="number"
                                             value={item.percent}
                                             onChange={(e) => updateItem(idx, 'percent', e.target.value)}
-                                            placeholder="%"
-                                            className={`${commonClasses} !pr-2 !py-2 text-center`}
-                                            autoFocus={idx === items.length - 1} // Autofocus new item
+                                            className="w-full bg-white border-2 border-slate-200 rounded-xl px-3 py-3 text-center focus:border-black focus:outline-none placeholder:text-slate-300 font-medium transition-colors"
+                                            autoFocus={idx === items.length - 1}
                                         />
-                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold">%</span>
+                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold pointer-events-none">%</span>
                                     </div>
                                     <input
                                         type="text"
                                         value={item.source}
                                         onChange={(e) => updateItem(idx, 'source', e.target.value)}
                                         placeholder="Source (e.g. SaaS)"
-                                        className={`${commonClasses} !py-2 flex-1 min-w-0`}
+                                        className="flex-1 bg-white border-2 border-slate-200 rounded-xl px-4 py-3 focus:border-black focus:outline-none placeholder:text-slate-400 font-medium min-w-0 transition-colors"
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') {
                                                 e.preventDefault();
@@ -1494,7 +1493,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                             onClick={() => removeItem(idx)}
                                             className="p-2 text-slate-400 hover:text-red-500 transition-colors"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="w-5 h-5" />
                                         </button>
                                     )}
                                 </div>
