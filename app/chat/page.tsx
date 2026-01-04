@@ -4,7 +4,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { ArrowRight, ArrowLeft, Sparkles, Loader2, CheckCircle2, Clock, Brain, Zap, User, Send, Mic, MicOff, Volume2, VolumeX, RefreshCw, Plus, Trash2 } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Sparkles, Loader2, CheckCircle2, Clock, Brain, Zap, User, Send, Mic, MicOff, Volume2, VolumeX, RefreshCw, Plus, Trash2, PlusCircle } from 'lucide-react';
 import { ALL_PHASES, Question, QuestionType, QuestionOption } from '@/lib/schemas/questions';
 import ChatHeader from '@/components/chat/ChatHeader';
 import ChatBubble from '@/components/chat/ChatBubble';
@@ -1488,33 +1488,34 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                             }
                                         }}
                                     />
-                                    {items.length > 1 && (
-                                        <button
-                                            onClick={() => removeItem(idx)}
-                                            className="p-2 text-slate-400 hover:text-red-500 transition-colors"
-                                        >
-                                            <Trash2 className="w-5 h-5" />
-                                        </button>
-                                    )}
+                                    <div className="flex items-center gap-1 shrink-0">
+                                        {items.length > 1 && (
+                                            <button
+                                                onClick={() => removeItem(idx)}
+                                                className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+                                            >
+                                                <Trash2 className="w-5 h-5" />
+                                            </button>
+                                        )}
+                                        {idx === items.length - 1 && items.length < MAX_ITEMS && (
+                                            <button
+                                                onClick={addItem}
+                                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                                            >
+                                                <PlusCircle className="w-6 h-6" />
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            {items.length < MAX_ITEMS ? (
-                                <button
-                                    onClick={addItem}
-                                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-200"
-                                >
-                                    <Plus className="w-4 h-4" />
-                                    Add Stream
-                                </button>
-                            ) : (
-                                <span className="text-xs text-amber-600 font-medium px-2 py-2 bg-amber-50 rounded-lg border border-amber-100">
+                        <div className="flex items-center gap-2 justify-end pt-2">
+                            {items.length >= MAX_ITEMS && (
+                                <span className="text-xs text-amber-600 font-medium px-2 py-2 bg-amber-50 rounded-lg border border-amber-100 mr-auto">
                                     Max {MAX_ITEMS} items reached
                                 </span>
                             )}
-                            <div className="flex-1"></div>
                             <button
                                 onClick={handleSubmitAnswer}
                                 className="flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-5 sm:py-3 bg-black text-white rounded-xl hover:bg-slate-800 transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px]"
