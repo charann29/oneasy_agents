@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Loader2 } from 'lucide-react'
+import type { User } from '@supabase/supabase-js'
 
 interface AuthWrapperProps {
     children: React.ReactNode
@@ -17,7 +18,7 @@ export default function AuthWrapper({
     redirectTo = '/'
 }: AuthWrapperProps) {
     const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState<User | null>(null) // Changed from 'authenticated' to 'user'
+    const [user, setUser] = useState<User | null>(null)
     const router = useRouter();
 
     useEffect(() => {
@@ -25,23 +26,28 @@ export default function AuthWrapper({
 
         const { data: { subscription } } = client.auth.onAuthStateChange((event: any, session: any) => {
             setUser(session?.user ?? null);
-            // Handle redirects based on auth state changes
-            if (event === 'SIGNED_OUT') {
-                router.push('/')
-            } else if (event === 'SIGNED_IN' && requireAuth) {
-                setLoading(false)
-            }
-        })
+        });
 
-        return () => subscription.unsubscribe()
-    }, [requireAuth, router])
+        client.auth.getSession().then(({ data: { session } }) => {
+            console.log('[AuthWrapper] Session check:', { hasSession: !!session, userId: session?.user?.id });
+            setUser(session?.user ?? null);
+            setLoading(false);
+        }).catch((error) => {
+            console.error('[AuthWrapper] Session fetch error:', error);
+            setLoading(false);
+        });
+
+        return () => {
+            subscription?.unsubscribe();
+        };
+    }, []);
 
     // Redirect if auth requirement not met
     useEffect(() => {
-        if (!loading && requireAuth && !authenticated) {
+        if (!loading && requireAuth && !user) {
             router.push(redirectTo)
         }
-    }, [loading, authenticated, requireAuth, redirectTo, router])
+    }, [loading, user, requireAuth, redirectTo, router])
 
     if (loading) {
         return (
@@ -54,7 +60,7 @@ export default function AuthWrapper({
         )
     }
 
-    if (requireAuth && !authenticated) {
+    if (requireAuth && !user) {
         return null // Will redirect via useEffect
     }
 
