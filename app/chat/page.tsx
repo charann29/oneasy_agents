@@ -1444,7 +1444,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                             onChange={(e) => setCurrentAnswer(e.target.value)}
                             placeholder={currentQuestion.placeholder || "Type your response..."}
                             rows={3}
-                            className={`w - full ${commonClasses} resize - y min - h - [80px] py - 2 pb - 11 leading - normal`}
+                            className={`w-full ${commonClasses} resize-y min-h-[80px] py-3 pr-24 leading-normal`}
                             autoFocus
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
@@ -1454,8 +1454,9 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                             }}
                         />
 
-                        <div className="absolute bottom-3 right-3 flex gap-2">
-                            <div className="px-2 py-2 text-xs rounded-lg border-2 border-slate-200 bg-white text-slate-500">
+                        <div className="absolute bottom-2 right-2 flex gap-1.5 sm:gap-2">
+                            {/* Hidden on mobile to save space inside textarea */}
+                            <div className="hidden sm:flex items-center px-2 py-1.5 text-xs rounded-lg border border-slate-200 bg-white/50 text-slate-500 shadow-sm">
                                 🌍 {selectedLanguage}
                             </div>
 
@@ -1464,13 +1465,23 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                 language={selectedLanguage}
                                 onLanguageChange={setSelectedLanguage}
                                 isProcessing={isProcessing}
+                                className="!px-2.5 !py-1.5 !rounded-lg min-w-[36px]"
+                                showLanguageSelector={false}
                             />
 
                             <button
                                 onClick={handleSubmitAnswer}
-                                className="p-2 bg-black text-white rounded-lg hover:bg-slate-800 transition-colors shadow-sm"
+                                className="flex items-center justify-center gap-1.5 px-2.5 py-1.5 sm:px-4 sm:py-2 bg-black text-white rounded-lg hover:bg-slate-800 transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed min-w-[36px]"
+                                disabled={isProcessing}
                             >
-                                <ArrowRight className="w-4 h-4" />
+                                {isProcessing ? (
+                                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                ) : (
+                                    <>
+                                        <span className="hidden sm:inline font-bold text-xs">{t('submit')}</span>
+                                        <Send className="w-3.5 h-3.5" />
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>
