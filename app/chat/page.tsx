@@ -1466,7 +1466,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                             type="number"
                                             value={item.percent}
                                             onChange={(e) => updateItem(idx, 'percent', e.target.value)}
-                                            className="w-full bg-white border-2 border-slate-200 rounded-xl px-3 py-3 text-center focus:border-black focus:outline-none placeholder:text-slate-300 font-medium transition-colors"
+                                            className="w-full bg-white border-2 border-slate-200 rounded-xl px-3 py-3 text-center focus:border-black focus:outline-none placeholder:text-slate-300 font-medium transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                             autoFocus={idx === items.length - 1}
                                         />
                                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold pointer-events-none">%</span>
