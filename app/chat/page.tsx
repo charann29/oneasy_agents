@@ -1461,22 +1461,22 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                         <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pr-1">
                             {items.map((item: any, idx: number) => (
                                 <div key={idx} className="flex gap-2 items-center">
-                                    <div className="relative w-24 sm:w-32 shrink-0">
+                                    <div className="relative w-20 sm:w-24 shrink-0">
                                         <input
                                             type="number"
                                             value={item.percent}
                                             onChange={(e) => updateItem(idx, 'percent', e.target.value)}
-                                            className="w-full bg-white border-2 border-slate-200 rounded-xl px-3 py-3 text-center focus:border-black focus:outline-none placeholder:text-slate-300 font-medium transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            className="w-full bg-white border-2 border-slate-200 rounded-lg px-2 py-2 text-center text-sm focus:border-black focus:outline-none placeholder:text-slate-300 font-medium transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                             autoFocus={idx === items.length - 1}
                                         />
-                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold pointer-events-none">%</span>
+                                        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold pointer-events-none">%</span>
                                     </div>
                                     <input
                                         type="text"
                                         value={item.source}
                                         onChange={(e) => updateItem(idx, 'source', e.target.value)}
-                                        placeholder="Source (e.g. SaaS)"
-                                        className="w-48 sm:w-64 bg-white border-2 border-slate-200 rounded-xl px-4 py-3 focus:border-black focus:outline-none placeholder:text-slate-400 font-medium min-w-0 transition-colors"
+                                        placeholder="Source"
+                                        className="w-40 sm:w-56 bg-white border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-black focus:outline-none placeholder:text-slate-400 font-medium min-w-0 transition-colors"
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') {
                                                 e.preventDefault();
@@ -1492,17 +1492,17 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                                         {items.length > 1 && (
                                             <button
                                                 onClick={() => removeItem(idx)}
-                                                className="p-2 text-slate-400 hover:text-red-500 transition-colors"
+                                                className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"
                                             >
-                                                <Trash2 className="w-5 h-5" />
+                                                <Trash2 className="w-4 h-4" />
                                             </button>
                                         )}
                                         {idx === items.length - 1 && items.length < MAX_ITEMS && (
                                             <button
                                                 onClick={addItem}
-                                                className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                                                className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
                                             >
-                                                <PlusCircle className="w-6 h-6" />
+                                                <PlusCircle className="w-5 h-5" />
                                             </button>
                                         )}
                                     </div>
