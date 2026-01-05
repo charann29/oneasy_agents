@@ -213,6 +213,13 @@ function QuestionnaireContent() {
         };
     }, [isProcessing]);
 
+    // Persist session ID to localStorage
+    useEffect(() => {
+        if (state.sessionId) {
+            localStorage.setItem('ca_session_id', state.sessionId);
+        }
+    }, [state.sessionId]);
+
     // Sync language selection
     useEffect(() => {
         if (state.answers['language']) {
@@ -304,7 +311,7 @@ function QuestionnaireContent() {
                     .from('questionnaire_sessions') as any)
                     .select('*')
                     .eq('user_id', user.id)
-                    .eq('status', 'in_progress')
+                    // .eq('status', 'in_progress')
                     .order('updated_at', { ascending: false })
                     .limit(1)
                     .maybeSingle() as { data: QuestionnaireSessionData | null; error: any };

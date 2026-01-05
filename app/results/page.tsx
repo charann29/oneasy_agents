@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
+import { supabase } from '@/lib/supabase/client';
 
 interface GeneratedDocument {
   type: string;
@@ -77,17 +78,36 @@ function ResultsContent() {
     setError(null);
 
     try {
-      // Get questionnaire answers from localStorage
-      // Check both possible keys for backward compatibility
-      let storedState = localStorage.getItem('questionnaire_state');
-      if (!storedState) {
-        storedState = localStorage.getItem('ca_backup_state');
-      }
-      if (!storedState) {
-        throw new Error('No questionnaire data found. Please complete the questionnaire first.');
+      let answers = null;
+
+      // 1. Try Supabase first (most reliable)
+      if (sessionId && sessionId !== 'new') {
+        const { data } = await (supabase
+          .from('questionnaire_sessions') as any)
+          .select('answers')
+          .eq('id', sessionId)
+          .single();
+
+        if (data?.answers) {
+          answers = data.answers;
+        }
       }
 
-      const state = JSON.parse(storedState);
+      // 2. Fallback to localStorage
+      if (!answers) {
+        let storedState = localStorage.getItem('questionnaire_state');
+        if (!storedState) {
+          storedState = localStorage.getItem('ca_backup_state');
+        }
+        if (storedState) {
+          const state = JSON.parse(storedState);
+          answers = state.answers;
+        }
+      }
+
+      if (!answers) {
+        throw new Error('No questionnaire data found. Please complete the questionnaire first.');
+      }
 
       // Call generation API
       const response = await fetch('/api/generate-documents', {
@@ -97,7 +117,7 @@ function ResultsContent() {
         },
         body: JSON.stringify({
           sessionId,
-          answers: state.answers,
+          answers: answers,
         }),
       });
 
