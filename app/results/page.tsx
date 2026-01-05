@@ -163,6 +163,45 @@ function ResultsContent() {
     alert('ZIP download coming soon! For now, download individual documents.');
   };
 
+  const downloadFile = async (format: 'pdf' | 'docx' | 'pptx' | 'csv') => {
+    const doc = documents.find(d => d.type === selectedDoc);
+    if (!doc) return;
+
+    try {
+      const title = documentTabs.find(t => t.id === selectedDoc)?.name || 'Document';
+      // Simple loading feedback
+      const btn = document.getElementById(`btn-download-${format}`);
+      if (btn) btn.innerText = '⏳...';
+
+      const response = await fetch('/api/download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: format,
+          content: doc.content,
+          title: `${title} - ${doc.type}`
+        })
+      });
+
+      if (btn) btn.innerText = format.toUpperCase();
+
+      if (!response.ok) throw new Error('Download failed');
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${doc.type}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (e) {
+      alert('Download failed. Ensure the server is running.');
+      console.error(e);
+    }
+  };
+
   const selectedDocument = documents.find(d => d.type === selectedDoc);
 
   if (loading) {
@@ -296,13 +335,61 @@ function ResultsContent() {
                     {' · '}
                     <span className="font-semibold">{selectedDocument.charCount.toLocaleString()}</span> characters
                   </div>
-                  <button
-                    onClick={() => downloadMarkdown(selectedDoc)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition flex items-center gap-2"
-                  >
-                    <span>⬇️</span>
-                    <span>Download Markdown</span>
-                  </button>
+                  <div className="flex gap-2">
+                    {/* PDF Button */}
+                    <button
+                      id="btn-download-pdf"
+                      onClick={() => downloadFile('pdf')}
+                      className="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm font-medium flex items-center gap-2 transition"
+                      title="Download as PDF"
+                    >
+                      <span>📄</span> PDF
+                    </button>
+
+                    {/* DOCX Button (Default for text docs) */}
+                    {(selectedDoc !== 'financial_model' && selectedDoc !== 'pitch_deck') && (
+                      <button
+                        id="btn-download-docx"
+                        onClick={() => downloadFile('docx')}
+                        className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 text-sm font-medium flex items-center gap-2 transition"
+                        title="Download as Word Doc"
+                      >
+                        <span>📝</span> Word
+                      </button>
+                    )}
+
+                    {/* PPTX Button (Pitch Deck only) */}
+                    {selectedDoc === 'pitch_deck' && (
+                      <button
+                        id="btn-download-pptx"
+                        onClick={() => downloadFile('pptx')}
+                        className="px-3 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 text-sm font-medium flex items-center gap-2 transition"
+                        title="Download as PowerPoint"
+                      >
+                        <span>🟧</span> PPT
+                      </button>
+                    )}
+
+                    {/* CSV Button (Financial Model only) */}
+                    {selectedDoc === 'financial_model' && (
+                      <button
+                        id="btn-download-csv"
+                        onClick={() => downloadFile('csv')}
+                        className="px-3 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 text-sm font-medium flex items-center gap-2 transition"
+                        title="Download as Spreadsheets (CSV)"
+                      >
+                        <span>📊</span> Sheets
+                      </button>
+                    )}
+
+                    <button
+                      onClick={() => downloadMarkdown(selectedDoc)}
+                      className="px-3 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-sm font-medium flex items-center gap-2 transition"
+                      title="Download Raw Markdown"
+                    >
+                      <span>⬇️</span> MD
+                    </button>
+                  </div>
                 </div>
 
                 {/* Document content */}

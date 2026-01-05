@@ -271,6 +271,38 @@ export class ExportEngine {
     }
 
     /**
+     * Convert Markdown Tables to CSV
+     */
+    toCSV(markdown: string): Buffer {
+        const lines = markdown.split('\n');
+        const rows: string[] = [];
+        let textRow = [];
+
+        for (const line of lines) {
+            const trimmed = line.trim();
+            if (trimmed.startsWith('|')) {
+                // Table row
+                if (trimmed.includes('---')) continue; // Skip separators
+
+                // Parse cells, handling | characters within quotes if needed (simplified here)
+                // Assuming simple markdown tables for now
+                const cells = trimmed.split('|');
+                // Remove first and last empty elements from split
+                if (cells.length >= 2) {
+                    const dataCells = cells.slice(1, cells.length - 1).map(c => {
+                        const cellContent = c.trim();
+                        // Escape quotes for CSV
+                        return `"${cellContent.replace(/"/g, '""')}"`;
+                    });
+                    rows.push(dataCells.join(','));
+                }
+            }
+        }
+
+        return Buffer.from(rows.join('\n'));
+    }
+
+    /**
      * Create ZIP package with all documents
      */
     async createPackage(
