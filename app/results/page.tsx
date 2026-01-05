@@ -124,6 +124,31 @@ function ResultsContent() {
         }
       }
 
+      // 3. Demo mode - use sample data for testing
+      if (!answers && (sessionId === 'demo' || sessionId === 'test-browser-flow')) {
+        answers = {
+          company_name: 'Demo Startup Inc',
+          tagline: 'Innovating for Tomorrow',
+          industry: 'Technology / SaaS',
+          stage: 'Seed Stage',
+          founding_date: '2024',
+          location: 'San Francisco, CA',
+          team_size: '5-10',
+          problem_statement: 'Small businesses struggle with complex document generation requiring expensive consultants.',
+          solution: 'AI-powered platform that generates professional business documents in minutes.',
+          target_market: 'SMBs and startups needing business planning documents',
+          business_model: 'SaaS subscription with tiered pricing',
+          revenue_streams: 'Monthly subscriptions, enterprise licenses, API access',
+          funding_seeking: '$500,000',
+          use_of_funds: 'Product development, marketing, team expansion',
+          competitors: 'Traditional consulting firms, basic templates',
+          competitive_advantage: 'AI-powered, 10x faster, 90% cost reduction',
+          traction: '100 beta users, $10k MRR',
+          vision: 'Become the go-to platform for AI-powered business documentation'
+        };
+        console.log('📋 Using demo data for document generation');
+      }
+
       if (!answers) {
         throw new Error('No questionnaire data found. Please complete the questionnaire first.');
       }

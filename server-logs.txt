@@ -12,3 +12,317 @@
  ✓ Compiled /results in 2.2s (925 modules)
  GET /results?sessionId=test-browser-flow 200 in 2329ms
  ✓ Compiled in 104ms (464 modules)
+ GET /results?sessionId=test-browser-flow 200 in 39ms
+ GET /results?sessionId=test-browser-flow 200 in 62ms
+ GET /results?sessionId=test-browser-flow 200 in 20ms
+ ○ Compiling /api/download ...
+ ✓ Compiled /api/download in 953ms (850 modules)
+Download request received: type=pdf, title=Company Profile, contentLength=6157
+Serving file: Company_Profile_2026-01-05.pdf (97403 bytes, type: application/pdf)
+ POST /api/download 200 in 2853ms
+Download request received: type=pdf, title=Company Profile, contentLength=6157
+Serving file: Company_Profile_2026-01-05.pdf (97403 bytes, type: application/pdf)
+ POST /api/download 200 in 1142ms
+Download request received: type=pdf, title=Company Profile, contentLength=6157
+Serving file: Company_Profile_2026-01-05.pdf (97403 bytes, type: application/pdf)
+ POST /api/download 200 in 1758ms
+ GET /results?sessionId=test-browser-flow 200 in 102ms
+ ✓ Compiled in 305ms (916 modules)
+ GET /results?sessionId=test-browser-flow 200 in 96ms
+ ✓ Compiled /api/generate-documents in 355ms (623 modules)
+🚀 Starting Multi-Agent Document Generation (HMR Check)
+📋 Session: test-browser-flow
+📊 Answers count: 18
+[2026-01-05T18:38:32.533Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:38:32.534Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:38:32.534Z] [INFO] Loading agent definitions... {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/backend/agents'
+}
+[2026-01-05T18:38:32.534Z] [INFO] Found 15 agent files 
+[2026-01-05T18:38:32.536Z] [DEBUG] Loaded agent: abhishek_ca { name: 'Abhishek CA - Conversational Business Advisor' }
+[2026-01-05T18:38:32.537Z] [DEBUG] Loaded agent: business_planner_lead { name: 'Business Planner Lead' }
+[2026-01-05T18:38:32.537Z] [DEBUG] Loaded agent: context_collector { name: 'Context Collector' }
+[2026-01-05T18:38:32.539Z] [DEBUG] Loaded agent: customer_profiler { name: 'Customer Profiler' }
+[2026-01-05T18:38:32.539Z] [DEBUG] Loaded agent: document_generator { name: 'Document Generator' }
+[2026-01-05T18:38:32.540Z] [DEBUG] Loaded agent: financial_modeler { name: 'Financial Modeler' }
+[2026-01-05T18:38:32.540Z] [DEBUG] Loaded agent: funding_strategist { name: 'Funding Strategist' }
+[2026-01-05T18:38:32.541Z] [DEBUG] Loaded agent: gtm_strategist { name: 'Gtm Strategist' }
+[2026-01-05T18:38:32.543Z] [DEBUG] Loaded agent: legal_advisor { name: 'Legal Advisor' }
+[2026-01-05T18:38:32.543Z] [DEBUG] Loaded agent: market_analyst { name: 'Market Analyst' }
+[2026-01-05T18:38:32.544Z] [DEBUG] Loaded agent: ops_planner { name: 'Ops Planner' }
+[2026-01-05T18:38:32.547Z] [ERROR] Failed to load agent from output_generator.yaml {
+  name: 'YAMLException',
+  message: 'duplicated mapping key (1967:1)\n' +
+    '\n' +
+    ' 1964 | tools: []\n' +
+    ' 1965 | temperature: 0.3\n' +
+    ' 1966 | context_window: 200000\n' +
+    ' 1967 | id: ops_planner\n' +
+    '--------^\n' +
+    ' 1968 | name: Ops Planner\n' +
+    ' 1969 | description: Expert in ops planner',
+  stack: 'YAMLException: duplicated mapping key (1967:1)\n' +
+    '\n' +
+    ' 1964 | tools: []\n' +
+    ' 1965 | temperature: 0.3\n' +
+    ' 1966 | context_window: 200000\n' +
+    ' 1967 | id: ops_planner\n' +
+    '--------^\n' +
+    ' 1968 | name: Ops Planner\n' +
+    ' 1969 | description: Expert in ops planner\n' +
+    '    at generateError (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1307:10)\n' +
+    '    at throwError (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1311:9)\n' +
+    '    at storeMappingPair (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1482:7)\n' +
+    '    at readBlockMapping (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2287:9)\n' +
+    '    at composeNode (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2555:12)\n' +
+    '    at readDocument (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2739:3)\n' +
+    '    at loadDocuments (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2802:5)\n' +
+    '    at Object.load$1 [as load] (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2828:19)\n' +
+    '    at eval (webpack-internal:///(rsc)/./backend/agents/manager.ts:63:83)\n' +
+    '    at Array.forEach (<anonymous>)\n' +
+    '    at AgentManager.loadAgents (webpack-internal:///(rsc)/./backend/agents/manager.ts:59:19)\n' +
+    '    at new AgentManager (webpack-internal:///(rsc)/./backend/agents/manager.ts:24:14)\n' +
+    '    at getAgentManager (webpack-internal:///(rsc)/./backend/agents/manager.ts:238:32)\n' +
+    '    at new ClaudeAgentExecutor (webpack-internal:///(rsc)/./lib/orchestrator/claude-agent-executor.ts:21:101)\n' +
+    '    at getClaudeAgentExecutor (webpack-internal:///(rsc)/./lib/orchestrator/claude-agent-executor.ts:224:28)\n' +
+    '    at new DocumentGenerationWorkflow (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:16:120)\n' +
+    '    at getDocumentGenerationWorkflow (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:136:28)\n' +
+    '    at POST (webpack-internal:///(rsc)/./app/api/generate-documents/route.ts:38:132)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228\n' +
+    '    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)\n' +
+    '    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)\n' +
+    '    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)\n' +
+    '    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)\n' +
+    '    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)\n' +
+    '    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)\n' +
+    '    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)\n' +
+    '    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)\n' +
+    '    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)\n' +
+    '    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20\n' +
+    '    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)\n' +
+    '    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)\n' +
+    '    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)\n' +
+    '    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)\n' +
+    '    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)\n' +
+    '    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)'
+}
+[2026-01-05T18:38:32.547Z] [DEBUG] Loaded agent: revenue_architect { name: 'Revenue Architect' }
+[2026-01-05T18:38:32.548Z] [DEBUG] Loaded agent: unit_economics_calculator { name: 'Unit Economics Calculator' }
+[2026-01-05T18:38:32.549Z] [DEBUG] Loaded agent: user_profiler { name: 'User Profiler' }
+[2026-01-05T18:38:32.549Z] [INFO] Successfully loaded 14 agents 
+[2026-01-05T18:38:32.549Z] [INFO] Loading external assignments... { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/agents' }
+[2026-01-05T18:38:32.549Z] [WARN] External agents directory not found { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/agents' }
+[2026-01-05T18:38:32.549Z] [INFO] Loading external assignments... {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/standalone_agents'
+}
+[2026-01-05T18:38:32.549Z] [WARN] External agents directory not found {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/standalone_agents'
+}
+[2026-01-05T18:38:32.549Z] [INFO] Registering skills... 
+[2026-01-05T18:38:32.549Z] [DEBUG] Registered skill: financial_modeling { name: 'Financial Modeling' }
+[2026-01-05T18:38:32.549Z] [DEBUG] Registered skill: market_sizing_calculator { name: 'Market Sizing Calculator' }
+[2026-01-05T18:38:32.549Z] [DEBUG] Registered skill: competitor_analysis { name: 'Competitor Analysis' }
+[2026-01-05T18:38:32.549Z] [DEBUG] Registered skill: compliance_checker { name: 'Compliance Checker' }
+[2026-01-05T18:38:32.549Z] [DEBUG] Registered skill: branded_document_generator { name: 'Branded Document Generator' }
+[2026-01-05T18:38:32.549Z] [WARN] External skills directory not found { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/skills' }
+[2026-01-05T18:38:32.549Z] [INFO] Successfully registered 5 skills 
+[2026-01-05T18:38:32.549Z] [INFO] Claude Agent Executor initialized { model: 'claude-3-haiku-20240307', agentCount: 14, skillCount: 5 }
+[2026-01-05T18:38:32.549Z] [INFO] Document Generation Workflow initialized 
+[2026-01-05T18:38:32.549Z] [INFO] 🚀 Starting document generation workflow { sessionId: 'test-browser-flow' }
+[2026-01-05T18:38:32.549Z] [INFO] 📊 Phase 1: Executing intelligence-gathering agents... 
+[2026-01-05T18:38:32.549Z] [INFO] Executing 4 core agents in sequence... 
+[2026-01-05T18:38:32.549Z] [INFO] Executing agent sequence {
+  agents: [
+    'market_analyst',
+    'customer_profiler',
+    'financial_modeler',
+    'gtm_strategist'
+  ]
+}
+[2026-01-05T18:38:32.549Z] [INFO] Executing agent: market_analyst { context: true }
+[2026-01-05T18:38:32.549Z] [INFO] Agent loaded: Market Analyst { skills: 2, tools: 2 }
+[2026-01-05T18:38:32.550Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 2 }
+(node:83634) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2026-01-05T18:38:34.565Z] [INFO] Claude response received {
+  stopReason: 'tool_use',
+  contentBlocks: 1,
+  inputTokens: 6801,
+  outputTokens: 116
+}
+[2026-01-05T18:38:34.565Z] [INFO] Processing tool calls from Claude { iteration: 1 }
+[2026-01-05T18:38:34.565Z] [INFO] Executing skill: market_sizing_calculator {
+  params: {
+    approach: 'both',
+    geography: 'United States',
+    industry: 'SaaS',
+    target_segment: 'SMBs, startups'
+  }
+}
+[2026-01-05T18:38:34.565Z] [INFO] [SKILL:market_sizing_calculator] Executing {
+  params: {
+    approach: 'both',
+    geography: 'United States',
+    industry: 'SaaS',
+    target_segment: 'SMBs, startups'
+  }
+}
+[2026-01-05T18:38:34.566Z] [INFO] Executing market sizing { industry: 'SaaS', geography: 'United States' }
+[2026-01-05T18:38:34.596Z] [INFO] Market sizing complete {
+  tam: '9,750,000,000',
+  sam: '1,950,000,000',
+  som: '195,000,000',
+  confidence: 'medium'
+}
+[2026-01-05T18:38:34.597Z] [INFO] [TIMING] Skill execution: market_sizing_calculator { duration_ms: 31 }
+[2026-01-05T18:38:34.597Z] [INFO] Skill executed: market_sizing_calculator 
+[2026-01-05T18:38:34.597Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 3, toolCount: 2 }
+[2026-01-05T18:38:39.391Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 7044,
+  outputTokens: 334
+}
+[2026-01-05T18:38:39.391Z] [INFO] Agent execution complete: market_analyst { executionTimeMs: 6842, toolCalls: 1 }
+[2026-01-05T18:38:39.392Z] [INFO] Agent completed: market_analyst { outputLength: 1395, toolCalls: 1 }
+[2026-01-05T18:38:39.392Z] [INFO] Executing agent: customer_profiler { context: true }
+[2026-01-05T18:38:39.392Z] [INFO] Agent loaded: Customer Profiler { skills: 0, tools: 0 }
+[2026-01-05T18:38:39.392Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:38:52.068Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 13532,
+  outputTokens: 1813
+}
+[2026-01-05T18:38:52.068Z] [INFO] Agent execution complete: customer_profiler { executionTimeMs: 12676, toolCalls: 0 }
+[2026-01-05T18:38:52.068Z] [INFO] Agent completed: customer_profiler { outputLength: 6717, toolCalls: 0 }
+[2026-01-05T18:38:52.068Z] [INFO] Executing agent: financial_modeler { context: true }
+[2026-01-05T18:38:52.069Z] [INFO] Agent loaded: Financial Modeler { skills: 1, tools: 1 }
+[2026-01-05T18:38:52.069Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 1 }
+[2026-01-05T18:38:56.937Z] [INFO] Claude response received {
+  stopReason: 'tool_use',
+  contentBlocks: 1,
+  inputTokens: 7651,
+  outputTokens: 562
+}
+[2026-01-05T18:38:56.937Z] [INFO] Processing tool calls from Claude { iteration: 1 }
+[2026-01-05T18:38:56.937Z] [INFO] Executing skill: financial_modeling {
+  params: {
+    revenue_data: { products: [Array] },
+    cost_structure: { opex_percentages: [Object] },
+    projection_period: { years: 7, detail_level: 'monthly_year1_annual' },
+    assumptions: { tax_rate: 0.25, starting_cash: 500000, payment_terms_days: 30 }
+  }
+}
+[2026-01-05T18:38:56.938Z] [INFO] [SKILL:financial_modeling] Executing {
+  params: {
+    revenue_data: { products: [Array] },
+    cost_structure: { opex_percentages: [Object] },
+    projection_period: { years: 7, detail_level: 'monthly_year1_annual' },
+    assumptions: { tax_rate: 0.25, starting_cash: 500000, payment_terms_days: 30 }
+  }
+}
+[2026-01-05T18:38:56.938Z] [INFO] Executing financial modeling { products: 1, years: 7 }
+[2026-01-05T18:38:56.939Z] [INFO] Financial modeling complete { y1_revenue: 198699.53065105452, break_even: -1, validation: 'FAIL' }
+[2026-01-05T18:38:56.939Z] [INFO] [TIMING] Skill execution: financial_modeling { duration_ms: 1 }
+[2026-01-05T18:38:56.939Z] [INFO] Skill executed: financial_modeling 
+[2026-01-05T18:38:56.939Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 3, toolCount: 1 }
+[2026-01-05T18:39:00.619Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 8601,
+  outputTokens: 332
+}
+[2026-01-05T18:39:00.620Z] [INFO] Agent execution complete: financial_modeler { executionTimeMs: 8552, toolCalls: 1 }
+[2026-01-05T18:39:00.620Z] [INFO] Agent completed: financial_modeler { outputLength: 1363, toolCalls: 1 }
+[2026-01-05T18:39:00.620Z] [INFO] Executing agent: gtm_strategist { context: true }
+[2026-01-05T18:39:00.620Z] [INFO] Agent loaded: Gtm Strategist { skills: 0, tools: 0 }
+[2026-01-05T18:39:00.620Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:39:16.359Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 16637,
+  outputTokens: 2081
+}
+[2026-01-05T18:39:16.359Z] [INFO] Agent execution complete: gtm_strategist { executionTimeMs: 15739, toolCalls: 0 }
+[2026-01-05T18:39:16.359Z] [INFO] Agent completed: gtm_strategist { outputLength: 7189, toolCalls: 0 }
+[2026-01-05T18:39:16.359Z] [INFO] Agent sequence complete { agentsExecuted: 4 }
+[2026-01-05T18:39:16.359Z] [INFO] Intelligence phase complete { agentsExecuted: 4 }
+[2026-01-05T18:39:16.359Z] [INFO] 📝 Phase 2: Generating documents... 
+[2026-01-05T18:39:16.367Z] [INFO] Generating 5 documents in parallel... 
+[2026-01-05T18:39:16.367Z] [INFO] Generating Company Profile document... 
+[2026-01-05T18:39:16.367Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:39:16.368Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:39:16.368Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:39:16.368Z] [INFO] Generating Business Plan document... 
+[2026-01-05T18:39:16.368Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:39:16.368Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:39:16.368Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:39:16.368Z] [INFO] Generating Financial Model document... 
+[2026-01-05T18:39:16.368Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:39:16.368Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:39:16.368Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:39:16.369Z] [INFO] Generating Pitch Deck document... 
+[2026-01-05T18:39:16.369Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:39:16.369Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:39:16.369Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:39:16.369Z] [INFO] Generating Strategic Analysis document... 
+[2026-01-05T18:39:16.369Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:39:16.369Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:39:16.369Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:39:24.615Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 2656,
+  outputTokens: 1053
+}
+[2026-01-05T18:39:24.615Z] [INFO] Company Profile generated { length: 5374 }
+[2026-01-05T18:39:35.059Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 6229,
+  outputTokens: 2828
+}
+[2026-01-05T18:39:35.060Z] [INFO] Pitch Deck generated { length: 12171, wordCount: 1834 }
+[2026-01-05T18:39:40.424Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 2766,
+  outputTokens: 3685
+}
+[2026-01-05T18:39:40.425Z] [INFO] Financial Model generated { length: 13136, wordCount: 2108 }
+[2026-01-05T18:39:42.370Z] [INFO] Claude response received {
+  stopReason: 'max_tokens',
+  contentBlocks: 1,
+  inputTokens: 5691,
+  outputTokens: 4096
+}
+[2026-01-05T18:39:42.371Z] [INFO] Business Plan generated { length: 17586, wordCount: 2507 }
+[2026-01-05T18:39:45.503Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 6322,
+  outputTokens: 3790
+}
+[2026-01-05T18:39:45.504Z] [INFO] Strategic Analysis generated { length: 17978, wordCount: 2481 }
+[2026-01-05T18:39:45.506Z] [INFO] All documents generated { count: 5 }
+[2026-01-05T18:39:45.507Z] [INFO] ✅ Document generation workflow complete { documentCount: 5, totalTimeMs: 72958 }
+✅ Multi-Agent Generation Complete
+📄 Documents: 5
+🤖 Agents executed: market_analyst, customer_profiler, financial_modeler, gtm_strategist
+🔧 Skills invoked: 2
+⏱️  Total time: 72958 ms
+💰 Tokens used: { input: 60266, output: 5238 }
+ POST /api/generate-documents 200 in 73389ms
+ ✓ Compiled /api/download in 125ms (850 modules)
+Download request received: type=pdf, title=Company Profile, contentLength=5374
+Serving file: Company_Profile_2026-01-05.pdf (90783 bytes, type: application/pdf)
+ POST /api/download 200 in 1665ms
+Download request received: type=csv, title=Financial Model, contentLength=13136
+Serving file: Financial_Model_2026-01-05.csv (1859 bytes, type: text/csv)
+ POST /api/download 200 in 14ms
+Download request received: type=csv, title=Financial Model, contentLength=13136
+Serving file: Financial_Model_2026-01-05.csv (1859 bytes, type: text/csv)
+ POST /api/download 200 in 20ms
