@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
+import { saveAs } from 'file-saver';
 import { supabase } from '@/lib/supabase/client';
 
 interface GeneratedDocument {
@@ -35,7 +36,25 @@ function ResultsContent() {
   const [selectedDoc, setSelectedDoc] = useState<string>('company_profile');
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('Initializing agents...');
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!generating) return;
+    setLoadingMessage('Initializing Multi-Agent System...');
+
+    const messages = [
+      { time: 2000, msg: 'Phase 1: Market Analyst Agents analyzing trends & competition...' },
+      { time: 15000, msg: 'Phase 2: Customer Profiler creating personas...' },
+      { time: 30000, msg: 'Phase 3: CFO Agent building Financial Models (Cash Flow, P&L)...' },
+      { time: 50000, msg: 'Phase 4: Strategist crafting Pitch Deck & Business Plan...' },
+      { time: 70000, msg: 'Phase 5: Finalizing documents and formatting output...' },
+      { time: 85000, msg: 'Almost there! Polishing final documents...' }
+    ];
+
+    const timeouts = messages.map(m => setTimeout(() => setLoadingMessage(m.msg), m.time));
+    return () => timeouts.forEach(clearTimeout);
+  }, [generating]);
 
   const documentTabs = [
     { id: 'company_profile', name: 'Company Profile', icon: '🏢' },
@@ -145,17 +164,21 @@ function ResultsContent() {
 
   const downloadMarkdown = (docType: string) => {
     const doc = documents.find(d => d.type === docType);
-    if (!doc) return;
+    if (!doc) {
+      alert('Document not found. Please generate documents first.');
+      return;
+    }
 
-    const blob = new Blob([doc.content], { type: 'text/markdown' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${docType}.md`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Create proper filename
+    const docName = documentTabs.find(t => t.id === docType)?.name || docType;
+    const safeDocName = docName.replace(/[^a-zA-Z0-9]/g, '_');
+    const timestamp = new Date().toISOString().split('T')[0];
+    const filename = `${safeDocName}_${timestamp}.md`;
+
+    console.log(`Downloading markdown: ${filename}`);
+
+    const blob = new Blob([doc.content], { type: 'text/plain;charset=utf-8' });
+    saveAs(blob, filename); // file-saver handles naming correctly
   };
 
   const downloadAllAsZip = async () => {
@@ -165,40 +188,105 @@ function ResultsContent() {
 
   const downloadFile = async (format: 'pdf' | 'docx' | 'pptx' | 'csv') => {
     const doc = documents.find(d => d.type === selectedDoc);
-    if (!doc) return;
+    if (!doc) {
+      alert('Document not found. Please generate documents first.');
+      return;
+    }
+
+    const btnId = `btn-download-${format}`;
+    const btn = document.getElementById(btnId);
+    const originalText = btn?.innerText || format.toUpperCase();
 
     try {
-      const title = documentTabs.find(t => t.id === selectedDoc)?.name || 'Document';
-      // Simple loading feedback
-      const btn = document.getElementById(`btn-download-${format}`);
-      if (btn) btn.innerText = '⏳...';
+      const docName = documentTabs.find(t => t.id === selectedDoc)?.name || 'Document';
+      const safeDocName = docName.replace(/[^a-zA-Z0-9]/g, '_');
+      const timestamp = new Date().toISOString().split('T')[0];
+      const filename = `${safeDocName}_${timestamp}.${format}`;
 
+      // Loading feedback
+      if (btn) {
+        btn.innerText = '⏳ Generating...';
+        btn.setAttribute('disabled', 'true');
+      }
+
+      console.log(`Downloading ${format}: ${filename}`);
+
+      // Fetch the file from API (expects JSON)
       const response = await fetch('/api/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: format,
           content: doc.content,
-          title: `${title} - ${doc.type}`
+          title: docName
         })
       });
 
-      if (btn) btn.innerText = format.toUpperCase();
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Server error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}`);
+      }
 
-      if (!response.ok) throw new Error('Download failed');
-
+      // Get the blob
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${doc.type}.${format}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+      if (blob.size === 0) {
+        throw new Error('Downloaded file is empty');
+      }
+
+      console.log(`✓ Received ${blob.size} bytes`);
+
+      // Use file-saver for guaranteed correct filename
+      saveAs(blob, filename);
+
+      // Success feedback
+      if (btn) {
+        btn.innerText = '✅ Downloaded!';
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.removeAttribute('disabled');
+        }, 2000);
+      }
+
+      // Show notification
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #10b981;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        font-size: 14px;
+        max-width: 350px;
+      `;
+      notification.innerHTML = `
+        <div style="font-weight: bold; margin-bottom: 8px;">📥 Download Started</div>
+        <div style="font-size: 12px; opacity: 0.9;">
+          Check your Downloads folder<br>
+          File should be named with proper title, not UUID
+        </div>
+      `;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.style.transition = 'opacity 0.3s';
+        notification.style.opacity = '0';
+        setTimeout(() => document.body.removeChild(notification), 300);
+      }, 4000);
+
     } catch (e) {
-      alert('Download failed. Ensure the server is running.');
-      console.error(e);
+      console.error('Download error:', e);
+      const errorMsg = e instanceof Error ? e.message : 'Download failed';
+      alert(`Download failed: ${errorMsg}\n\nPlease check:\n1. Server is running\n2. Documents are generated\n3. Browser console for details`);
+
+      // Reset button
+      if (btn) {
+        btn.innerText = originalText;
+        btn.removeAttribute('disabled');
+      }
     }
   };
 
@@ -232,7 +320,7 @@ function ResultsContent() {
                   disabled={generating}
                   className="px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg font-semibold hover:from-green-700 hover:to-emerald-700 transition-all shadow-md disabled:opacity-50"
                 >
-                  {generating ? '⏳ Generating...' : '🔄 Regenerate with AI'}
+                  {generating ? `⏳ ${loadingMessage}` : '🔄 Regenerate with AI'}
                 </button>
                 <button
                   onClick={downloadAllAsZip}
@@ -266,7 +354,7 @@ function ResultsContent() {
               {generating ? (
                 <span className="flex items-center gap-2">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  Generating Documents...
+                  {loadingMessage}
                 </span>
               ) : (
                 '✨ Generate Documents'
@@ -325,6 +413,19 @@ function ResultsContent() {
               </nav>
             </div>
 
+            {/* No document selected warning */}
+            {!selectedDocument && (
+              <div className="p-12 text-center bg-yellow-50">
+                <div className="text-4xl mb-4">📄</div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Document Not Available
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  This document hasn't been generated yet. Click "Generate Documents" or "Regenerate with AI" above.
+                </p>
+              </div>
+            )}
+
             {/* Document viewer */}
             {selectedDocument && (
               <div>
@@ -334,13 +435,14 @@ function ResultsContent() {
                     <span className="font-semibold">{selectedDocument.wordCount.toLocaleString()}</span> words
                     {' · '}
                     <span className="font-semibold">{selectedDocument.charCount.toLocaleString()}</span> characters
+                    <span className="ml-4 text-xs bg-green-100 text-green-700 px-2 py-1 rounded">✓ Ready to download</span>
                   </div>
                   <div className="flex gap-2">
                     {/* PDF Button */}
                     <button
                       id="btn-download-pdf"
                       onClick={() => downloadFile('pdf')}
-                      className="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm font-medium flex items-center gap-2 transition"
+                      className="px-3 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm font-medium flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Download as PDF"
                     >
                       <span>📄</span> PDF
@@ -351,7 +453,7 @@ function ResultsContent() {
                       <button
                         id="btn-download-docx"
                         onClick={() => downloadFile('docx')}
-                        className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 text-sm font-medium flex items-center gap-2 transition"
+                        className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 text-sm font-medium flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         title="Download as Word Doc"
                       >
                         <span>📝</span> Word
@@ -363,7 +465,7 @@ function ResultsContent() {
                       <button
                         id="btn-download-pptx"
                         onClick={() => downloadFile('pptx')}
-                        className="px-3 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 text-sm font-medium flex items-center gap-2 transition"
+                        className="px-3 py-2 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 text-sm font-medium flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         title="Download as PowerPoint"
                       >
                         <span>🟧</span> PPT
@@ -375,7 +477,7 @@ function ResultsContent() {
                       <button
                         id="btn-download-csv"
                         onClick={() => downloadFile('csv')}
-                        className="px-3 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 text-sm font-medium flex items-center gap-2 transition"
+                        className="px-3 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 text-sm font-medium flex items-center gap-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         title="Download as Spreadsheets (CSV)"
                       >
                         <span>📊</span> Sheets
@@ -404,3 +506,4 @@ function ResultsContent() {
     </div>
   );
 }
+

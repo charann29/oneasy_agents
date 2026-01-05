@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Test - Browser Permissions Check</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        #log {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .success { color: #10b981; }
+        .error { color: #ef4444; }
+        .warning { color: #f59e0b; }
+        .info { color: #3b82f6; }
+        .section {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Download Diagnostics</h1>
+
+    <div class="section">
+        <h2>Step 1: Check Browser Permissions</h2>
+        <p>When you click the button below, your browser might ask for permission to download files.</p>
+        <button onclick="testSimpleDownload()">Test Simple Download</button>
+        <button onclick="testBlobDownload()">Test Blob Download</button>
+        <button onclick="testFileAPIDownload()">Test File API Download</button>
+    </div>
+
+    <div class="section">
+        <h2>Step 2: Check Download Location</h2>
+        <button onclick="checkDownloadSettings()">Check Browser Settings</button>
+        <p id="downloadLocation"></p>
+    </div>
+
+    <div class="section">
+        <h2>Step 3: Test API Download</h2>
+        <button onclick="testAPIDownload()">Test Real API (PDF)</button>
+    </div>
+
+    <pre id="log"></pre>
+
+    <script>
+        const log = (msg, type = 'info') => {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEl = document.getElementById('log');
+            const className = type === 'success' ? 'success' :
+                            type === 'error' ? 'error' :
+                            type === 'warning' ? 'warning' : 'info';
+            logEl.innerHTML += `<span class="${className}">[${timestamp}] ${msg}</span>\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+            console.log(msg);
+        };
+
+        function testSimpleDownload() {
+            log('Testing simple text download...', 'info');
+
+            const content = 'Hello, this is a test file!\nIf you can see this file in your Downloads folder, simple downloads work.';
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'test_simple.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            log('✓ Simple download triggered. Check your Downloads folder for "test_simple.txt"', 'success');
+            log('   Expected location: ~/Downloads/test_simple.txt', 'info');
+        }
+
+        function testBlobDownload() {
+            log('Testing Blob download with proper MIME type...', 'info');
+
+            const content = '<!DOCTYPE html><html><body><h1>Test HTML File</h1><p>This is a test.</p></body></html>';
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'test_blob.html';
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+            log('✓ Blob download triggered. Check for "test_blob.html"', 'success');
+        }
+
+        function testFileAPIDownload() {
+            log('Testing File API download...', 'info');
+
+            const content = 'Test file using File API\nTimestamp: ' + new Date().toISOString();
+            const file = new File([content], 'test_file_api.txt', { type: 'text/plain' });
+            const url = URL.createObjectURL(file);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'test_file_api.txt';
+            document.body.appendChild(a);
+
+            try {
+                a.click();
+                log('✓ File API download triggered via click()', 'success');
+            } catch (e) {
+                log('✗ Click failed: ' + e.message, 'error');
+
+                // Try MouseEvent
+                const evt = new MouseEvent('click', {
+                    view: window,
+                    bubbles: true,
+                    cancelable: true
+                });
+                a.dispatchEvent(evt);
+                log('⚠ Tried MouseEvent fallback', 'warning');
+            }
+
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+            log('   Check for "test_file_api.txt" in Downloads', 'info');
+        }
+
+        function checkDownloadSettings() {
+            log('Checking browser download settings...', 'info');
+
+            // Check if downloads API is available (Chrome)
+            if ('downloads' in navigator) {
+                log('✓ Downloads API available', 'success');
+            } else {
+                log('⚠ Downloads API not available (this is normal for most browsers)', 'warning');
+            }
+
+            // Check user agent
+            log('Browser: ' + navigator.userAgent.split(')')[0] + ')', 'info');
+
+            // Provide instructions
+            const instructions = document.getElementById('downloadLocation');
+            const userAgent = navigator.userAgent;
+
+            if (userAgent.includes('Chrome') || userAgent.includes('Edge')) {
+                instructions.innerHTML = `
+                    <strong>Chrome/Edge Settings:</strong><br>
+                    1. Go to: <code>chrome://settings/downloads</code><br>
+                    2. Make sure "Ask where to save files" is ON (or check default location)<br>
+                    3. Check: <code>chrome://settings/content/automaticDownloads</code><br>
+                    4. Make sure localhost is allowed
+                `;
+                log('Open chrome://settings/downloads to check your download location', 'info');
+            } else if (userAgent.includes('Safari')) {
+                instructions.innerHTML = `
+                    <strong>Safari Settings:</strong><br>
+                    1. Safari → Settings → General<br>
+                    2. Check "File download location"<br>
+                    3. Safari → Settings → Websites → Downloads<br>
+                    4. Make sure "localhost" is set to "Allow"
+                `;
+                log('Check Safari → Settings → General for download location', 'info');
+            } else if (userAgent.includes('Firefox')) {
+                instructions.innerHTML = `
+                    <strong>Firefox Settings:</strong><br>
+                    1. Go to: <code>about:preferences#general</code><br>
+                    2. Scroll to "Downloads"<br>
+                    3. Check if "Always ask where to save files" is enabled<br>
+                    4. Or check the default save location
+                `;
+                log('Open about:preferences#general to check downloads', 'info');
+            }
+
+            log('✓ Instructions displayed above', 'success');
+        }
+
+        async function testAPIDownload() {
+            log('Testing real API download from localhost:3000...', 'info');
+
+            try {
+                const response = await fetch('http://localhost:3000/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'pdf',
+                        content: '# Test PDF\n\nThis is a test from diagnostic page.\n\nIf you can read this, PDF generation works!',
+                        title: 'Diagnostic Test PDF'
+                    })
+                });
+
+                log('Response status: ' + response.status, response.ok ? 'success' : 'error');
+
+                const contentType = response.headers.get('Content-Type');
+                const contentDisposition = response.headers.get('Content-Disposition');
+
+                log('Content-Type: ' + contentType, 'info');
+                log('Content-Disposition: ' + contentDisposition, 'info');
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    log('✗ API Error: ' + error, 'error');
+                    return;
+                }
+
+                const blob = await response.blob();
+                log('Blob size: ' + blob.size + ' bytes', 'success');
+
+                // Extract filename
+                let filename = 'diagnostic_test.pdf';
+                if (contentDisposition) {
+                    const match = contentDisposition.match(/filename="(.+?)"/);
+                    if (match) {
+                        filename = match[1];
+                        log('Using server filename: ' + filename, 'info');
+                    }
+                }
+
+                // Download
+                const file = new File([blob], filename, { type: 'application/pdf' });
+                const url = URL.createObjectURL(file);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+                log('✓ API download triggered!', 'success');
+                log('   Filename: ' + filename, 'success');
+                log('   Size: ' + (blob.size / 1024).toFixed(2) + ' KB', 'success');
+                log('', 'info');
+                log('🔍 CHECK YOUR DOWNLOADS FOLDER NOW!', 'success');
+                log('   Expected file: ~/Downloads/' + filename, 'info');
+
+            } catch (e) {
+                log('✗ API test failed: ' + e.message, 'error');
+                log('   Is your dev server running on localhost:3000?', 'warning');
+            }
+        }
+
+        // Auto-check on load
+        window.addEventListener('load', () => {
+            log('Download Diagnostics Loaded', 'success');
+            log('Click buttons above to test different download methods', 'info');
+            log('', 'info');
+        });
+    </script>
+</body>
+</html>

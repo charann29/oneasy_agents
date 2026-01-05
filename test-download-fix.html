@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download Test</title>
+</head>
+<body>
+    <h1>Test Download Functionality</h1>
+    <button onclick="testDownload()">Test PDF Download</button>
+    <pre id="log"></pre>
+
+    <script>
+        const log = (msg) => {
+            document.getElementById('log').textContent += msg + '\n';
+            console.log(msg);
+        };
+
+        async function testDownload() {
+            log('Starting download test...');
+
+            try {
+                const response = await fetch('http://localhost:3000/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'pdf',
+                        content: '# Test Document\n\nThis is a test.',
+                        title: 'Test Document'
+                    })
+                });
+
+                log(`Response status: ${response.status}`);
+                log(`Response headers:`);
+
+                const contentType = response.headers.get('Content-Type');
+                const contentDisposition = response.headers.get('Content-Disposition');
+                const contentLength = response.headers.get('Content-Length');
+
+                log(`  Content-Type: ${contentType}`);
+                log(`  Content-Disposition: ${contentDisposition}`);
+                log(`  Content-Length: ${contentLength}`);
+
+                const blob = await response.blob();
+                log(`Blob size: ${blob.size} bytes`);
+                log(`Blob type: ${blob.type}`);
+
+                // Check if it's actually a PDF
+                const arrayBuffer = await blob.arrayBuffer();
+                const uint8Array = new Uint8Array(arrayBuffer);
+                const header = String.fromCharCode(...uint8Array.slice(0, 4));
+                log(`File header: ${header} (should be %PDF for PDF files)`);
+
+                // Download the file
+                const properBlob = new Blob([blob], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(properBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'test_download.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+
+                log('✅ Download triggered successfully!');
+            } catch (e) {
+                log('❌ Error: ' + e.message);
+                console.error(e);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateAllDocumentsWithAI, type DocumentAnswers } from '@/lib/templates/ai-document-generator';
+import { getDocumentGenerationWorkflow } from '@/lib/workflows/document-generation-workflow';
 
 /**
- * Generate Documents API
- * 
+ * Generate Documents API (Phase 2 - Multi-Agent Orchestration)
+ *
  * POST /api/generate-documents
- * 
- * Generates professional business documents using AI (Groq)
- * NOT hardcoded templates - genuine AI-generated content
+ *
+ * Generates professional business documents using:
+ * - Claude API (Haiku for speed, upgradeable to Opus/Sonnet)
+ * - Multi-agent orchestration (market_analyst, financial_modeler, gtm_strategist, customer_profiler)
+ * - Real skill invocations (financial_modeling, market_sizing, etc.)
+ * - Deep synthesis and analysis (4,000-6,000 word documents)
+ *
+ * This is NOT simple prompt generation - it's a full agent-based intelligence system.
  */
 export async function POST(request: NextRequest) {
     try {
@@ -24,27 +29,36 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        console.log('📄 Generating AI documents for session:', sessionId);
-        console.log('📋 Answers count:', Object.keys(answers).length);
+        console.log('🚀 Starting Multi-Agent Document Generation (HMR Check)');
+        console.log('📋 Session:', sessionId);
+        console.log('📊 Answers count:', Object.keys(answers).length);
 
-        // Generate all documents using AI
-        const startTime = Date.now();
-        const documents = await generateAllDocumentsWithAI(answers as DocumentAnswers);
-        const executionTime = Date.now() - startTime;
+        // Use the new workflow with agent orchestration
+        const workflow = getDocumentGenerationWorkflow();
 
-        console.log('✅ Documents generated in', executionTime, 'ms');
+        const result = await workflow.generateAllDocuments(answers, sessionId);
+
+        console.log('✅ Multi-Agent Generation Complete');
+        console.log('📄 Documents:', result.documents.length);
+        console.log('🤖 Agents executed:', result.metadata.agentsExecuted.join(', '));
+        console.log('🔧 Skills invoked:', result.metadata.skillsInvoked);
+        console.log('⏱️  Total time:', result.metadata.totalExecutionTimeMs, 'ms');
+        console.log('💰 Tokens used:', result.metadata.totalTokensUsed);
 
         // Return generated documents
         return NextResponse.json({
             success: true,
             data: {
                 sessionId,
-                documents,
+                documents: result.documents,
                 metadata: {
                     generatedAt: new Date().toISOString(),
-                    executionTimeMs: executionTime,
-                    documentCount: documents.length,
-                    generatedBy: 'AI (Groq llama-3.3-70b)'
+                    executionTimeMs: result.metadata.totalExecutionTimeMs,
+                    documentCount: result.documents.length,
+                    generatedBy: 'Multi-Agent System (Claude + Agents + Skills)',
+                    agentsExecuted: result.metadata.agentsExecuted,
+                    skillsInvoked: result.metadata.skillsInvoked,
+                    tokensUsed: result.metadata.totalTokensUsed
                 },
             },
         });
@@ -55,6 +69,7 @@ export async function POST(request: NextRequest) {
             {
                 success: false,
                 error: error instanceof Error ? error.message : 'Document generation failed',
+                details: error instanceof Error ? error.stack : undefined
             },
             { status: 500 }
         );
