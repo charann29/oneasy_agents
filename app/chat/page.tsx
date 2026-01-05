@@ -1535,6 +1535,187 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
                 );
             }
 
+            case QuestionType.LIST: {
+                const MAX_ITEMS = 10;
+                const items = Array.isArray(currentAnswer) ? currentAnswer : [''];
+
+                const updateItem = (index: number, value: string) => {
+                    const newItems = [...items];
+                    newItems[index] = value;
+                    setCurrentAnswer(newItems);
+                };
+
+                const addItem = () => {
+                    if (items.length < MAX_ITEMS) {
+                        setCurrentAnswer([...items, '']);
+                    }
+                };
+
+                const removeItem = (index: number) => {
+                    if (items.length > 1) {
+                        const newItems = items.filter((_: any, i: number) => i !== index);
+                        setCurrentAnswer(newItems);
+                    }
+                };
+
+                return (
+                    <div className="flex flex-col gap-3 w-fit">
+                        <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pr-1">
+                            {items.map((item: string, idx: number) => (
+                                <div key={idx} className="flex gap-2 items-center">
+                                    <input
+                                        type="text"
+                                        value={item}
+                                        onChange={(e) => updateItem(idx, e.target.value)}
+                                        placeholder={currentQuestion.placeholder || "Enter item..."}
+                                        className="w-64 sm:w-80 bg-white border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-black focus:outline-none placeholder:text-slate-400 font-medium transition-colors"
+                                        autoFocus={idx === items.length - 1}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                if (idx === items.length - 1 && item && items.length < MAX_ITEMS) {
+                                                    addItem();
+                                                } else if (idx === items.length - 1) {
+                                                    handleSubmitAnswer();
+                                                }
+                                            }
+                                        }}
+                                    />
+                                    <div className="flex items-center gap-1 shrink-0">
+                                        {items.length > 1 && (
+                                            <button
+                                                onClick={() => removeItem(idx)}
+                                                className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        )}
+                                        {idx === items.length - 1 && items.length < MAX_ITEMS && (
+                                            <button
+                                                onClick={addItem}
+                                                className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                                            >
+                                                <PlusCircle className="w-5 h-5" />
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-2 justify-end pt-2">
+                            <button
+                                onClick={handleSubmitAnswer}
+                                className="flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-5 sm:py-3 bg-black text-white rounded-xl hover:bg-slate-800 transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px]"
+                                disabled={isProcessing}
+                            >
+                                {isProcessing ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <>
+                                        <span className="hidden sm:inline font-bold text-sm">{t('submit')}</span>
+                                        <Send className="w-4 h-4" />
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            case QuestionType.MILESTONE: {
+                const MAX_ITEMS = 10;
+                const items = Array.isArray(currentAnswer) ? currentAnswer : [{ timeframe: '', description: '' }];
+
+                const updateItem = (index: number, field: string, value: string) => {
+                    const newItems = [...items];
+                    newItems[index] = { ...newItems[index], [field]: value };
+                    setCurrentAnswer(newItems);
+                };
+
+                const addItem = () => {
+                    if (items.length < MAX_ITEMS) {
+                        setCurrentAnswer([...items, { timeframe: '', description: '' }]);
+                    }
+                };
+
+                const removeItem = (index: number) => {
+                    if (items.length > 1) {
+                        const newItems = items.filter((_: any, i: number) => i !== index);
+                        setCurrentAnswer(newItems);
+                    }
+                };
+
+                return (
+                    <div className="flex flex-col gap-3 w-fit">
+                        <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pr-1">
+                            {items.map((item: any, idx: number) => (
+                                <div key={idx} className="flex gap-2 items-center">
+                                    <input
+                                        type="text"
+                                        value={item.timeframe}
+                                        onChange={(e) => updateItem(idx, 'timeframe', e.target.value)}
+                                        placeholder="When? (e.g. Month 3)"
+                                        className="w-32 sm:w-40 bg-white border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-black focus:outline-none placeholder:text-slate-400 font-medium transition-colors"
+                                        autoFocus={idx === items.length - 1}
+                                    />
+                                    <input
+                                        type="text"
+                                        value={item.description}
+                                        onChange={(e) => updateItem(idx, 'description', e.target.value)}
+                                        placeholder="Milestone description"
+                                        className="w-48 sm:w-64 bg-white border-2 border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-black focus:outline-none placeholder:text-slate-400 font-medium min-w-0 transition-colors"
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                if (idx === items.length - 1 && item.timeframe && item.description && items.length < MAX_ITEMS) {
+                                                    addItem();
+                                                } else if (idx === items.length - 1) {
+                                                    handleSubmitAnswer();
+                                                }
+                                            }
+                                        }}
+                                    />
+                                    <div className="flex items-center gap-1 shrink-0">
+                                        {items.length > 1 && (
+                                            <button
+                                                onClick={() => removeItem(idx)}
+                                                className="p-1.5 text-slate-400 hover:text-red-500 transition-colors"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        )}
+                                        {idx === items.length - 1 && items.length < MAX_ITEMS && (
+                                            <button
+                                                onClick={addItem}
+                                                className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                                            >
+                                                <PlusCircle className="w-5 h-5" />
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-2 justify-end pt-2">
+                            <button
+                                onClick={handleSubmitAnswer}
+                                className="flex items-center justify-center gap-1.5 px-3 py-2.5 sm:px-5 sm:py-3 bg-black text-white rounded-xl hover:bg-slate-800 transition-all shadow-md hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed min-w-[44px]"
+                                disabled={isProcessing}
+                            >
+                                {isProcessing ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <>
+                                        <span className="hidden sm:inline font-bold text-sm">{t('submit')}</span>
+                                        <Send className="w-4 h-4" />
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
             case QuestionType.TEXT:
             case QuestionType.EMAIL:
             case QuestionType.PHONE:

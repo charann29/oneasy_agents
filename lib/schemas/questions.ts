@@ -1082,8 +1082,8 @@ export const PHASE_6_COMPETITION: Phase = {
   questions: [
     {
       id: 'top_competitors',
-      question: 'Who are your top 3-5 direct competitors?',
       type: QuestionType.LIST,
+      question: 'Who are your top 3-5 direct competitors?',
       placeholder: 'List competitor names and URLs'
     },
     {
