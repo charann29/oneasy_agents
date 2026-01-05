@@ -1428,7 +1428,7 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
         setState(prev => ({ ...prev, messages: [...prev.messages, completionMsg] }));
 
         setTimeout(() => {
-            window.location.href = '/complete';
+            window.location.href = `/complete?sessionId=${state.sessionId}`;
         }, 2000);
     };
 

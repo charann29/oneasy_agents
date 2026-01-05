@@ -1,6 +1,25 @@
-import Link from 'next/link';
+'use client';
 
-export default function QuestionnaireCompletePage() {
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState, Suspense } from 'react';
+
+function CompletePageContent() {
+    const searchParams = useSearchParams();
+    const [sessionId, setSessionId] = useState<string | null>(null);
+
+    useEffect(() => {
+        const urlId = searchParams.get('sessionId');
+        if (urlId && urlId !== 'new') {
+            setSessionId(urlId);
+        } else if (typeof window !== 'undefined') {
+            const localId = localStorage.getItem('ca_session_id');
+            setSessionId(localId || 'new');
+        }
+    }, [searchParams]);
+
+    const targetSessionId = sessionId || 'new';
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center px-4">
             <div className="max-w-2xl w-full bg-white rounded-3xl shadow-2xl p-12 text-center">
@@ -68,14 +87,14 @@ export default function QuestionnaireCompletePage() {
                 {/* Action Buttons */}
                 <div className="space-y-3">
                     <Link
-                        href={`/results?sessionId=${typeof window !== 'undefined' ? localStorage.getItem('ca_session_id') || 'new' : 'new'}`}
+                        href={`/results?sessionId=${targetSessionId}`}
                         className="block w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg transform hover:scale-105"
                     >
                         ✨ Generate My Business Plan
                     </Link>
 
                     <Link
-                        href="/questionnaire-chat"
+                        href="/chat"
                         className="block w-full px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all"
                     >
                         📝 Review My Answers
@@ -88,5 +107,17 @@ export default function QuestionnaireCompletePage() {
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function QuestionnaireCompletePage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+        }>
+            <CompletePageContent />
+        </Suspense>
     );
 }
