@@ -326,3 +326,1274 @@ Serving file: Financial_Model_2026-01-05.csv (1859 bytes, type: text/csv)
 Download request received: type=csv, title=Financial Model, contentLength=13136
 Serving file: Financial_Model_2026-01-05.csv (1859 bytes, type: text/csv)
  POST /api/download 200 in 20ms
+ ✓ Compiled /api/generate-documents in 142ms (623 modules)
+🚀 Starting Multi-Agent Document Generation (HMR Check)
+📋 Session: quick-test
+📊 Answers count: 4
+[2026-01-05T18:46:29.161Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:46:29.162Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:46:29.162Z] [INFO] Loading agent definitions... {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/backend/agents'
+}
+[2026-01-05T18:46:29.162Z] [INFO] Found 15 agent files 
+[2026-01-05T18:46:29.164Z] [DEBUG] Loaded agent: abhishek_ca { name: 'Abhishek CA - Conversational Business Advisor' }
+[2026-01-05T18:46:29.165Z] [DEBUG] Loaded agent: business_planner_lead { name: 'Business Planner Lead' }
+[2026-01-05T18:46:29.165Z] [DEBUG] Loaded agent: context_collector { name: 'Context Collector' }
+[2026-01-05T18:46:29.166Z] [DEBUG] Loaded agent: customer_profiler { name: 'Customer Profiler' }
+[2026-01-05T18:46:29.167Z] [DEBUG] Loaded agent: document_generator { name: 'Document Generator' }
+[2026-01-05T18:46:29.167Z] [DEBUG] Loaded agent: financial_modeler { name: 'Financial Modeler' }
+[2026-01-05T18:46:29.168Z] [DEBUG] Loaded agent: funding_strategist { name: 'Funding Strategist' }
+[2026-01-05T18:46:29.169Z] [DEBUG] Loaded agent: gtm_strategist { name: 'Gtm Strategist' }
+[2026-01-05T18:46:29.170Z] [DEBUG] Loaded agent: legal_advisor { name: 'Legal Advisor' }
+[2026-01-05T18:46:29.171Z] [DEBUG] Loaded agent: market_analyst { name: 'Market Analyst' }
+[2026-01-05T18:46:29.171Z] [DEBUG] Loaded agent: ops_planner { name: 'Ops Planner' }
+[2026-01-05T18:46:29.174Z] [ERROR] Failed to load agent from output_generator.yaml {
+  name: 'YAMLException',
+  message: 'duplicated mapping key (1967:1)\n' +
+    '\n' +
+    ' 1964 | tools: []\n' +
+    ' 1965 | temperature: 0.3\n' +
+    ' 1966 | context_window: 200000\n' +
+    ' 1967 | id: ops_planner\n' +
+    '--------^\n' +
+    ' 1968 | name: Ops Planner\n' +
+    ' 1969 | description: Expert in ops planner',
+  stack: 'YAMLException: duplicated mapping key (1967:1)\n' +
+    '\n' +
+    ' 1964 | tools: []\n' +
+    ' 1965 | temperature: 0.3\n' +
+    ' 1966 | context_window: 200000\n' +
+    ' 1967 | id: ops_planner\n' +
+    '--------^\n' +
+    ' 1968 | name: Ops Planner\n' +
+    ' 1969 | description: Expert in ops planner\n' +
+    '    at generateError (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1307:10)\n' +
+    '    at throwError (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1311:9)\n' +
+    '    at storeMappingPair (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1482:7)\n' +
+    '    at readBlockMapping (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2287:9)\n' +
+    '    at composeNode (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2555:12)\n' +
+    '    at readDocument (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2739:3)\n' +
+    '    at loadDocuments (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2802:5)\n' +
+    '    at Object.load$1 [as load] (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2828:19)\n' +
+    '    at eval (webpack-internal:///(rsc)/./backend/agents/manager.ts:63:83)\n' +
+    '    at Array.forEach (<anonymous>)\n' +
+    '    at AgentManager.loadAgents (webpack-internal:///(rsc)/./backend/agents/manager.ts:59:19)\n' +
+    '    at new AgentManager (webpack-internal:///(rsc)/./backend/agents/manager.ts:24:14)\n' +
+    '    at getAgentManager (webpack-internal:///(rsc)/./backend/agents/manager.ts:238:32)\n' +
+    '    at new ClaudeAgentExecutor (webpack-internal:///(rsc)/./lib/orchestrator/claude-agent-executor.ts:21:101)\n' +
+    '    at getClaudeAgentExecutor (webpack-internal:///(rsc)/./lib/orchestrator/claude-agent-executor.ts:224:28)\n' +
+    '    at new DocumentGenerationWorkflow (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:16:120)\n' +
+    '    at getDocumentGenerationWorkflow (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:136:28)\n' +
+    '    at POST (webpack-internal:///(rsc)/./app/api/generate-documents/route.ts:38:132)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228\n' +
+    '    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)\n' +
+    '    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)\n' +
+    '    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)\n' +
+    '    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)\n' +
+    '    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)\n' +
+    '    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)\n' +
+    '    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)\n' +
+    '    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)\n' +
+    '    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)\n' +
+    '    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20\n' +
+    '    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)\n' +
+    '    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)\n' +
+    '    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)\n' +
+    '    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)\n' +
+    '    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)\n' +
+    '    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)'
+}
+[2026-01-05T18:46:29.175Z] [DEBUG] Loaded agent: revenue_architect { name: 'Revenue Architect' }
+[2026-01-05T18:46:29.178Z] [DEBUG] Loaded agent: unit_economics_calculator { name: 'Unit Economics Calculator' }
+[2026-01-05T18:46:29.178Z] [DEBUG] Loaded agent: user_profiler { name: 'User Profiler' }
+[2026-01-05T18:46:29.179Z] [INFO] Successfully loaded 14 agents 
+[2026-01-05T18:46:29.179Z] [INFO] Loading external assignments... { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/agents' }
+[2026-01-05T18:46:29.179Z] [WARN] External agents directory not found { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/agents' }
+[2026-01-05T18:46:29.179Z] [INFO] Loading external assignments... {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/standalone_agents'
+}
+[2026-01-05T18:46:29.179Z] [WARN] External agents directory not found {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/standalone_agents'
+}
+[2026-01-05T18:46:29.179Z] [INFO] Registering skills... 
+[2026-01-05T18:46:29.179Z] [DEBUG] Registered skill: financial_modeling { name: 'Financial Modeling' }
+[2026-01-05T18:46:29.179Z] [DEBUG] Registered skill: market_sizing_calculator { name: 'Market Sizing Calculator' }
+[2026-01-05T18:46:29.179Z] [DEBUG] Registered skill: competitor_analysis { name: 'Competitor Analysis' }
+[2026-01-05T18:46:29.179Z] [DEBUG] Registered skill: compliance_checker { name: 'Compliance Checker' }
+[2026-01-05T18:46:29.179Z] [DEBUG] Registered skill: branded_document_generator { name: 'Branded Document Generator' }
+[2026-01-05T18:46:29.179Z] [WARN] External skills directory not found { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/skills' }
+[2026-01-05T18:46:29.179Z] [INFO] Successfully registered 5 skills 
+[2026-01-05T18:46:29.179Z] [INFO] Claude Agent Executor initialized { model: 'claude-3-haiku-20240307', agentCount: 14, skillCount: 5 }
+[2026-01-05T18:46:29.179Z] [INFO] Document Generation Workflow initialized 
+[2026-01-05T18:46:29.179Z] [INFO] 🚀 Starting document generation workflow { sessionId: 'quick-test' }
+[2026-01-05T18:46:29.179Z] [INFO] 📊 Phase 1: Executing intelligence-gathering agents... 
+[2026-01-05T18:46:29.179Z] [INFO] Executing 4 core agents in sequence... 
+[2026-01-05T18:46:29.179Z] [INFO] Executing agent sequence {
+  agents: [
+    'market_analyst',
+    'customer_profiler',
+    'financial_modeler',
+    'gtm_strategist'
+  ]
+}
+[2026-01-05T18:46:29.179Z] [INFO] Executing agent: market_analyst { context: true }
+[2026-01-05T18:46:29.179Z] [INFO] Agent loaded: Market Analyst { skills: 2, tools: 2 }
+[2026-01-05T18:46:29.179Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 2 }
+[2026-01-05T18:46:31.128Z] [INFO] Claude response received {
+  stopReason: 'tool_use',
+  contentBlocks: 1,
+  inputTokens: 6562,
+  outputTokens: 108
+}
+[2026-01-05T18:46:31.128Z] [INFO] Processing tool calls from Claude { iteration: 1 }
+[2026-01-05T18:46:31.128Z] [INFO] Executing skill: market_sizing_calculator {
+  params: {
+    approach: 'both',
+    geography: 'global',
+    industry: 'tech',
+    target_segment: 'enterprise'
+  }
+}
+[2026-01-05T18:46:31.128Z] [INFO] [SKILL:market_sizing_calculator] Executing {
+  params: {
+    approach: 'both',
+    geography: 'global',
+    industry: 'tech',
+    target_segment: 'enterprise'
+  }
+}
+[2026-01-05T18:46:31.129Z] [INFO] Executing market sizing { industry: 'tech', geography: 'global' }
+[2026-01-05T18:46:31.132Z] [INFO] Market sizing complete {
+  tam: '100,000,000,000',
+  sam: '15,000,000,000',
+  som: '1,500,000,000',
+  confidence: 'medium'
+}
+[2026-01-05T18:46:31.132Z] [INFO] [TIMING] Skill execution: market_sizing_calculator { duration_ms: 4 }
+[2026-01-05T18:46:31.132Z] [INFO] Skill executed: market_sizing_calculator 
+[2026-01-05T18:46:31.132Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 3, toolCount: 2 }
+[2026-01-05T18:46:34.157Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 6785,
+  outputTokens: 301
+}
+[2026-01-05T18:46:34.158Z] [INFO] Agent execution complete: market_analyst { executionTimeMs: 4979, toolCalls: 1 }
+[2026-01-05T18:46:34.158Z] [INFO] Agent completed: market_analyst { outputLength: 1362, toolCalls: 1 }
+[2026-01-05T18:46:34.158Z] [INFO] Executing agent: customer_profiler { context: true }
+[2026-01-05T18:46:34.158Z] [INFO] Agent loaded: Customer Profiler { skills: 0, tools: 0 }
+[2026-01-05T18:46:34.158Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:46:40.915Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 13277,
+  outputTokens: 786
+}
+[2026-01-05T18:46:40.915Z] [INFO] Agent execution complete: customer_profiler { executionTimeMs: 6757, toolCalls: 0 }
+[2026-01-05T18:46:40.915Z] [INFO] Agent completed: customer_profiler { outputLength: 2869, toolCalls: 0 }
+[2026-01-05T18:46:40.916Z] [INFO] Executing agent: financial_modeler { context: true }
+[2026-01-05T18:46:40.916Z] [INFO] Agent loaded: Financial Modeler { skills: 1, tools: 1 }
+[2026-01-05T18:46:40.916Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 1 }
+[2026-01-05T18:46:45.697Z] [INFO] Claude response received {
+  stopReason: 'tool_use',
+  contentBlocks: 1,
+  inputTokens: 7391,
+  outputTokens: 518
+}
+[2026-01-05T18:46:45.697Z] [INFO] Processing tool calls from Claude { iteration: 1 }
+[2026-01-05T18:46:45.698Z] [INFO] Executing skill: financial_modeling {
+  params: {
+    revenue_data: { products: [Array] },
+    cost_structure: { opex_percentages: [Object] },
+    projection_period: { years: 7, detail_level: 'monthly_year1_annual' },
+    assumptions: { tax_rate: 25, starting_cash: 50000000, payment_terms_days: 30 }
+  }
+}
+[2026-01-05T18:46:45.699Z] [INFO] [SKILL:financial_modeling] Executing {
+  params: {
+    revenue_data: { products: [Array] },
+    cost_structure: { opex_percentages: [Object] },
+    projection_period: { years: 7, detail_level: 'monthly_year1_annual' },
+    assumptions: { tax_rate: 25, starting_cash: 50000000, payment_terms_days: 30 }
+  }
+}
+[2026-01-05T18:46:45.699Z] [INFO] Executing financial modeling { products: 1, years: 7 }
+[2026-01-05T18:46:45.701Z] [INFO] Financial modeling complete { y1_revenue: 14833131.337124562, break_even: -1, validation: 'FAIL' }
+[2026-01-05T18:46:45.701Z] [INFO] [TIMING] Skill execution: financial_modeling { duration_ms: 2 }
+[2026-01-05T18:46:45.701Z] [INFO] Skill executed: financial_modeling 
+[2026-01-05T18:46:45.701Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 3, toolCount: 1 }
+[2026-01-05T18:46:50.052Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 8312,
+  outputTokens: 456
+}
+[2026-01-05T18:46:50.053Z] [INFO] Agent execution complete: financial_modeler { executionTimeMs: 9137, toolCalls: 1 }
+[2026-01-05T18:46:50.053Z] [INFO] Agent completed: financial_modeler { outputLength: 1451, toolCalls: 1 }
+[2026-01-05T18:46:50.053Z] [INFO] Executing agent: gtm_strategist { context: true }
+[2026-01-05T18:46:50.053Z] [INFO] Agent loaded: Gtm Strategist { skills: 0, tools: 0 }
+[2026-01-05T18:46:50.053Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:47:05.105Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 16459,
+  outputTokens: 1883
+}
+[2026-01-05T18:47:05.105Z] [INFO] Agent execution complete: gtm_strategist { executionTimeMs: 15052, toolCalls: 0 }
+[2026-01-05T18:47:05.105Z] [INFO] Agent completed: gtm_strategist { outputLength: 6645, toolCalls: 0 }
+[2026-01-05T18:47:05.106Z] [INFO] Agent sequence complete { agentsExecuted: 4 }
+[2026-01-05T18:47:05.106Z] [INFO] Intelligence phase complete { agentsExecuted: 4 }
+[2026-01-05T18:47:05.106Z] [INFO] 📝 Phase 2: Generating documents... 
+[2026-01-05T18:47:05.110Z] [INFO] Generating 5 documents in parallel... 
+[2026-01-05T18:47:05.110Z] [INFO] Generating Company Profile document... 
+[2026-01-05T18:47:05.111Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:47:05.111Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:47:05.111Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:47:05.112Z] [INFO] Generating Business Plan document... 
+[2026-01-05T18:47:05.112Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:47:05.112Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:47:05.112Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:47:05.112Z] [INFO] Generating Financial Model document... 
+[2026-01-05T18:47:05.112Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:47:05.112Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:47:05.113Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:47:05.113Z] [INFO] Generating Pitch Deck document... 
+[2026-01-05T18:47:05.113Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:47:05.113Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:47:05.114Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:47:05.114Z] [INFO] Generating Strategic Analysis document... 
+[2026-01-05T18:47:05.114Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:47:05.114Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:47:05.114Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:47:16.822Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 1596,
+  outputTokens: 1523
+}
+[2026-01-05T18:47:16.822Z] [INFO] Company Profile generated { length: 7932 }
+[2026-01-05T18:47:27.519Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 4856,
+  outputTokens: 2879
+}
+[2026-01-05T18:47:27.520Z] [INFO] Pitch Deck generated { length: 12193, wordCount: 1889 }
+[2026-01-05T18:47:29.628Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 2859,
+  outputTokens: 3500
+}
+[2026-01-05T18:47:29.629Z] [INFO] Financial Model generated { length: 11621, wordCount: 1925 }
+[2026-01-05T18:47:31.591Z] [INFO] Claude response received {
+  stopReason: 'max_tokens',
+  contentBlocks: 1,
+  inputTokens: 4318,
+  outputTokens: 4096
+}
+[2026-01-05T18:47:31.591Z] [INFO] Business Plan generated { length: 17620, wordCount: 2514 }
+[2026-01-05T18:47:32.289Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 4949,
+  outputTokens: 3696
+}
+[2026-01-05T18:47:32.290Z] [INFO] Strategic Analysis generated { length: 18176, wordCount: 2518 }
+[2026-01-05T18:47:32.292Z] [INFO] All documents generated { count: 5 }
+[2026-01-05T18:47:32.292Z] [INFO] ✅ Document generation workflow complete { documentCount: 5, totalTimeMs: 63113 }
+✅ Multi-Agent Generation Complete
+📄 Documents: 5
+🤖 Agents executed: market_analyst, customer_profiler, financial_modeler, gtm_strategist
+🔧 Skills invoked: 2
+⏱️  Total time: 63113 ms
+💰 Tokens used: { input: 58786, output: 4052 }
+ POST /api/generate-documents 200 in 63341ms
+ ✓ Compiled in 166ms (464 modules)
+ ✓ Compiled in 132ms (902 modules)
+ ✓ Compiled in 234ms (916 modules)
+ ✓ Compiled in 128ms (916 modules)
+ GET /results?sessionId=demo 200 in 95ms
+ GET /results?sessionId=demo 200 in 24ms
+ ✓ Compiled /api/generate-documents in 85ms (623 modules)
+🚀 Starting Multi-Agent Document Generation (HMR Check)
+📋 Session: demo
+📊 Answers count: 10
+[2026-01-05T18:51:14.540Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:51:14.540Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:51:14.540Z] [INFO] Loading agent definitions... {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/backend/agents'
+}
+[2026-01-05T18:51:14.540Z] [INFO] Found 15 agent files 
+[2026-01-05T18:51:14.543Z] [DEBUG] Loaded agent: abhishek_ca { name: 'Abhishek CA - Conversational Business Advisor' }
+[2026-01-05T18:51:14.544Z] [DEBUG] Loaded agent: business_planner_lead { name: 'Business Planner Lead' }
+[2026-01-05T18:51:14.544Z] [DEBUG] Loaded agent: context_collector { name: 'Context Collector' }
+[2026-01-05T18:51:14.545Z] [DEBUG] Loaded agent: customer_profiler { name: 'Customer Profiler' }
+[2026-01-05T18:51:14.546Z] [DEBUG] Loaded agent: document_generator { name: 'Document Generator' }
+[2026-01-05T18:51:14.546Z] [DEBUG] Loaded agent: financial_modeler { name: 'Financial Modeler' }
+[2026-01-05T18:51:14.547Z] [DEBUG] Loaded agent: funding_strategist { name: 'Funding Strategist' }
+[2026-01-05T18:51:14.549Z] [DEBUG] Loaded agent: gtm_strategist { name: 'Gtm Strategist' }
+[2026-01-05T18:51:14.550Z] [DEBUG] Loaded agent: legal_advisor { name: 'Legal Advisor' }
+[2026-01-05T18:51:14.551Z] [DEBUG] Loaded agent: market_analyst { name: 'Market Analyst' }
+[2026-01-05T18:51:14.551Z] [DEBUG] Loaded agent: ops_planner { name: 'Ops Planner' }
+[2026-01-05T18:51:14.554Z] [ERROR] Failed to load agent from output_generator.yaml {
+  name: 'YAMLException',
+  message: 'duplicated mapping key (1967:1)\n' +
+    '\n' +
+    ' 1964 | tools: []\n' +
+    ' 1965 | temperature: 0.3\n' +
+    ' 1966 | context_window: 200000\n' +
+    ' 1967 | id: ops_planner\n' +
+    '--------^\n' +
+    ' 1968 | name: Ops Planner\n' +
+    ' 1969 | description: Expert in ops planner',
+  stack: 'YAMLException: duplicated mapping key (1967:1)\n' +
+    '\n' +
+    ' 1964 | tools: []\n' +
+    ' 1965 | temperature: 0.3\n' +
+    ' 1966 | context_window: 200000\n' +
+    ' 1967 | id: ops_planner\n' +
+    '--------^\n' +
+    ' 1968 | name: Ops Planner\n' +
+    ' 1969 | description: Expert in ops planner\n' +
+    '    at generateError (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1307:10)\n' +
+    '    at throwError (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1311:9)\n' +
+    '    at storeMappingPair (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1482:7)\n' +
+    '    at readBlockMapping (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2287:9)\n' +
+    '    at composeNode (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2555:12)\n' +
+    '    at readDocument (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2739:3)\n' +
+    '    at loadDocuments (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2802:5)\n' +
+    '    at Object.load$1 [as load] (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2828:19)\n' +
+    '    at eval (webpack-internal:///(rsc)/./backend/agents/manager.ts:63:83)\n' +
+    '    at Array.forEach (<anonymous>)\n' +
+    '    at AgentManager.loadAgents (webpack-internal:///(rsc)/./backend/agents/manager.ts:59:19)\n' +
+    '    at new AgentManager (webpack-internal:///(rsc)/./backend/agents/manager.ts:24:14)\n' +
+    '    at getAgentManager (webpack-internal:///(rsc)/./backend/agents/manager.ts:238:32)\n' +
+    '    at new ClaudeAgentExecutor (webpack-internal:///(rsc)/./lib/orchestrator/claude-agent-executor.ts:21:101)\n' +
+    '    at getClaudeAgentExecutor (webpack-internal:///(rsc)/./lib/orchestrator/claude-agent-executor.ts:224:28)\n' +
+    '    at new DocumentGenerationWorkflow (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:16:120)\n' +
+    '    at getDocumentGenerationWorkflow (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:136:28)\n' +
+    '    at POST (webpack-internal:///(rsc)/./app/api/generate-documents/route.ts:38:132)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228\n' +
+    '    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)\n' +
+    '    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)\n' +
+    '    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)\n' +
+    '    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)\n' +
+    '    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)\n' +
+    '    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)\n' +
+    '    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)\n' +
+    '    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)\n' +
+    '    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)\n' +
+    '    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20\n' +
+    '    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)\n' +
+    '    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)\n' +
+    '    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)\n' +
+    '    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)\n' +
+    '    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)\n' +
+    '    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)'
+}
+[2026-01-05T18:51:14.558Z] [DEBUG] Loaded agent: revenue_architect { name: 'Revenue Architect' }
+[2026-01-05T18:51:14.559Z] [DEBUG] Loaded agent: unit_economics_calculator { name: 'Unit Economics Calculator' }
+[2026-01-05T18:51:14.559Z] [DEBUG] Loaded agent: user_profiler { name: 'User Profiler' }
+[2026-01-05T18:51:14.560Z] [INFO] Successfully loaded 14 agents 
+[2026-01-05T18:51:14.560Z] [INFO] Loading external assignments... { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/agents' }
+[2026-01-05T18:51:14.560Z] [WARN] External agents directory not found { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/agents' }
+[2026-01-05T18:51:14.560Z] [INFO] Loading external assignments... {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/standalone_agents'
+}
+[2026-01-05T18:51:14.560Z] [WARN] External agents directory not found {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/standalone_agents'
+}
+[2026-01-05T18:51:14.560Z] [INFO] Registering skills... 
+[2026-01-05T18:51:14.560Z] [DEBUG] Registered skill: financial_modeling { name: 'Financial Modeling' }
+[2026-01-05T18:51:14.560Z] [DEBUG] Registered skill: market_sizing_calculator { name: 'Market Sizing Calculator' }
+[2026-01-05T18:51:14.560Z] [DEBUG] Registered skill: competitor_analysis { name: 'Competitor Analysis' }
+[2026-01-05T18:51:14.560Z] [DEBUG] Registered skill: compliance_checker { name: 'Compliance Checker' }
+[2026-01-05T18:51:14.560Z] [DEBUG] Registered skill: branded_document_generator { name: 'Branded Document Generator' }
+[2026-01-05T18:51:14.560Z] [WARN] External skills directory not found { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/skills' }
+[2026-01-05T18:51:14.560Z] [INFO] Successfully registered 5 skills 
+[2026-01-05T18:51:14.560Z] [INFO] Claude Agent Executor initialized { model: 'claude-3-haiku-20240307', agentCount: 14, skillCount: 5 }
+[2026-01-05T18:51:14.560Z] [INFO] Document Generation Workflow initialized 
+[2026-01-05T18:51:14.560Z] [INFO] 🚀 Starting document generation workflow { sessionId: 'demo' }
+[2026-01-05T18:51:14.560Z] [INFO] 📊 Phase 1: Executing intelligence-gathering agents... 
+[2026-01-05T18:51:14.560Z] [INFO] Executing 4 core agents in sequence... 
+[2026-01-05T18:51:14.560Z] [INFO] Executing agent sequence {
+  agents: [
+    'market_analyst',
+    'customer_profiler',
+    'financial_modeler',
+    'gtm_strategist'
+  ]
+}
+[2026-01-05T18:51:14.560Z] [INFO] Executing agent: market_analyst { context: true }
+[2026-01-05T18:51:14.560Z] [INFO] Agent loaded: Market Analyst { skills: 2, tools: 2 }
+[2026-01-05T18:51:14.561Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 2 }
+[2026-01-05T18:51:16.429Z] [INFO] Claude response received {
+  stopReason: 'tool_use',
+  contentBlocks: 1,
+  inputTokens: 6641,
+  outputTokens: 110
+}
+[2026-01-05T18:51:16.429Z] [INFO] Processing tool calls from Claude { iteration: 1 }
+[2026-01-05T18:51:16.429Z] [INFO] Executing skill: market_sizing_calculator {
+  params: {
+    approach: 'both',
+    geography: 'India',
+    industry: 'Tech',
+    target_segment: 'B2B'
+  }
+}
+[2026-01-05T18:51:16.429Z] [INFO] [SKILL:market_sizing_calculator] Executing {
+  params: {
+    approach: 'both',
+    geography: 'India',
+    industry: 'Tech',
+    target_segment: 'B2B'
+  }
+}
+[2026-01-05T18:51:16.430Z] [INFO] Executing market sizing { industry: 'Tech', geography: 'India' }
+[2026-01-05T18:51:16.430Z] [INFO] Market sizing complete {
+  tam: '8,000,000,000',
+  sam: '1,600,000,000',
+  som: '160,000,000',
+  confidence: 'medium'
+}
+[2026-01-05T18:51:16.430Z] [INFO] [TIMING] Skill execution: market_sizing_calculator { duration_ms: 1 }
+[2026-01-05T18:51:16.430Z] [INFO] Skill executed: market_sizing_calculator 
+[2026-01-05T18:51:16.430Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 3, toolCount: 2 }
+[2026-01-05T18:51:19.930Z] [INFO] Claude response received {
+  stopReason: 'tool_use',
+  contentBlocks: 2,
+  inputTokens: 6869,
+  outputTokens: 335
+}
+[2026-01-05T18:51:19.930Z] [INFO] Processing tool calls from Claude { iteration: 2 }
+[2026-01-05T18:51:19.930Z] [INFO] Executing skill: competitor_analysis {
+  params: {
+    industry: 'Tech',
+    competitors: [
+      'Salesforce',
+      'Microsoft Dynamics',
+      'HubSpot',
+      'Zoho CRM',
+      'Freshworks CRM'
+    ],
+    analysis_depth: 'detailed'
+  }
+}
+[2026-01-05T18:51:19.930Z] [INFO] [SKILL:competitor_analysis] Executing {
+  params: {
+    industry: 'Tech',
+    competitors: [
+      'Salesforce',
+      'Microsoft Dynamics',
+      'HubSpot',
+      'Zoho CRM',
+      'Freshworks CRM'
+    ],
+    analysis_depth: 'detailed'
+  }
+}
+[2026-01-05T18:51:19.931Z] [INFO] Executing competitor analysis { industry: 'Tech', competitor_count: 5 }
+[2026-01-05T18:51:19.931Z] [INFO] Competitor analysis complete { competitors_analyzed: 5, advantages_identified: 4 }
+[2026-01-05T18:51:19.931Z] [INFO] [TIMING] Skill execution: competitor_analysis { duration_ms: 1 }
+[2026-01-05T18:51:19.931Z] [INFO] Skill executed: competitor_analysis 
+[2026-01-05T18:51:19.931Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 5, toolCount: 2 }
+[2026-01-05T18:51:23.337Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 7707,
+  outputTokens: 350
+}
+[2026-01-05T18:51:23.337Z] [INFO] Agent execution complete: market_analyst { executionTimeMs: 8777, toolCalls: 2 }
+[2026-01-05T18:51:23.338Z] [INFO] Agent completed: market_analyst { outputLength: 1545, toolCalls: 2 }
+[2026-01-05T18:51:23.338Z] [INFO] Executing agent: customer_profiler { context: true }
+[2026-01-05T18:51:23.338Z] [INFO] Agent loaded: Customer Profiler { skills: 0, tools: 0 }
+[2026-01-05T18:51:23.338Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:51:37.943Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 13353,
+  outputTokens: 1909
+}
+[2026-01-05T18:51:37.944Z] [INFO] Agent execution complete: customer_profiler { executionTimeMs: 14606, toolCalls: 0 }
+[2026-01-05T18:51:37.944Z] [INFO] Agent completed: customer_profiler { outputLength: 6756, toolCalls: 0 }
+[2026-01-05T18:51:37.944Z] [INFO] Executing agent: financial_modeler { context: true }
+[2026-01-05T18:51:37.944Z] [INFO] Agent loaded: Financial Modeler { skills: 1, tools: 1 }
+[2026-01-05T18:51:37.945Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 1 }
+[2026-01-05T18:51:42.562Z] [INFO] Claude response received {
+  stopReason: 'tool_use',
+  contentBlocks: 1,
+  inputTokens: 7493,
+  outputTokens: 562
+}
+[2026-01-05T18:51:42.562Z] [INFO] Processing tool calls from Claude { iteration: 1 }
+[2026-01-05T18:51:42.563Z] [INFO] Executing skill: financial_modeling {
+  params: {
+    revenue_data: { products: [Array] },
+    cost_structure: { opex_percentages: [Object] },
+    projection_period: { years: 7, detail_level: 'monthly_year1_annual' },
+    assumptions: { tax_rate: 25, starting_cash: 1000000, payment_terms_days: 30 }
+  }
+}
+[2026-01-05T18:51:42.563Z] [INFO] [SKILL:financial_modeling] Executing {
+  params: {
+    revenue_data: { products: [Array] },
+    cost_structure: { opex_percentages: [Object] },
+    projection_period: { years: 7, detail_level: 'monthly_year1_annual' },
+    assumptions: { tax_rate: 25, starting_cash: 1000000, payment_terms_days: 30 }
+  }
+}
+[2026-01-05T18:51:42.563Z] [INFO] Executing financial modeling { products: 1, years: 7 }
+[2026-01-05T18:51:42.564Z] [INFO] Financial modeling complete { y1_revenue: 1911569.5948613165, break_even: -1, validation: 'FAIL' }
+[2026-01-05T18:51:42.564Z] [INFO] [TIMING] Skill execution: financial_modeling { duration_ms: 1 }
+[2026-01-05T18:51:42.564Z] [INFO] Skill executed: financial_modeling 
+[2026-01-05T18:51:42.564Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 3, toolCount: 1 }
+[2026-01-05T18:51:47.263Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 8415,
+  outputTokens: 492
+}
+[2026-01-05T18:51:47.263Z] [INFO] Agent execution complete: financial_modeler { executionTimeMs: 9319, toolCalls: 1 }
+[2026-01-05T18:51:47.263Z] [INFO] Agent completed: financial_modeler { outputLength: 1872, toolCalls: 1 }
+[2026-01-05T18:51:47.263Z] [INFO] Executing agent: gtm_strategist { context: true }
+[2026-01-05T18:51:47.264Z] [INFO] Agent loaded: Gtm Strategist { skills: 0, tools: 0 }
+[2026-01-05T18:51:47.264Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:52:06.923Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 16510,
+  outputTokens: 2390
+}
+[2026-01-05T18:52:06.923Z] [INFO] Agent execution complete: gtm_strategist { executionTimeMs: 19660, toolCalls: 0 }
+[2026-01-05T18:52:06.923Z] [INFO] Agent completed: gtm_strategist { outputLength: 8469, toolCalls: 0 }
+[2026-01-05T18:52:06.923Z] [INFO] Agent sequence complete { agentsExecuted: 4 }
+[2026-01-05T18:52:06.923Z] [INFO] Intelligence phase complete { agentsExecuted: 4 }
+[2026-01-05T18:52:06.924Z] [INFO] 📝 Phase 2: Generating documents... 
+[2026-01-05T18:52:06.926Z] [INFO] Generating 5 documents in parallel... 
+[2026-01-05T18:52:06.927Z] [INFO] Generating Company Profile document... 
+[2026-01-05T18:52:06.927Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:52:06.927Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:52:06.927Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:52:06.927Z] [INFO] Generating Business Plan document... 
+[2026-01-05T18:52:06.927Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:52:06.928Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:52:06.928Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:52:06.928Z] [INFO] Generating Financial Model document... 
+[2026-01-05T18:52:06.928Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:52:06.928Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:52:06.928Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:52:06.928Z] [INFO] Generating Pitch Deck document... 
+[2026-01-05T18:52:06.928Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:52:06.929Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:52:06.929Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:52:06.929Z] [INFO] Generating Strategic Analysis document... 
+[2026-01-05T18:52:06.929Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:52:06.929Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:52:06.929Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:52:16.098Z] [ERROR] Claude API error {
+  name: 'Error',
+  message: '500 {"type":"error","error":{"type":"api_error","message":"Internal server error"},"request_id":"req_011CWpjd2QoGK2BrsuasTiL1"}',
+  stack: 'Error: 500 {"type":"error","error":{"type":"api_error","message":"Internal server error"},"request_id":"req_011CWpjd2QoGK2BrsuasTiL1"}\n' +
+    '    at APIError.generate (webpack-internal:///(rsc)/./node_modules/@anthropic-ai/sdk/error.mjs:75:20)\n' +
+    '    at Anthropic.makeStatusError (webpack-internal:///(rsc)/./node_modules/@anthropic-ai/sdk/core.mjs:312:65)\n' +
+    '    at Anthropic.makeRequest (webpack-internal:///(rsc)/./node_modules/@anthropic-ai/sdk/core.mjs:356:30)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async ClaudeService.sendMessage (webpack-internal:///(rsc)/./lib/services/claude-service.ts:40:30)\n' +
+    '    at async generateAnalysis (webpack-internal:///(rsc)/./lib/generators/analysis-generator.ts:239:26)\n' +
+    '    at async Promise.all (index 4)\n' +
+    '    at async DocumentGenerationWorkflow.generateDocuments (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:81:85)\n' +
+    '    at async DocumentGenerationWorkflow.generateAllDocuments (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:32:31)\n' +
+    '    at async POST (webpack-internal:///(rsc)/./app/api/generate-documents/route.ts:39:24)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228\n' +
+    '    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)\n' +
+    '    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)\n' +
+    '    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)\n' +
+    '    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)\n' +
+    '    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)\n' +
+    '    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)\n' +
+    '    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)\n' +
+    '    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)\n' +
+    '    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)\n' +
+    '    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20\n' +
+    '    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)\n' +
+    '    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)\n' +
+    '    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)\n' +
+    '    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)\n' +
+    '    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)\n' +
+    '    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)'
+}
+[2026-01-05T18:52:16.098Z] [ERROR] Strategic Analysis generation failed {
+  name: 'Error',
+  message: '500 {"type":"error","error":{"type":"api_error","message":"Internal server error"},"request_id":"req_011CWpjd2QoGK2BrsuasTiL1"}',
+  stack: 'Error: 500 {"type":"error","error":{"type":"api_error","message":"Internal server error"},"request_id":"req_011CWpjd2QoGK2BrsuasTiL1"}\n' +
+    '    at APIError.generate (webpack-internal:///(rsc)/./node_modules/@anthropic-ai/sdk/error.mjs:75:20)\n' +
+    '    at Anthropic.makeStatusError (webpack-internal:///(rsc)/./node_modules/@anthropic-ai/sdk/core.mjs:312:65)\n' +
+    '    at Anthropic.makeRequest (webpack-internal:///(rsc)/./node_modules/@anthropic-ai/sdk/core.mjs:356:30)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async ClaudeService.sendMessage (webpack-internal:///(rsc)/./lib/services/claude-service.ts:40:30)\n' +
+    '    at async generateAnalysis (webpack-internal:///(rsc)/./lib/generators/analysis-generator.ts:239:26)\n' +
+    '    at async Promise.all (index 4)\n' +
+    '    at async DocumentGenerationWorkflow.generateDocuments (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:81:85)\n' +
+    '    at async DocumentGenerationWorkflow.generateAllDocuments (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:32:31)\n' +
+    '    at async POST (webpack-internal:///(rsc)/./app/api/generate-documents/route.ts:39:24)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228\n' +
+    '    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)\n' +
+    '    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)\n' +
+    '    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)\n' +
+    '    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)\n' +
+    '    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)\n' +
+    '    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)\n' +
+    '    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)\n' +
+    '    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)\n' +
+    '    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)\n' +
+    '    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20\n' +
+    '    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)\n' +
+    '    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)\n' +
+    '    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)\n' +
+    '    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)\n' +
+    '    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)\n' +
+    '    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)'
+}
+[2026-01-05T18:52:16.099Z] [ERROR] ❌ Document generation workflow failed {
+  name: 'Error',
+  message: '500 {"type":"error","error":{"type":"api_error","message":"Internal server error"},"request_id":"req_011CWpjd2QoGK2BrsuasTiL1"}',
+  stack: 'Error: 500 {"type":"error","error":{"type":"api_error","message":"Internal server error"},"request_id":"req_011CWpjd2QoGK2BrsuasTiL1"}\n' +
+    '    at APIError.generate (webpack-internal:///(rsc)/./node_modules/@anthropic-ai/sdk/error.mjs:75:20)\n' +
+    '    at Anthropic.makeStatusError (webpack-internal:///(rsc)/./node_modules/@anthropic-ai/sdk/core.mjs:312:65)\n' +
+    '    at Anthropic.makeRequest (webpack-internal:///(rsc)/./node_modules/@anthropic-ai/sdk/core.mjs:356:30)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async ClaudeService.sendMessage (webpack-internal:///(rsc)/./lib/services/claude-service.ts:40:30)\n' +
+    '    at async generateAnalysis (webpack-internal:///(rsc)/./lib/generators/analysis-generator.ts:239:26)\n' +
+    '    at async Promise.all (index 4)\n' +
+    '    at async DocumentGenerationWorkflow.generateDocuments (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:81:85)\n' +
+    '    at async DocumentGenerationWorkflow.generateAllDocuments (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:32:31)\n' +
+    '    at async POST (webpack-internal:///(rsc)/./app/api/generate-documents/route.ts:39:24)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228\n' +
+    '    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)\n' +
+    '    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)\n' +
+    '    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)\n' +
+    '    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)\n' +
+    '    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)\n' +
+    '    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)\n' +
+    '    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)\n' +
+    '    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)\n' +
+    '    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)\n' +
+    '    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20\n' +
+    '    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)\n' +
+    '    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)\n' +
+    '    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)\n' +
+    '    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)\n' +
+    '    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)\n' +
+    '    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)'
+}
+❌ Document generation error: Error: Workflow failed: 500 {"type":"error","error":{"type":"api_error","message":"Internal server error"},"request_id":"req_011CWpjd2QoGK2BrsuasTiL1"}
+    at DocumentGenerationWorkflow.generateAllDocuments (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:45:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/generate-documents/route.ts:39:24)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/generate-documents 500 in 61710ms
+[2026-01-05T18:52:16.510Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 2768,
+  outputTokens: 1345
+}
+[2026-01-05T18:52:16.510Z] [INFO] Company Profile generated { length: 6641 }
+[2026-01-05T18:52:29.453Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 6650,
+  outputTokens: 3313
+}
+[2026-01-05T18:52:29.454Z] [INFO] Pitch Deck generated { length: 12985, wordCount: 2036 }
+[2026-01-05T18:52:32.200Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 2928,
+  outputTokens: 3646
+}
+[2026-01-05T18:52:32.200Z] [INFO] Financial Model generated { length: 12185, wordCount: 1974 }
+ GET /results?sessionId=demo 200 in 65ms
+[2026-01-05T18:52:36.574Z] [INFO] Claude response received {
+  stopReason: 'max_tokens',
+  contentBlocks: 1,
+  inputTokens: 6112,
+  outputTokens: 4096
+}
+[2026-01-05T18:52:36.575Z] [INFO] Business Plan generated { length: 17074, wordCount: 2522 }
+ GET /results?sessionId=demo 200 in 94ms
+ ✓ Compiled /_not-found in 490ms (905 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 578ms
+ ✓ Compiled /api/generate-documents in 69ms (624 modules)
+🚀 Starting Multi-Agent Document Generation (HMR Check)
+📋 Session: demo
+📊 Answers count: 10
+[2026-01-05T18:52:39.774Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:52:39.774Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:52:39.775Z] [INFO] Loading agent definitions... {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/backend/agents'
+}
+[2026-01-05T18:52:39.775Z] [INFO] Found 15 agent files 
+[2026-01-05T18:52:39.777Z] [DEBUG] Loaded agent: abhishek_ca { name: 'Abhishek CA - Conversational Business Advisor' }
+[2026-01-05T18:52:39.778Z] [DEBUG] Loaded agent: business_planner_lead { name: 'Business Planner Lead' }
+[2026-01-05T18:52:39.778Z] [DEBUG] Loaded agent: context_collector { name: 'Context Collector' }
+[2026-01-05T18:52:39.780Z] [DEBUG] Loaded agent: customer_profiler { name: 'Customer Profiler' }
+[2026-01-05T18:52:39.780Z] [DEBUG] Loaded agent: document_generator { name: 'Document Generator' }
+[2026-01-05T18:52:39.781Z] [DEBUG] Loaded agent: financial_modeler { name: 'Financial Modeler' }
+[2026-01-05T18:52:39.782Z] [DEBUG] Loaded agent: funding_strategist { name: 'Funding Strategist' }
+[2026-01-05T18:52:39.783Z] [DEBUG] Loaded agent: gtm_strategist { name: 'Gtm Strategist' }
+[2026-01-05T18:52:39.785Z] [DEBUG] Loaded agent: legal_advisor { name: 'Legal Advisor' }
+[2026-01-05T18:52:39.785Z] [DEBUG] Loaded agent: market_analyst { name: 'Market Analyst' }
+[2026-01-05T18:52:39.786Z] [DEBUG] Loaded agent: ops_planner { name: 'Ops Planner' }
+[2026-01-05T18:52:39.789Z] [ERROR] Failed to load agent from output_generator.yaml {
+  name: 'YAMLException',
+  message: 'duplicated mapping key (1967:1)\n' +
+    '\n' +
+    ' 1964 | tools: []\n' +
+    ' 1965 | temperature: 0.3\n' +
+    ' 1966 | context_window: 200000\n' +
+    ' 1967 | id: ops_planner\n' +
+    '--------^\n' +
+    ' 1968 | name: Ops Planner\n' +
+    ' 1969 | description: Expert in ops planner',
+  stack: 'YAMLException: duplicated mapping key (1967:1)\n' +
+    '\n' +
+    ' 1964 | tools: []\n' +
+    ' 1965 | temperature: 0.3\n' +
+    ' 1966 | context_window: 200000\n' +
+    ' 1967 | id: ops_planner\n' +
+    '--------^\n' +
+    ' 1968 | name: Ops Planner\n' +
+    ' 1969 | description: Expert in ops planner\n' +
+    '    at generateError (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1307:10)\n' +
+    '    at throwError (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1311:9)\n' +
+    '    at storeMappingPair (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:1482:7)\n' +
+    '    at readBlockMapping (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2287:9)\n' +
+    '    at composeNode (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2555:12)\n' +
+    '    at readDocument (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2739:3)\n' +
+    '    at loadDocuments (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2802:5)\n' +
+    '    at Object.load$1 [as load] (webpack-internal:///(rsc)/./node_modules/js-yaml/dist/js-yaml.mjs:2828:19)\n' +
+    '    at eval (webpack-internal:///(rsc)/./backend/agents/manager.ts:63:83)\n' +
+    '    at Array.forEach (<anonymous>)\n' +
+    '    at AgentManager.loadAgents (webpack-internal:///(rsc)/./backend/agents/manager.ts:59:19)\n' +
+    '    at new AgentManager (webpack-internal:///(rsc)/./backend/agents/manager.ts:24:14)\n' +
+    '    at getAgentManager (webpack-internal:///(rsc)/./backend/agents/manager.ts:238:32)\n' +
+    '    at new ClaudeAgentExecutor (webpack-internal:///(rsc)/./lib/orchestrator/claude-agent-executor.ts:21:101)\n' +
+    '    at getClaudeAgentExecutor (webpack-internal:///(rsc)/./lib/orchestrator/claude-agent-executor.ts:224:28)\n' +
+    '    at new DocumentGenerationWorkflow (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:16:120)\n' +
+    '    at getDocumentGenerationWorkflow (webpack-internal:///(rsc)/./lib/workflows/document-generation-workflow.ts:136:28)\n' +
+    '    at POST (webpack-internal:///(rsc)/./app/api/generate-documents/route.ts:38:132)\n' +
+    '    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228\n' +
+    '    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)\n' +
+    '    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)\n' +
+    '    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)\n' +
+    '    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)\n' +
+    '    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)\n' +
+    '    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)\n' +
+    '    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)\n' +
+    '    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)\n' +
+    '    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)\n' +
+    '    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)\n' +
+    '    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20\n' +
+    '    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)\n' +
+    '    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)\n' +
+    '    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)\n' +
+    '    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)\n' +
+    '    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)\n' +
+    '    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)'
+}
+[2026-01-05T18:52:39.790Z] [DEBUG] Loaded agent: revenue_architect { name: 'Revenue Architect' }
+[2026-01-05T18:52:39.791Z] [DEBUG] Loaded agent: unit_economics_calculator { name: 'Unit Economics Calculator' }
+[2026-01-05T18:52:39.791Z] [DEBUG] Loaded agent: user_profiler { name: 'User Profiler' }
+[2026-01-05T18:52:39.791Z] [INFO] Successfully loaded 14 agents 
+[2026-01-05T18:52:39.792Z] [INFO] Loading external assignments... { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/agents' }
+[2026-01-05T18:52:39.792Z] [WARN] External agents directory not found { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/agents' }
+[2026-01-05T18:52:39.792Z] [INFO] Loading external assignments... {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/standalone_agents'
+}
+[2026-01-05T18:52:39.792Z] [WARN] External agents directory not found {
+  dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/standalone_agents'
+}
+[2026-01-05T18:52:39.792Z] [INFO] Registering skills... 
+[2026-01-05T18:52:39.792Z] [DEBUG] Registered skill: financial_modeling { name: 'Financial Modeling' }
+[2026-01-05T18:52:39.792Z] [DEBUG] Registered skill: market_sizing_calculator { name: 'Market Sizing Calculator' }
+[2026-01-05T18:52:39.792Z] [DEBUG] Registered skill: competitor_analysis { name: 'Competitor Analysis' }
+[2026-01-05T18:52:39.792Z] [DEBUG] Registered skill: compliance_checker { name: 'Compliance Checker' }
+[2026-01-05T18:52:39.792Z] [DEBUG] Registered skill: branded_document_generator { name: 'Branded Document Generator' }
+[2026-01-05T18:52:39.792Z] [WARN] External skills directory not found { dir: '/Users/charan/Desktop/hype/oneasy/current_alpha/skills' }
+[2026-01-05T18:52:39.792Z] [INFO] Successfully registered 5 skills 
+[2026-01-05T18:52:39.792Z] [INFO] Claude Agent Executor initialized { model: 'claude-3-haiku-20240307', agentCount: 14, skillCount: 5 }
+[2026-01-05T18:52:39.792Z] [INFO] Document Generation Workflow initialized 
+[2026-01-05T18:52:39.792Z] [INFO] 🚀 Starting document generation workflow { sessionId: 'demo' }
+[2026-01-05T18:52:39.792Z] [INFO] 📊 Phase 1: Executing intelligence-gathering agents... 
+[2026-01-05T18:52:39.792Z] [INFO] Executing 4 core agents in sequence... 
+[2026-01-05T18:52:39.792Z] [INFO] Executing agent sequence {
+  agents: [
+    'market_analyst',
+    'customer_profiler',
+    'financial_modeler',
+    'gtm_strategist'
+  ]
+}
+[2026-01-05T18:52:39.792Z] [INFO] Executing agent: market_analyst { context: true }
+[2026-01-05T18:52:39.792Z] [INFO] Agent loaded: Market Analyst { skills: 2, tools: 2 }
+[2026-01-05T18:52:39.792Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 2 }
+[2026-01-05T18:52:42.450Z] [INFO] Claude response received {
+  stopReason: 'tool_use',
+  contentBlocks: 1,
+  inputTokens: 6641,
+  outputTokens: 110
+}
+[2026-01-05T18:52:42.450Z] [INFO] Processing tool calls from Claude { iteration: 1 }
+[2026-01-05T18:52:42.450Z] [INFO] Executing skill: market_sizing_calculator {
+  params: {
+    approach: 'both',
+    geography: 'India',
+    industry: 'Tech',
+    target_segment: 'B2B'
+  }
+}
+[2026-01-05T18:52:42.450Z] [INFO] [SKILL:market_sizing_calculator] Executing {
+  params: {
+    approach: 'both',
+    geography: 'India',
+    industry: 'Tech',
+    target_segment: 'B2B'
+  }
+}
+[2026-01-05T18:52:42.450Z] [INFO] Executing market sizing { industry: 'Tech', geography: 'India' }
+[2026-01-05T18:52:42.451Z] [INFO] Market sizing complete {
+  tam: '8,000,000,000',
+  sam: '1,600,000,000',
+  som: '160,000,000',
+  confidence: 'medium'
+}
+[2026-01-05T18:52:42.451Z] [INFO] [TIMING] Skill execution: market_sizing_calculator { duration_ms: 1 }
+[2026-01-05T18:52:42.451Z] [INFO] Skill executed: market_sizing_calculator 
+[2026-01-05T18:52:42.451Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 3, toolCount: 2 }
+[2026-01-05T18:52:45.769Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 6869,
+  outputTokens: 361
+}
+[2026-01-05T18:52:45.769Z] [INFO] Agent execution complete: market_analyst { executionTimeMs: 5977, toolCalls: 1 }
+[2026-01-05T18:52:45.770Z] [INFO] Agent completed: market_analyst { outputLength: 1506, toolCalls: 1 }
+[2026-01-05T18:52:45.770Z] [INFO] Executing agent: customer_profiler { context: true }
+[2026-01-05T18:52:45.770Z] [INFO] Agent loaded: Customer Profiler { skills: 0, tools: 0 }
+[2026-01-05T18:52:45.770Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:52:50.114Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 13381,
+  outputTokens: 195
+}
+[2026-01-05T18:52:50.114Z] [INFO] Agent execution complete: customer_profiler { executionTimeMs: 4344, toolCalls: 0 }
+[2026-01-05T18:52:50.114Z] [INFO] Agent completed: customer_profiler { outputLength: 797, toolCalls: 0 }
+[2026-01-05T18:52:50.115Z] [INFO] Executing agent: financial_modeler { context: true }
+[2026-01-05T18:52:50.115Z] [INFO] Agent loaded: Financial Modeler { skills: 1, tools: 1 }
+[2026-01-05T18:52:50.115Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 1 }
+[2026-01-05T18:52:56.085Z] [INFO] Claude response received {
+  stopReason: 'tool_use',
+  contentBlocks: 1,
+  inputTokens: 7449,
+  outputTokens: 489
+}
+[2026-01-05T18:52:56.085Z] [INFO] Processing tool calls from Claude { iteration: 1 }
+[2026-01-05T18:52:56.085Z] [INFO] Executing skill: financial_modeling {
+  params: {
+    revenue_data: { products: [Array] },
+    cost_structure: { opex_percentages: [Object] },
+    projection_period: { years: 7, detail_level: 'monthly_year1_annual' },
+    assumptions: { tax_rate: 25, starting_cash: 1000000, payment_terms_days: 30 }
+  }
+}
+[2026-01-05T18:52:56.085Z] [INFO] [SKILL:financial_modeling] Executing {
+  params: {
+    revenue_data: { products: [Array] },
+    cost_structure: { opex_percentages: [Object] },
+    projection_period: { years: 7, detail_level: 'monthly_year1_annual' },
+    assumptions: { tax_rate: 25, starting_cash: 1000000, payment_terms_days: 30 }
+  }
+}
+[2026-01-05T18:52:56.086Z] [INFO] Executing financial modeling { products: 1, years: 7 }
+[2026-01-05T18:52:56.087Z] [INFO] Financial modeling complete { y1_revenue: 1471400.7839034603, break_even: -1, validation: 'FAIL' }
+[2026-01-05T18:52:56.087Z] [INFO] [TIMING] Skill execution: financial_modeling { duration_ms: 2 }
+[2026-01-05T18:52:56.087Z] [INFO] Skill executed: financial_modeling 
+[2026-01-05T18:52:56.087Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 3, toolCount: 1 }
+[2026-01-05T18:53:05.457Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 8371,
+  outputTokens: 482
+}
+[2026-01-05T18:53:05.457Z] [INFO] Agent execution complete: financial_modeler { executionTimeMs: 15342, toolCalls: 1 }
+[2026-01-05T18:53:05.457Z] [INFO] Agent completed: financial_modeler { outputLength: 1799, toolCalls: 1 }
+[2026-01-05T18:53:05.457Z] [INFO] Executing agent: gtm_strategist { context: true }
+[2026-01-05T18:53:05.457Z] [INFO] Agent loaded: Gtm Strategist { skills: 0, tools: 0 }
+[2026-01-05T18:53:05.458Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:53:20.960Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 16478,
+  outputTokens: 1845
+}
+[2026-01-05T18:53:20.960Z] [INFO] Agent execution complete: gtm_strategist { executionTimeMs: 15503, toolCalls: 0 }
+[2026-01-05T18:53:20.960Z] [INFO] Agent completed: gtm_strategist { outputLength: 6625, toolCalls: 0 }
+[2026-01-05T18:53:20.960Z] [INFO] Agent sequence complete { agentsExecuted: 4 }
+[2026-01-05T18:53:20.960Z] [INFO] Intelligence phase complete { agentsExecuted: 4 }
+[2026-01-05T18:53:20.960Z] [INFO] 📝 Phase 2: Generating documents... 
+[2026-01-05T18:53:20.963Z] [INFO] Generating 5 documents in parallel... 
+[2026-01-05T18:53:20.963Z] [INFO] Generating Company Profile document... 
+[2026-01-05T18:53:20.963Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:53:20.963Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:53:20.963Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:53:20.964Z] [INFO] Generating Business Plan document... 
+[2026-01-05T18:53:20.964Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:53:20.964Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:53:20.964Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:53:20.964Z] [INFO] Generating Financial Model document... 
+[2026-01-05T18:53:20.964Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:53:20.964Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:53:20.965Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:53:20.965Z] [INFO] Generating Pitch Deck document... 
+[2026-01-05T18:53:20.965Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:53:20.966Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:53:20.966Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:53:20.966Z] [INFO] Generating Strategic Analysis document... 
+[2026-01-05T18:53:20.966Z] [INFO] Claude service initializing { keyPrefix: 'sk-an...' }
+[2026-01-05T18:53:20.966Z] [INFO] Claude service initialized { model: 'claude-3-haiku-20240307' }
+[2026-01-05T18:53:20.966Z] [INFO] Sending request to Claude { model: 'claude-3-haiku-20240307', messageCount: 1, toolCount: 0 }
+[2026-01-05T18:53:32.918Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 1065,
+  outputTokens: 1738
+}
+[2026-01-05T18:53:32.918Z] [INFO] Company Profile generated { length: 9036 }
+[2026-01-05T18:53:38.725Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 4392,
+  outputTokens: 2455
+}
+[2026-01-05T18:53:38.726Z] [INFO] Pitch Deck generated { length: 9853, wordCount: 1525 }
+[2026-01-05T18:53:45.718Z] [INFO] Claude response received {
+  stopReason: 'end_turn',
+  contentBlocks: 1,
+  inputTokens: 2929,
+  outputTokens: 3819
+}
+[2026-01-05T18:53:45.719Z] [INFO] Financial Model generated { length: 13848, wordCount: 2213 }
+[2026-01-05T18:53:48.352Z] [INFO] Claude response received {
+  stopReason: 'max_tokens',
+  contentBlocks: 1,
+  inputTokens: 4485,
+  outputTokens: 4096
+}
+[2026-01-05T18:53:48.352Z] [INFO] Strategic Analysis generated { length: 19734, wordCount: 2799 }
+[2026-01-05T18:53:48.659Z] [INFO] Claude response received {
+  stopReason: 'max_tokens',
+  contentBlocks: 1,
+  inputTokens: 3854,
+  outputTokens: 4096
+}
+[2026-01-05T18:53:48.660Z] [INFO] Business Plan generated { length: 18198, wordCount: 2700 }
+[2026-01-05T18:53:48.664Z] [INFO] All documents generated { count: 5 }
+[2026-01-05T18:53:48.664Z] [INFO] ✅ Document generation workflow complete { documentCount: 5, totalTimeMs: 68872 }
+✅ Multi-Agent Generation Complete
+📄 Documents: 5
+🤖 Agents executed: market_analyst, customer_profiler, financial_modeler, gtm_strategist
+🔧 Skills invoked: 2
+⏱️  Total time: 68872 ms
+💰 Tokens used: { input: 59189, output: 3482 }
+ POST /api/generate-documents 200 in 69022ms
+ ✓ Compiled /api/download in 338ms (850 modules)
+Download request received: type=pdf, title=Company Profile, contentLength=9036
+ ✓ Compiled /api/download-zip in 136ms (852 modules)
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Error: TypeError: PassThrough is not a constructor
+    at eval (webpack-internal:///(rsc)/./lib/services/export-engine.ts:338:37)
+    at new Promise (<anonymous>)
+    at ExportEngine.toZipBuffer (webpack-internal:///(rsc)/./lib/services/export-engine.ts:329:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/download-zip/route.ts:37:27)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/download-zip 500 in 187ms
+Serving file: Company_Profile_2026-01-05.pdf (106122 bytes, type: application/pdf)
+ POST /api/download 200 in 2151ms
+ GET /results?sessionId=demo 200 in 98ms
+ ✓ Compiled /_not-found in 195ms (1305 modules)
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 262ms
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Error: TypeError: PassThrough is not a constructor
+    at eval (webpack-internal:///(rsc)/./lib/services/export-engine.ts:338:37)
+    at new Promise (<anonymous>)
+    at ExportEngine.toZipBuffer (webpack-internal:///(rsc)/./lib/services/export-engine.ts:329:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/download-zip/route.ts:37:27)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/download-zip 500 in 14ms
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Error: TypeError: PassThrough is not a constructor
+    at eval (webpack-internal:///(rsc)/./lib/services/export-engine.ts:338:37)
+    at new Promise (<anonymous>)
+    at ExportEngine.toZipBuffer (webpack-internal:///(rsc)/./lib/services/export-engine.ts:329:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/download-zip/route.ts:37:27)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/download-zip 500 in 6ms
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Error: TypeError: PassThrough is not a constructor
+    at eval (webpack-internal:///(rsc)/./lib/services/export-engine.ts:338:37)
+    at new Promise (<anonymous>)
+    at ExportEngine.toZipBuffer (webpack-internal:///(rsc)/./lib/services/export-engine.ts:329:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/download-zip/route.ts:37:27)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/download-zip 500 in 6ms
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Error: TypeError: PassThrough is not a constructor
+    at eval (webpack-internal:///(rsc)/./lib/services/export-engine.ts:338:37)
+    at new Promise (<anonymous>)
+    at ExportEngine.toZipBuffer (webpack-internal:///(rsc)/./lib/services/export-engine.ts:329:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/download-zip/route.ts:37:27)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/download-zip 500 in 8ms
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Error: TypeError: PassThrough is not a constructor
+    at eval (webpack-internal:///(rsc)/./lib/services/export-engine.ts:338:37)
+    at new Promise (<anonymous>)
+    at ExportEngine.toZipBuffer (webpack-internal:///(rsc)/./lib/services/export-engine.ts:329:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/download-zip/route.ts:37:27)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/download-zip 500 in 8ms
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Error: TypeError: PassThrough is not a constructor
+    at eval (webpack-internal:///(rsc)/./lib/services/export-engine.ts:338:37)
+    at new Promise (<anonymous>)
+    at ExportEngine.toZipBuffer (webpack-internal:///(rsc)/./lib/services/export-engine.ts:329:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/download-zip/route.ts:37:27)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/download-zip 500 in 5ms
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Error: TypeError: PassThrough is not a constructor
+    at eval (webpack-internal:///(rsc)/./lib/services/export-engine.ts:338:37)
+    at new Promise (<anonymous>)
+    at ExportEngine.toZipBuffer (webpack-internal:///(rsc)/./lib/services/export-engine.ts:329:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/download-zip/route.ts:37:27)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/download-zip 500 in 3ms
+Download request received: type=pdf, title=Company Profile, contentLength=9036
+Serving file: Company_Profile_2026-01-05.pdf (106122 bytes, type: application/pdf)
+ POST /api/download 200 in 1601ms
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Error: TypeError: PassThrough is not a constructor
+    at eval (webpack-internal:///(rsc)/./lib/services/export-engine.ts:338:37)
+    at new Promise (<anonymous>)
+    at ExportEngine.toZipBuffer (webpack-internal:///(rsc)/./lib/services/export-engine.ts:329:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async POST (webpack-internal:///(rsc)/./app/api/download-zip/route.ts:37:27)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:57228
+    at async eT.execute (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:46851)
+    at async eT.handle (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:6:58760)
+    at async doRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1496:28)
+    at async DevServer.renderPageComponent (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:1962:32)
+    at async DevServer.pipeImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/next-server.js:272:17)
+    at async DevServer.handleRequestImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/base-server.js:818:17)
+    at async /Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:339:20
+    at async Span.traceAsyncFn (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/trace/trace.js:154:20)
+    at async DevServer.handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
+    at async invokeRender (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:179:21)
+    at async handleRequest (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:359:24)
+    at async requestHandlerImpl (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/router-server.js:383:13)
+    at async Server.requestListener (/Users/charan/Desktop/hype/oneasy/current_alpha/ca-business-planner/node_modules/next/dist/server/lib/start-server.js:141:13)
+ POST /api/download-zip 500 in 3ms
+ GET /.well-known/appspecific/com.chrome.devtools.json 404 in 27ms
+ ✓ Compiled in 90ms (853 modules)
+ GET /results?sessionId=demo 200 in 48ms
+ GET /results?sessionId=demo 200 in 20ms
+[ZIP] Creating ZIP with 5 documents
+[ZIP] Formats: pdf, docx, md
+[ZIP] Generated ZIP: 705808 bytes
+ POST /api/download-zip 200 in 8055ms

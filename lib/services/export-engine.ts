@@ -5,6 +5,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { PassThrough } from 'stream';
 import MarkdownIt from 'markdown-it';
 import archiver from 'archiver';
 
@@ -342,6 +343,84 @@ export class ExportEngine {
             }
 
             archive.finalize();
+        });
+    }
+
+    /**
+     * Create ZIP package as Buffer (for streaming to client)
+     */
+    async toZipBuffer(
+        documents: Array<{ name: string; content: string }>,
+        formats: ('pdf' | 'docx' | 'pptx' | 'md')[] = ['pdf', 'docx', 'md']
+    ): Promise<Buffer> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const chunks: Buffer[] = [];
+                const archive = archiver('zip', {
+                    zlib: { level: 9 },
+                });
+
+                // Use PassThrough stream to collect data
+                const passthrough = new PassThrough();
+                passthrough.on('data', (chunk: Buffer) => chunks.push(chunk));
+                passthrough.on('end', () => resolve(Buffer.concat(chunks)));
+
+                archive.on('error', (err: Error) => reject(err));
+                archive.pipe(passthrough);
+
+                // Process each document
+                for (const doc of documents) {
+                    const safeName = doc.name.replace(/[^a-zA-Z0-9-_]/g, '_');
+
+                    // Always add markdown
+                    if (formats.includes('md')) {
+                        archive.append(doc.content, { name: `${safeName}.md` });
+                    }
+
+                    // Generate and add PDF
+                    if (formats.includes('pdf')) {
+                        try {
+                            const pdfBuffer = await this.toPDF(doc.content, {
+                                filename: safeName,
+                                title: doc.name
+                            });
+                            archive.append(pdfBuffer, { name: `${safeName}.pdf` });
+                        } catch (e) {
+                            console.error(`Failed to generate PDF for ${doc.name}:`, e);
+                        }
+                    }
+
+                    // Generate and add DOCX
+                    if (formats.includes('docx')) {
+                        try {
+                            const docxBuffer = await this.toDOCX(doc.content, {
+                                filename: safeName,
+                                title: doc.name
+                            });
+                            archive.append(docxBuffer, { name: `${safeName}.docx` });
+                        } catch (e) {
+                            console.error(`Failed to generate DOCX for ${doc.name}:`, e);
+                        }
+                    }
+
+                    // Generate and add PPTX (only for suitable documents)
+                    if (formats.includes('pptx') && doc.content.includes('## ')) {
+                        try {
+                            const pptxBuffer = await this.toPPTX(doc.content, {
+                                filename: safeName,
+                                title: doc.name
+                            });
+                            archive.append(pptxBuffer, { name: `${safeName}.pptx` });
+                        } catch (e) {
+                            console.error(`Failed to generate PPTX for ${doc.name}:`, e);
+                        }
+                    }
+                }
+
+                archive.finalize();
+            } catch (error) {
+                reject(error);
+            }
         });
     }
 

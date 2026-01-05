@@ -207,8 +207,82 @@ function ResultsContent() {
   };
 
   const downloadAllAsZip = async () => {
-    // This would call the export engine to create a ZIP
-    alert('ZIP download coming soon! For now, download individual documents.');
+    if (documents.length === 0) {
+      alert('No documents to download. Please generate documents first.');
+      return;
+    }
+
+    const btn = document.getElementById('btn-download-zip');
+    const originalText = btn?.innerText || '📦 Download All (ZIP)';
+
+    try {
+      // Show loading state
+      if (btn) {
+        btn.innerText = '⏳ Creating ZIP...';
+        btn.setAttribute('disabled', 'true');
+      }
+
+      // Prepare documents for ZIP
+      const docsForZip = documents.map(doc => {
+        const tabInfo = documentTabs.find(t => t.id === doc.type);
+        return {
+          name: tabInfo?.name || doc.type,
+          content: doc.content
+        };
+      });
+
+      console.log(`Creating ZIP with ${docsForZip.length} documents...`);
+
+      // Call ZIP API
+      const response = await fetch('/api/download-zip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          documents: docsForZip,
+          title: 'Business_Plan_Package',
+          formats: ['pdf', 'docx', 'md']
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Server error' }));
+        throw new Error(errorData.error || `HTTP ${response.status}`);
+      }
+
+      // Get the blob
+      const blob = await response.blob();
+      if (blob.size === 0) {
+        throw new Error('Downloaded ZIP is empty');
+      }
+
+      console.log(`✓ ZIP received: ${blob.size} bytes`);
+
+      // Create filename
+      const timestamp = new Date().toISOString().split('T')[0];
+      const filename = `Business_Plan_Package_${timestamp}.zip`;
+
+      // Download using file-saver
+      saveAs(blob, filename);
+
+      // Success feedback
+      if (btn) {
+        btn.innerText = '✅ Downloaded!';
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.removeAttribute('disabled');
+        }, 3000);
+      }
+
+    } catch (err: any) {
+      console.error('ZIP download error:', err);
+      alert(`ZIP download failed: ${err.message}\n\nPlease try downloading individual documents.`);
+
+      // Reset button
+      if (btn) {
+        btn.innerText = originalText;
+        btn.removeAttribute('disabled');
+      }
+    }
   };
 
   const downloadFile = async (format: 'pdf' | 'docx' | 'pptx' | 'csv') => {
@@ -348,8 +422,10 @@ function ResultsContent() {
                   {generating ? `⏳ ${loadingMessage}` : '🔄 Regenerate with AI'}
                 </button>
                 <button
+                  id="btn-download-zip"
                   onClick={downloadAllAsZip}
-                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md"
+                  disabled={generating || documents.length === 0}
+                  className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   📦 Download All (ZIP)
                 </button>
