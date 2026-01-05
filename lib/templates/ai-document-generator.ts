@@ -204,40 +204,40 @@ function buildContextSummary(answers: DocumentAnswers): string {
 }
 
 /**
- * Generate Company Profile using AI
+ * Agent: Brand & Identity Strategist
+ * Generates Company Profile using specific agent persona
  */
 async function generateCompanyProfile(answers: DocumentAnswers): Promise<string> {
     const groq = getGroqClient();
     const context = buildContextSummary(answers);
     const businessName = answers.business_name || extractBusinessName(answers);
 
-    const prompt = `You are a professional business writer creating a Company Profile document.
+    const prompt = `You are a Brand Identity Strategist & Professional Copywriter Agent.
+Your goal is to craft a compelling, premium corporate identity.
+
+ROLE:
+- Transform basic inputs into polished, professional copy.
+- Tone: Established, trustworthy, innovation-forward.
+- Use "Agent Insights" to explain branding choices (e.g. why you chose a specific mission statement phrasing).
 
 BUSINESS CONTEXT:
 ${context}
 
-Generate a comprehensive, professional Company Profile document in Markdown format for "${businessName}".
+TASK:
+Generate a Corporate Profile for "${businessName}".
+
+STRUCTURE:
+1. **Brand Essence**: Vision, Mission, Core Values (3-5 distinct values).
+2. **Executive Narrative**: Who we are (Founder story woven into business purpose).
+3. **The Solution**: Elevator Pitch + Detailed Product Description.
+4. **Target Audience**: Who we serve (Ideal Customer Profile).
+5. **Brand Position**: Brand Archetype & voice.
 
 REQUIREMENTS:
-1. Write in first person plural ("We", "Our")
-2. Be specific - use actual data from the context, DO NOT use placeholder text like "TBD" or "to be determined"
-3. If data is missing, make reasonable assumptions based on the business type and industry
-4. Include these sections:
-   - Executive Summary (compelling overview)
-   - About the Company (vision, mission, values)
-   - Founder Profile (background, expertise, why they started this)
-   - Our Solution (what we offer, how it works)
-   - Target Market (who we serve, market opportunity)
-   - Competitive Advantage (why we win)
-   - Current Stage (where we are today)
-   - Contact Information
-
-5. Make it professional but engaging
-6. Length: 800-1200 words
-7. Use data-driven language with specific numbers where available
-
-DO NOT include phrases like "To be determined", "TBD", "Not specified", or placeholder brackets [].
-If information is missing, either omit it or make a reasonable inference based on context.`;
+- Use professional "We" language.
+- Avoid generic jargon.
+- Length: 800+ words.
+`;
 
     const response = await groq.chat.completions.create({
         model: 'llama-3.3-70b-versatile',
@@ -250,176 +250,172 @@ If information is missing, either omit it or make a reasonable inference based o
 }
 
 /**
- * Generate Business Plan using AI
+ * Agent: Strategic Planner
+ * Generates Business Plan using specific agent persona
  */
 async function generateBusinessPlan(answers: DocumentAnswers): Promise<string> {
     const groq = getGroqClient();
     const context = buildContextSummary(answers);
     const businessName = answers.business_name || extractBusinessName(answers);
 
-    const prompt = `You are a professional business consultant creating a Business Plan for investors and stakeholders.
+    const prompt = `You are an elite Venture Capital Strategist & Business Consultant Agent.
+Your goal is to transform raw user inputs into a world-class, investor-ready Business Plan.
+
+ROLE & METHODOLOGY:
+1. Act as a critical partner, not just a writer. If the user's idea is generic, analyze specific execution challenges.
+2. Use "Agent Insights" blocks: Begin key sections with a blockquote (> 💡 **Agent Insight:** ...) explaining the strategic rationale.
+3. Extrapolate intelligently: If inputs are sparse, use your training on successful startups to fill gaps with plausible, high-quality strategies.
 
 BUSINESS CONTEXT:
 ${context}
 
-Generate a comprehensive Business Plan document in Markdown format for "${businessName}".
+TASK:
+Generate a comprehensive Business Plan for "${businessName}" in Markdown.
 
-REQUIREMENTS:
-1. Write professionally for an investor audience
-2. Be specific with numbers and projections - use data from context
-3. DO NOT use placeholder text like "TBD" - make reasonable projections
-4. Include these sections:
-   - Executive Summary (hook investors in first paragraph)
-   - Problem & Opportunity (pain points, market gap)
-   - Solution (our product/service, how it works)
-   - Business Model (how we make money)
-   - Market Analysis (TAM/SAM/SOM with numbers, trends)
-   - Competitive Analysis (competitors, our differentiation)
-   - Go-to-Market Strategy (customer acquisition, channels)
-   - Financial Projections (5-year revenue, costs, margins)
-   - Unit Economics (CAC, LTV, payback period)
-   - Team (founder background, key hires needed)
-   - Funding Requirements (amount, use of funds, milestones)
-   - Risk & Mitigation
+STRUCTURE & REQUIREMENTS:
 
-5. Include specific numbers, percentages, and timelines
-6. Length: 1500-2500 words
-7. Make financial projections realistic based on the business model
+# Executive Summary
+- The "Hook": Why this? Why now?
+- Quick formatting: High-level metrics and value prop.
 
-If financial data is missing, calculate reasonable estimates based on:
-- Industry benchmarks (SaaS: 75-85% gross margin, Services: 50-70%)
-- Startup growth rates (20-100% YoY for early stage)
-- Typical CAC payback (12-18 months)`;
+# I. Market Analysis (Deep Dive)
+- TAM/SAM/SOM Calculation (Show your logic).
+- Market Trends (Current outlook).
+- Competitor Matrix (Compare vs 3 archetypes).
+
+# II. Strategic Roadmap
+- The "Secret Sauce" (Unfair Advantage).
+- Go-to-Market Engine (Specific channels, CPA estimates).
+- Product Roadmap (Phase 1, 2, 3).
+
+# III. Operational Architecture
+- Team Structure (Key hires timeline).
+- Tech Stack / Infrastructure.
+
+# IV. Financial & Risk Overview
+- Investment Ask & Use of Funds.
+- Critical Risks & Mitigation Strategies.
+
+TONE:
+Professional, authoritative, persuasive, yet grounded in reality.
+Avoid generic fluff. Use active verbs.
+Length: 1500+ words.
+`;
 
     const response = await groq.chat.completions.create({
         model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
-        max_tokens: 5000
+        max_tokens: 6000
     });
 
     return response.choices[0]?.message?.content || 'Error generating business plan';
 }
 
 /**
- * Generate Financial Model using AI
+ * Agent: CFO & Financial Architect
+ * Generates Financial Model using specific agent persona
  */
 async function generateFinancialModel(answers: DocumentAnswers): Promise<string> {
     const groq = getGroqClient();
     const context = buildContextSummary(answers);
     const businessName = answers.business_name || extractBusinessName(answers);
 
-    const prompt = `You are a financial analyst creating a Financial Model summary for a startup.
+    const prompt = `You are a Chartered Accountant (CA) & Expert CFO Agent.
+Your task is to build a robust, mathematically sound projected financial model.
+
+ROLE:
+- Be conservative in revenue, realistic in costs.
+- Do not just output tables; explain the *drivers* (e.g., "Assumed 15% m-o-m growth based on SaaS benchmarks").
+- Include a "Sanity Check" section where you evaluate if the business is viable.
 
 BUSINESS CONTEXT:
 ${context}
 
-Generate a detailed Financial Model document in Markdown format for "${businessName}".
+TASK:
+Generate a detailed Financial Model & Feasibility Report for "${businessName}".
 
-REQUIREMENTS:
-1. Create realistic financial projections based on the business type
-2. DO NOT use "TBD" - calculate specific numbers
-3. Include these sections:
-   - Financial Summary (5-year overview table)
-   - Revenue Projections (monthly for Y1, annual for Y2-5)
-   - Cost Structure (fixed costs, variable costs, COGS)
-   - Unit Economics (CAC, LTV, LTV:CAC ratio, payback period)
-   - Cash Flow Analysis (burn rate, runway)
-   - Key Assumptions (list all assumptions with rationale)
-   - Sensitivity Analysis (best/base/worst case)
-   - Break-even Analysis
+STRUCTURE & REQUIREMENTS:
 
-4. Use tables for financial data:
-   | Metric | Year 1 | Year 2 | Year 3 | Year 4 | Year 5 |
-   
-5. Base projections on:
-   - Business model type (SaaS, marketplace, services, etc.)
-   - Target pricing mentioned
-   - Growth rate expectations
-   - Industry benchmarks
+# 1. Financial Executive Summary
+- Key highlights (Breakeven point, Year 3 Revenue, Total Funding Need).
+- > 💡 **CFO Insight:** Your professional opinion on the financial viability.
 
-6. Include specific formulas and calculations
-7. Length: 1000-1500 words with tables
+# 2. Revenue Modeling
+- **Revenue Drivers:** (Price x Volume, Churn, Expansion).
+- **Year 1 Monthly Projections:** Table showing Month 1-12.
+- **5-Year Growth Trajectory:** Annual summary table.
 
-Make the numbers specific and realistic. For a SaaS business, assume:
-- Month 1-3: ₹0-50K revenue (pre-launch)
-- Month 4-12: ₹50K-5L/month (early traction)
-- Gross margin: 75-85%
-- Growth: 15-20% MoM initially`;
+# 3. Cost Structure Analysis
+- **COGS Breakdown:** Margins per unit/user.
+- **OPEX:** Team salaries, Marketing budget, Tech costs.
+- **Burn Rate:** Monthly cash burn in Year 1.
+
+# 4. Unit Economics (Crucial)
+- Customer Acquisition Cost (CAC) Estimate.
+- Lifetime Value (LTV) Calculation.
+- LTV:CAC Ratio Analysis.
+
+# 5. Valuation & Investment
+- Pre-money Valuation Estimate (using multiples method).
+- ROI Analysis for investors.
+
+FORMATTING:
+- Use Markdown tables for all financial data.
+- Use bolding for key figures.
+- Provide specific formulas used for calculations.
+`;
 
     const response = await groq.chat.completions.create({
         model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.6,
-        max_tokens: 4000
+        max_tokens: 5000
     });
 
     return response.choices[0]?.message?.content || 'Error generating financial model';
 }
 
 /**
- * Generate Pitch Deck using AI
+ * Agent: Startup Storytelling Coach
+ * Generates Pitch Deck using specific agent persona
  */
 async function generatePitchDeck(answers: DocumentAnswers): Promise<string> {
     const groq = getGroqClient();
     const context = buildContextSummary(answers);
     const businessName = answers.business_name || extractBusinessName(answers);
 
-    const prompt = `You are creating a Pitch Deck outline for a startup seeking investment.
+    const prompt = `You are a Startup Pitch Coach & Storyteller Agent.
+Your background is in helping founders raise Series A rounds.
+
+ROLE:
+Think visually and narratively. A pitch deck is a STORY, not just data.
+Use "Slide Note:" to advise the user on *visuals* (e.g., "Show a graph of X here").
 
 BUSINESS CONTEXT:
 ${context}
 
-Generate a detailed Pitch Deck document in Markdown format for "${businessName}".
+TASK:
+Create a text-based layout for a 12-Slide Investor Pitch Deck for "${businessName}".
+
+STRUCTURE:
+1. Cover Slide (Tagline + One-liner).
+2. The Problem (The Villain).
+3. The Solution (The Hero).
+4. The Market (The Prize - TAM/SAM/SOM).
+5. The Product (Demo flow).
+6. Traction (Social Proof).
+7. Business Model (How we make money).
+8. Go-To-Market (How we grow).
+9. Competition (Why we win).
+10. The Team (Why us).
+11. Financial Projections (The ROI).
+12. The Ask (Funding + Milestones).
 
 REQUIREMENTS:
-1. Format for a 12-15 slide investor pitch deck
-2. Include specific content for each slide (not just headers)
-3. DO NOT use placeholder text - write real content
-4. Structure:
-   
-   ## Slide 1: Title
-   [Company name, tagline, founder name, contact]
-   
-   ## Slide 2: The Problem
-   [Specific pain points with data/examples]
-   
-   ## Slide 3: The Solution
-   [What we do, how it works, key features]
-   
-   ## Slide 4: Demo / Product
-   [Product description, key screenshots/mockups description]
-   
-   ## Slide 5: Market Size
-   [TAM/SAM/SOM with specific numbers]
-   
-   ## Slide 6: Business Model
-   [Revenue streams, pricing, unit economics]
-   
-   ## Slide 7: Traction
-   [Current metrics, milestones achieved]
-   
-   ## Slide 8: Competition
-   [Competitive landscape, our differentiation]
-   
-   ## Slide 9: Go-to-Market
-   [Customer acquisition strategy, channels]
-   
-   ## Slide 10: Team
-   [Founder background, key team members]
-   
-   ## Slide 11: Financials
-   [Key projections, growth trajectory]
-   
-   ## Slide 12: The Ask
-   [Funding amount, use of funds, milestones]
-   
-   ## Slide 13: Contact
-   [Call to action, contact info]
-
-5. Make it compelling and investor-ready
-6. Include specific numbers and metrics
-7. Length: 800-1200 words`;
+- For each slide, write 3-4 bullet points of PUNCHY, high-impact copy.
+- Include "Speaker Notes" for the founder.
+`;
 
     const response = await groq.chat.completions.create({
         model: 'llama-3.3-70b-versatile',
@@ -432,43 +428,38 @@ REQUIREMENTS:
 }
 
 /**
- * Generate Before/After Analysis using AI
+ * Agent: Strategic Consultant
+ * Generates Analysis using specific agent persona
  */
 async function generateAnalysis(answers: DocumentAnswers): Promise<string> {
     const groq = getGroqClient();
     const context = buildContextSummary(answers);
     const businessName = answers.business_name || extractBusinessName(answers);
 
-    const prompt = `You are a strategic business consultant providing analysis and recommendations.
+    const prompt = `You are a Senior Strategic Business Consultant Agent.
+Your job is to stress-test the user's business plan and identify blind spots.
+
+ROLE:
+Be honest, constructive, and rigorous. Don't sugarcoat risks.
 
 BUSINESS CONTEXT:
 ${context}
 
-Generate a comprehensive Analysis document in Markdown format for "${businessName}".
+TASK:
+Perform a 360-degree Strategic Analysis for "${businessName}".
+
+STRUCTURE:
+1. **Executive Assessment**: A letter grade (A-F) on overall viability with rationale.
+2. **SWOT Analysis**: Strengths, Weaknesses, Opportunities, Threats.
+3. **Gap Analysis**: What is missing? (e.g., "No clear retention strategy").
+4. **Risk Heatmap**: Identify High/Med/Low probability risks.
+5. **Strategic Recommendations**: 5 concrete next steps for the CEO.
+6. **Blue Ocean Strategy**: How to pivot to uncontested market space.
 
 REQUIREMENTS:
-1. Provide genuine strategic insights (not generic advice)
-2. Include these sections:
-   - Executive Assessment (overall business health score)
-   - Strengths Analysis (what's working well)
-   - Opportunity Areas (growth potential)
-   - Risk Assessment (potential threats, mitigation)
-   - Strategic Recommendations (specific, actionable items)
-   - Quick Wins (things to implement in 30 days)
-   - Long-term Priorities (90-day and 1-year goals)
-   - Key Metrics to Track
-   - Next Steps Checklist
-
-3. Use a scoring system:
-   | Dimension | Score | Assessment |
-   |-----------|-------|------------|
-   | Market Opportunity | X/10 | Brief note |
-   
-4. Make recommendations specific to THIS business
-5. Include timelines and priorities
-6. Length: 1000-1500 words
-
-Base your analysis on the actual business context provided. Be constructive but honest about challenges.`;
+- Use clear headers.
+- Provide actionable advice, not generic theory.
+`;
 
     const response = await groq.chat.completions.create({
         model: 'llama-3.3-70b-versatile',
