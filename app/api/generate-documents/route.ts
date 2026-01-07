@@ -75,11 +75,21 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('❌ Document generation error:', error);
 
+        // Extract meaningful error message
+        let errorMessage = 'Document generation failed';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+            // Check for common issues
+            if (error.message.includes('ANTHROPIC_API_KEY')) {
+                errorMessage = 'Configuration error: AI service not configured. Please contact support.';
+            }
+        }
+
         return NextResponse.json(
             {
                 success: false,
-                error: error instanceof Error ? error.message : 'Document generation failed',
-                details: error instanceof Error ? error.stack : undefined
+                error: errorMessage,
+                details: process.env.NODE_ENV === 'development' && error instanceof Error ? error.stack : undefined
             },
             { status: 500 }
         );
