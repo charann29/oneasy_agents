@@ -17,7 +17,7 @@ import { getDocumentGenerationWorkflow } from '@/lib/workflows/document-generati
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { sessionId, answers } = body;
+        const { sessionId, answers, additionalNotes } = body;
 
         if (!answers || Object.keys(answers).length === 0) {
             return NextResponse.json(
@@ -33,10 +33,20 @@ export async function POST(request: NextRequest) {
         console.log('📋 Session:', sessionId);
         console.log('📊 Answers count:', Object.keys(answers).length);
 
+        // Include additional notes in context if provided
+        if (additionalNotes) {
+            console.log('📝 Additional notes provided:', additionalNotes.length, 'chars');
+        }
+
         // Use the new workflow with agent orchestration
         const workflow = getDocumentGenerationWorkflow();
 
-        const result = await workflow.generateAllDocuments(answers, sessionId);
+        // Merge additional notes into answers for document generation
+        const enrichedAnswers = additionalNotes
+            ? { ...answers, _user_additional_context: additionalNotes }
+            : answers;
+
+        const result = await workflow.generateAllDocuments(enrichedAnswers, sessionId);
 
         console.log('✅ Multi-Agent Generation Complete');
         console.log('📄 Documents:', result.documents.length);

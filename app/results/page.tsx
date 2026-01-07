@@ -98,17 +98,28 @@ function ResultsContent() {
 
     try {
       let answers = null;
+      let additionalNotes = null;
 
       // 1. Try Supabase first (most reliable)
       if (sessionId && sessionId !== 'new') {
-        const { data } = await (supabase
-          .from('questionnaire_sessions') as any)
-          .select('answers')
-          .eq('id', sessionId)
-          .single();
+        try {
+          const { data, error: dbError } = await (supabase
+            .from('questionnaire_sessions') as any)
+            .select('answers, additional_notes')
+            .eq('id', sessionId)
+            .maybeSingle(); // Use maybeSingle to avoid 406 error when no rows found
 
-        if (data?.answers) {
-          answers = data.answers;
+          if (dbError) {
+            console.warn('Supabase query error:', dbError.message);
+            // Continue to fallback - don't throw
+          } else if (data?.answers) {
+            answers = data.answers;
+            additionalNotes = data.additional_notes || null;
+            console.log('✅ Loaded session data from Supabase');
+          }
+        } catch (supabaseError) {
+          console.warn('Supabase fetch failed, will try localStorage:', supabaseError);
+          // Continue to localStorage fallback
         }
       }
 
@@ -153,7 +164,7 @@ function ResultsContent() {
         throw new Error('No questionnaire data found. Please complete the questionnaire first.');
       }
 
-      // Call generation API
+      // Call generation API with answers and additional notes
       const response = await fetch('/api/generate-documents', {
         method: 'POST',
         headers: {
@@ -162,6 +173,7 @@ function ResultsContent() {
         body: JSON.stringify({
           sessionId,
           answers: answers,
+          additionalNotes: additionalNotes,
         }),
       });
 

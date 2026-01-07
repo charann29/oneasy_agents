@@ -94,10 +94,10 @@ function CompletePageContent() {
                     </Link>
 
                     <Link
-                        href="/chat"
+                        href={`/review?sessionId=${targetSessionId}`}
                         className="block w-full px-8 py-4 bg-white border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all"
                     >
-                        📝 Review My Answers
+                        📝 Review & Edit My Answers
                     </Link>
                 </div>
 

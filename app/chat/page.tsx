@@ -1422,14 +1422,15 @@ Analyze this question and provide 3-4 short, specific options or ideas as bullet
         const completionMsg: Message = {
             id: 'complete',
             role: 'assistant',
-            content: "🎉 Excellent! You've completed all 147 questions across 11 phases. Now let's generate your professional business planning documents!",
+            content: "🎉 Excellent! You've completed all 147 questions across 11 phases. Before we generate your documents, let's take a moment to review everything. You can update any answers or add extra context if needed!",
             timestamp: new Date()
         };
         setState(prev => ({ ...prev, messages: [...prev.messages, completionMsg] }));
 
+        // Redirect to review page first so user can review/edit their accumulated context
         setTimeout(() => {
-            window.location.href = `/complete?sessionId=${state.sessionId}`;
-        }, 2000);
+            window.location.href = `/review?sessionId=${state.sessionId}`;
+        }, 3000);
     };
 
     const renderInput = () => {
