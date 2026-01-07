@@ -105,7 +105,7 @@ function ResultsContent() {
         try {
           const { data, error: dbError } = await (supabase
             .from('questionnaire_sessions') as any)
-            .select('answers, additional_notes')
+            .select('answers')
             .eq('id', sessionId)
             .maybeSingle(); // Use maybeSingle to avoid 406 error when no rows found
 
@@ -114,7 +114,7 @@ function ResultsContent() {
             // Continue to fallback - don't throw
           } else if (data?.answers) {
             answers = data.answers;
-            additionalNotes = data.additional_notes || null;
+            additionalNotes = data.answers._additional_notes || null;
             console.log('✅ Loaded session data from Supabase');
           }
         } catch (supabaseError) {

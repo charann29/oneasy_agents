@@ -66,7 +66,7 @@ function ReviewPageContent() {
             try {
                 const { data, error: fetchError } = await (supabase
                     .from('questionnaire_sessions') as any)
-                    .select('answers, accumulated_context, additional_notes')
+                    .select('answers, accumulated_context')
                     .eq('id', sessionId)
                     .maybeSingle(); // Use maybeSingle to prevent 406 error when no data found
 
@@ -89,7 +89,7 @@ function ReviewPageContent() {
 
                 if (data) {
                     setAnswers(data.answers || {});
-                    setAdditionalNotes(data.additional_notes || '');
+                    // Note: additional_notes column may not exist yet in production
                 } else {
                     // No data in Supabase, try localStorage
                     const localBackup = localStorage.getItem('questionnaire_state') || localStorage.getItem('ca_backup_state');
@@ -215,10 +215,17 @@ function ReviewPageContent() {
         setSaving(true);
 
         try {
+            // Store additional notes in the answers JSON as _additional_notes
+            // This works without needing a separate database column
+            const updatedAnswers = {
+                ...answers,
+                _additional_notes: additionalNotes
+            };
+
             const { error: updateError } = await (supabase
                 .from('questionnaire_sessions') as any)
                 .update({
-                    additional_notes: additionalNotes,
+                    answers: updatedAnswers,
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', sessionId);
@@ -227,6 +234,7 @@ function ReviewPageContent() {
                 throw updateError;
             }
 
+            setAnswers(updatedAnswers);
             setShowAddNotes(false);
             setSaveSuccess(true);
             setTimeout(() => setSaveSuccess(false), 2000);
