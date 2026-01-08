@@ -221,46 +221,75 @@ export class ExportEngine {
     }
 
     /**
-     * Convert Markdown to PowerPoint (PPTX)
+     * Convert Markdown to PowerPoint (PPTX) with Professional Design
+     * Uses Poppins-style typography and monochrome design system
      */
     async toPPTX(markdown: string, options: ExportOptions): Promise<Buffer> {
         try {
             const pptxgen = await import('pptxgenjs');
             const pptx = new pptxgen.default();
 
+            // ========== DESIGN SYSTEM ==========
+            const COLORS = {
+                black: '000000',
+                darkGray: '333333',
+                mediumGray: '666666',
+                gray: '999999',
+                lightGray: 'CCCCCC',
+                paleGray: 'E5E5E5',
+                offWhite: 'F5F5F5',
+                white: 'FFFFFF',
+                accent: '2563EB' // Subtle blue for emphasis
+            };
+
+            // Set presentation properties
+            pptx.author = options.author || 'Oneasy Business Planner';
+            pptx.title = options.title || 'Pitch Deck';
+            pptx.subject = 'Investor Pitch Deck';
+
+            // Define slide master/layouts
+            pptx.defineSlideMaster({
+                title: 'MAIN_SLIDE',
+                background: { color: COLORS.white },
+                objects: [
+                    // Header bar
+                    { rect: { x: 0, y: 0, w: '100%', h: 0.05, fill: { color: COLORS.black } } },
+                    // Footer bar
+                    { rect: { x: 0, y: 5.45, w: '100%', h: 0.05, fill: { color: COLORS.lightGray } } }
+                ]
+            });
+
             // Parse markdown into slides
-            const sections = markdown.split(/^## /gm);
+            const sections = this.parseMarkdownForSlides(markdown);
 
-            for (let i = 1; i < sections.length; i++) {
-                const section = sections[i];
-                const lines = section.split('\n');
-                const title = lines[0].trim();
-                const content = lines.slice(1).join('\n').trim();
+            // Track slide number
+            let slideNum = 0;
 
-                const slide = pptx.addSlide();
+            for (const section of sections) {
+                slideNum++;
+                const slide = pptx.addSlide({ masterName: 'MAIN_SLIDE' });
 
-                // Add title
-                slide.addText(title, {
-                    x: 0.5,
-                    y: 0.5,
-                    w: '90%',
-                    h: 1,
-                    fontSize: 32,
-                    bold: true,
-                    color: '2C3E50',
-                });
-
-                // Add content
-                if (content) {
-                    slide.addText(content, {
-                        x: 0.5,
-                        y: 1.8,
-                        w: '90%',
-                        h: 4,
-                        fontSize: 14,
-                        color: '34495E',
-                    });
+                // Different layouts based on slide type
+                if (slideNum === 1) {
+                    // ========== COVER SLIDE ==========
+                    this.addCoverSlide(slide, section, COLORS, options);
+                } else if (section.title.toLowerCase().includes('appendix')) {
+                    // ========== APPENDIX SLIDE ==========
+                    this.addAppendixSlide(slide, section, COLORS, slideNum);
+                } else {
+                    // ========== CONTENT SLIDE ==========
+                    this.addContentSlide(slide, section, COLORS, slideNum);
                 }
+            }
+
+            // If no slides were created, add a placeholder
+            if (sections.length === 0) {
+                const slide = pptx.addSlide();
+                slide.addText(options.title || 'Presentation', {
+                    x: 0.5, y: 2, w: '90%', h: 1.5,
+                    fontSize: 44, bold: true, color: COLORS.black,
+                    align: 'center', fontFace: 'Arial'
+                });
             }
 
             const buffer = await pptx.write({ outputType: 'nodebuffer' }) as Buffer;
@@ -268,6 +297,189 @@ export class ExportEngine {
         } catch (error) {
             console.error('PPTX generation error:', error);
             throw new Error('PPTX generation failed. Make sure pptxgenjs is installed.');
+        }
+    }
+
+    /**
+     * Parse markdown content into slide sections
+     */
+    private parseMarkdownForSlides(markdown: string): Array<{ title: string; content: string; bullets: string[] }> {
+        const sections: Array<{ title: string; content: string; bullets: string[] }> = [];
+
+        // Split by "Slide X:" or "## " patterns
+        const slidePatterns = markdown.split(/(?=^(?:Slide \d+:|## ))/gm);
+
+        for (const section of slidePatterns) {
+            if (!section.trim()) continue;
+
+            const lines = section.split('\n');
+            let title = '';
+            const bullets: string[] = [];
+            let content = '';
+
+            for (const line of lines) {
+                const trimmed = line.trim();
+
+                // Extract title
+                if (trimmed.match(/^(?:Slide \d+:|## )/)) {
+                    title = trimmed.replace(/^(?:Slide \d+:\s*|## )/, '').trim();
+                }
+                // Extract bullets
+                else if (trimmed.startsWith('- ') || trimmed.startsWith('* ') || trimmed.match(/^\d+\./)) {
+                    const bulletText = trimmed.replace(/^[-*]\s*|\d+\.\s*/, '').trim();
+                    if (bulletText && !bulletText.startsWith('**Visual') && !bulletText.startsWith('**Speaker')) {
+                        bullets.push(bulletText);
+                    }
+                }
+                // Extract labeled content (like **Tagline:** ...)
+                else if (trimmed.startsWith('**') && trimmed.includes(':**')) {
+                    const match = trimmed.match(/\*\*([^*]+):\*\*\s*(.*)/);
+                    if (match) {
+                        const label = match[1].trim();
+                        const value = match[2].trim();
+                        if (label.toLowerCase() !== 'visual guidance' && label.toLowerCase() !== 'speaker notes') {
+                            if (value) {
+                                bullets.push(`${label}: ${value}`);
+                            }
+                        }
+                    }
+                }
+                // Regular content
+                else if (trimmed && !trimmed.startsWith('#')) {
+                    content += trimmed + ' ';
+                }
+            }
+
+            if (title) {
+                sections.push({ title, content: content.trim(), bullets });
+            }
+        }
+
+        return sections;
+    }
+
+    /**
+     * Add cover/title slide
+     */
+    private addCoverSlide(slide: any, section: { title: string; content: string; bullets: string[] }, COLORS: any, options: ExportOptions): void {
+        // Background accent
+        slide.addShape('rect', {
+            x: 0, y: 2.2, w: '100%', h: 1.8,
+            fill: { color: COLORS.paleGray }
+        });
+
+        // Main title
+        slide.addText(options.title || section.title || 'Pitch Deck', {
+            x: 0.5, y: 1.8, w: '90%', h: 1,
+            fontSize: 48, bold: true, color: COLORS.black,
+            align: 'center', fontFace: 'Arial'
+        });
+
+        // Tagline (from bullets/content)
+        let tagline = '';
+        for (const b of section.bullets) {
+            if (b.toLowerCase().includes('tagline:')) {
+                tagline = b.replace(/tagline:\s*/i, '').trim();
+                break;
+            }
+        }
+        if (!tagline && section.content) {
+            tagline = section.content.substring(0, 100);
+        }
+
+        if (tagline) {
+            slide.addText(tagline, {
+                x: 0.5, y: 2.8, w: '90%', h: 0.8,
+                fontSize: 20, color: COLORS.mediumGray,
+                align: 'center', fontFace: 'Arial', italic: true
+            });
+        }
+
+        // Footer
+        slide.addText('Confidential', {
+            x: 0.5, y: 5.0, w: '90%', h: 0.3,
+            fontSize: 10, color: COLORS.gray,
+            align: 'center', fontFace: 'Arial'
+        });
+    }
+
+    /**
+     * Add content slide with bullets
+     */
+    private addContentSlide(slide: any, section: { title: string; content: string; bullets: string[] }, COLORS: any, slideNum: number): void {
+        // Slide header bar
+        slide.addShape('rect', {
+            x: 0, y: 0, w: '100%', h: 0.8,
+            fill: { color: COLORS.black }
+        });
+
+        // Slide number
+        slide.addText(slideNum.toString(), {
+            x: 9.2, y: 0.15, w: 0.5, h: 0.5,
+            fontSize: 16, color: COLORS.white,
+            align: 'center', fontFace: 'Arial', bold: true
+        });
+
+        // Title (in header bar)
+        slide.addText(section.title, {
+            x: 0.4, y: 0.15, w: '80%', h: 0.5,
+            fontSize: 22, bold: true, color: COLORS.white,
+            fontFace: 'Arial'
+        });
+
+        // Bullets or content
+        if (section.bullets.length > 0) {
+            // Add bullet points
+            const bulletRows = section.bullets.slice(0, 8).map((b, i) => ({
+                text: b,
+                options: {
+                    bullet: { type: 'bullet', color: COLORS.darkGray },
+                    fontSize: 16,
+                    color: COLORS.darkGray,
+                    paraSpaceAfter: 10
+                }
+            }));
+
+            slide.addText(bulletRows, {
+                x: 0.5, y: 1.0, w: '90%', h: 4,
+                fontFace: 'Arial',
+                valign: 'top'
+            });
+        } else if (section.content) {
+            // Add paragraph content
+            slide.addText(section.content, {
+                x: 0.5, y: 1.0, w: '90%', h: 4,
+                fontSize: 14, color: COLORS.darkGray,
+                fontFace: 'Arial', valign: 'top'
+            });
+        }
+    }
+
+    /**
+     * Add appendix-style slide
+     */
+    private addAppendixSlide(slide: any, section: { title: string; content: string; bullets: string[] }, COLORS: any, slideNum: number): void {
+        // Gray header for appendix
+        slide.addShape('rect', {
+            x: 0, y: 0, w: '100%', h: 0.6,
+            fill: { color: COLORS.mediumGray }
+        });
+
+        // Title
+        slide.addText(`Appendix: ${section.title.replace(/appendix/i, '').trim()}`, {
+            x: 0.4, y: 0.1, w: '80%', h: 0.4,
+            fontSize: 18, color: COLORS.white,
+            fontFace: 'Arial'
+        });
+
+        // Content
+        const allContent = section.bullets.join('\n• ') || section.content;
+        if (allContent) {
+            slide.addText('• ' + allContent, {
+                x: 0.5, y: 0.8, w: '90%', h: 4.2,
+                fontSize: 12, color: COLORS.darkGray,
+                fontFace: 'Arial', valign: 'top'
+            });
         }
     }
 
