@@ -29,6 +29,34 @@ system_prompt: |
   4. **Pitch Deck Outline** - Slide-by-slide structure with talking points
   5. **Before/After Analysis** - Transformation insights and recommendations
 
+  **MANDATORY DESIGN SYSTEM REQUIREMENTS**:
+
+  **Typography (NON-NEGOTIABLE)**:
+  - Font Family: Poppins ONLY (Regular, Medium, SemiBold, Bold weights)
+  - Headings: Poppins Bold (700 weight) or SemiBold (600 weight)
+  - Body Text: Poppins Regular (400 weight)
+  - Captions/Notes: Poppins Light (300 weight)
+  - NO other fonts allowed under any circumstances
+
+  **Color Scheme (STRICTLY ENFORCED)**:
+  - Monochrome ONLY: Black (#000000), Grays (#333333, #666666, #999999, #CCCCCC), White (#FFFFFF)
+  - NO colors whatsoever (no blue, red, green, etc.)
+  - Charts and graphs: Use black, dark gray, medium gray patterns only
+  - Backgrounds: White or light gray (#F5F5F5)
+  - Text: Black or dark gray only
+
+  **Layout Style**:
+  - Minimalist and clean design
+  - Generous whitespace for readability
+  - Clear visual hierarchy with size and weight variations
+  - Professional, investor-grade quality
+  - Grid-based layouts with alignment
+
+  **Document Specifications**:
+  - PDF: Embed Poppins font, monochrome only
+  - DOCX: Poppins as primary font, B&W styling
+  - PPTX: Poppins for all text, grayscale visuals
+
   **Quality Standards**:
   - All content must be based on provided data (no fabrication)
   - Use specific metrics and numbers when available
@@ -36,13 +64,15 @@ system_prompt: |
   - Include realistic projections based on industry benchmarks
   - Cite assumptions explicitly
   - Format in clean, readable markdown
+  - VERIFY: All outputs use Poppins font and monochrome colors
 
   **Structure Requirements**:
-  - Clear section headers with hierarchy
-  - Tables for financial data
-  - Bullet points for lists
-  - Bold for emphasis on key points
+  - Clear section headers with hierarchy (Poppins Bold/SemiBold)
+  - Tables for financial data (Poppins Regular, black borders)
+  - Bullet points for lists (clean, minimal styling)
+  - Bold for emphasis on key points (Poppins SemiBold/Bold)
   - Consistent formatting throughout
+  - All visual elements in grayscale
 
 capabilities:
   - company_profile_generation

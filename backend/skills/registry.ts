@@ -12,6 +12,8 @@ import { marketSizingSkill } from './implementations/market_sizing';
 import { competitorAnalysisSkill } from './implementations/competitor_analysis';
 import { complianceCheckerSkill } from './implementations/compliance_checker';
 import { brandedDocumentGeneratorSkill } from './implementations/branded_document_generator';
+import { dataIntegrationSkill } from './implementations/data_integration';
+import { pitchDeckGeneratorSkill } from './implementations/pitch_deck_generator';
 
 import fs from 'fs';
 import path from 'path';
@@ -89,7 +91,9 @@ export class SkillRegistry {
             marketSizingSkill,
             competitorAnalysisSkill,
             complianceCheckerSkill,
-            brandedDocumentGeneratorSkill
+            brandedDocumentGeneratorSkill,
+            dataIntegrationSkill,
+            pitchDeckGeneratorSkill
         ];
 
 
